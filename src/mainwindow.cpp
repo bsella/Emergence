@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //p.add();
     FuncGate* gt = new GTGate;
     gt->setPos(100,50);
-    FuncGate *x= ui->widget->xg;
+    //FuncGate *x= ui->widget->xg;
     FuncGate *y= ui->widget->yg;
     RenderGate*s= ui->widget->start;
 

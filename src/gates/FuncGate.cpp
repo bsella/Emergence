@@ -9,14 +9,14 @@ FuncGate::FuncGate(unsigned w, unsigned h, QColor c, uint n, bool spec):Gate(w,h
     }
 }
 
-void FuncGate::connect(FuncGate *g, unsigned i){
+void FuncGate::connectGate(FuncGate *g, unsigned i){
     if(input.size()>=i+1){
         QRectF r= g->boundingRect();
-        g->returnLine=this->scene()->addLine(r.right(),g->y()+r.height()/2,
+        g->returnLine=this->scene()->addLine(g->x()+r.right(),g->y()+r.height()/2,
                                              x(),y()+height*((i+1.0)/(input.size()+1.0)));
         input[i]=g;
+        sockets[i]->setVisible(false);
     }
-    update();
 }
 
 void FuncGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
@@ -45,17 +45,17 @@ void FuncGate::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
 }
 
 void FuncGate::dragEnterEvent(QGraphicsSceneDragDropEvent* event){
-    /*if(event->mimeData()->parent()==this)
-        setAcceptDrops(false);
-    else
-        setAcceptDrops(true);*/
+    if(event->mimeData()->parent()==this);
+       //event;
+    //else;
+       //setAcceptDrops(true);
 }
 
 void FuncGate::dragLeaveEvent(QGraphicsSceneDragDropEvent*){
 }
 
 void FuncGate::dropEvent(QGraphicsSceneDragDropEvent* event){
-    ((FuncGate*)(event->mimeData()->parent()))->connect(this,(event->mimeData()->data("rank")).toInt());
+    ((FuncGate*)(event->mimeData()->parent()))->connectGate(this,(event->mimeData()->data("rank")).toInt());
 }
 
 FuncGate::operator bool(){
@@ -63,4 +63,26 @@ FuncGate::operator bool(){
         if(g==nullptr || !(*g))
             return false;
     return true;
+}
+
+void FuncGate::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
+    QMenu *menu = new QMenu;
+    connect(menu->addAction("delete"),&QAction::triggered,this,&FuncGate::removeGate);
+    menu->addSeparator();
+    for(unsigned i = 0; i<nbArgs; i++){
+        QAction *a= menu->addAction(QString("diconnect ")+QString::number(i+1));
+        a->setEnabled(input[i]!=nullptr);
+        connect(a,&QAction::triggered,this,[=](){disconnectGate(i);});
+    }
+    menu->exec(event->screenPos());
+}
+
+void FuncGate::removeGate(){
+    scene()->removeItem(this);
+}
+
+void FuncGate::disconnectGate(unsigned rank){
+    scene()->removeItem(input[rank]->returnLine);
+    input[rank]=nullptr;
+    sockets[rank]->setVisible(true);
 }

@@ -1,0 +1,18 @@
+#include "lib/RenderGate.h"
+
+RenderGate::RenderGate():FuncGate(50, 50, Qt::white,1,true){
+}
+data_t RenderGate::eval()const{
+    return input[0]->eval();
+}
+
+void RenderGate::paint(QPainter* painter,
+           const QStyleOptionGraphicsItem* option,
+           QWidget* widget){
+    pen=QPen(Qt::darkGreen,1);
+    FuncGate::paint(painter, option, widget);
+}
+
+void RenderGate::connect(FuncGate *g, unsigned i){
+    FuncGate::connect(g,i);
+}

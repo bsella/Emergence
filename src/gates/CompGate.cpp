@@ -37,25 +37,25 @@ void LTGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     painter->drawText(rect.x()+rect.width()/2-3,rect.y()+rect.height()/2+3,"<");
 }
 data_t GTGate::eval()const{
-    return input[0]->eval() > input[1]->eval();
+    return iGates[0]->eval() > iGates[1]->eval();
 }
 
 data_t LTGate::eval()const{
-    return input[0]->eval() < input[1]->eval();
+    return iGates[0]->eval() < iGates[1]->eval();
 }
 
 data_t GEGate::eval()const{
-    return input[0]->eval() >= input[1]->eval();
+    return iGates[0]->eval() >= iGates[1]->eval();
 }
 
 data_t LEGate::eval()const{
-    return input[0]->eval() <= input[1]->eval();
+    return iGates[0]->eval() <= iGates[1]->eval();
 }
 
 data_t EQGate::eval()const{
-    return input[0]->eval() == input[1]->eval();
+    return iGates[0]->eval() == iGates[1]->eval();
 }
 
 data_t NEGate::eval()const{
-    return input[0]->eval() != input[1]->eval();
+    return iGates[0]->eval() != iGates[1]->eval();
 }

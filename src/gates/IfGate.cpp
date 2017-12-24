@@ -16,7 +16,5 @@ void IfGate::paint(QPainter* painter,
 }
 
 data_t IfGate::eval()const{
-    if(input[1]->eval())
-        return input[0]->eval();
-    return input[2]->eval();
+    return iGates[1]->eval()? iGates[0]->eval() : iGates[2]->eval();
 }

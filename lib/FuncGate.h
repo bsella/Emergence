@@ -10,31 +10,30 @@
 #include <QDragEnterEvent>
 
 class FuncGate:public Gate{
-
 private:
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
+    unsigned int nbArgs;
+    bool special;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void dragEnterEvent(QGraphicsSceneDragDropEvent* event);
     void dragLeaveEvent(QGraphicsSceneDragDropEvent*);
     void dropEvent(QGraphicsSceneDragDropEvent* event);
-    unsigned int nbArgs;
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 private slots:
     void removeGate();
     void disconnectGate(unsigned rank);
 protected:
     FuncGate(unsigned w, unsigned h, QColor c= Qt::white, uint n=0, bool spec=false);
-    virtual void connectGate(FuncGate *g, unsigned i);
-    std::vector<FuncGate*> input;
+    std::vector<FuncGate*> iGates;          //INPUT GATES
+    FuncGate* oGate=nullptr;                //OUTPUT GATE
+    unsigned int oRank;                     //OUTPUT RANK
+    std::vector<QGraphicsLineItem*> lines;
     std::vector<Socket*> sockets;
-//    std::vector<QGraphicsLineItem*> lines;
+    virtual void connectGate(FuncGate *g, unsigned i);
     virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 public:
-    bool special;
-    operator bool();
-    QGraphicsLineItem* returnLine=nullptr;
-    //std::pair<FuncGate*,uint> output={nullptr,0};
     TypeEnum t=TypeEnum::ANY;
     virtual data_t eval()const=0;
+    operator bool();
 };
 
 #endif // FUNC_GATE_H

@@ -16,6 +16,7 @@ void FuncGate::connectGate(FuncGate *g, unsigned i){
                                              x(),y()+height*((i+1.0)/(input.size()+1.0)));
         input[i]=g;
         sockets[i]->setVisible(false);
+        emit newConnectGate();
     }
 }
 
@@ -78,6 +79,7 @@ void FuncGate::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 }
 
 void FuncGate::removeGate(){
+
     scene()->removeItem(this);
 }
 

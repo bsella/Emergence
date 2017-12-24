@@ -28,7 +28,7 @@ struct data_t{
         return d;
     }
     operator unsigned(){
-        if(t==TypeEnum::BOOL) return b? 0xffffffff:0;
+        if(t==TypeEnum::BOOL) return b? 0xffffffff:0xff000000;
         if(t==TypeEnum::DOUBLE){
             if(d>1)return 0xffffffff;
             if(d<0)return 0;

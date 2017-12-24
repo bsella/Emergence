@@ -11,7 +11,7 @@ private:
     void paint(QPainter* painter,
                const QStyleOptionGraphicsItem* option,
                QWidget* widget);
-    void connect(FuncGate *g, unsigned i);
+    void connectGate(FuncGate *g, unsigned i);
 };
 
 #endif // RENDERGATE_H

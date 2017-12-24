@@ -15,6 +15,9 @@ class Gate: public QGraphicsObject{
 public:
     unsigned int width, height;
     QRectF boundingRect() const;
+signals:
+    void newConnectGate(){}
+
 protected:
     QColor color;
     Gate(unsigned w=50, unsigned h=50, QColor c=Qt::white);

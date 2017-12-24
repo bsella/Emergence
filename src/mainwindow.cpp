@@ -16,19 +16,27 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
     Palette p;
     //p.add();
+    FuncGate* red= new ConstGate(0xffff0000);
+    FuncGate* green= new ConstGate(0xff00ff00);
+    FuncGate* c = new ConstGate(.75);
     FuncGate* gt = new GTGate;
-    gt->setPos(100,50);
-    //FuncGate *x= ui->widget->xg;
+    FuncGate* ifg = new IfGate;
     FuncGate *y= ui->widget->yg;
     RenderGate*s= ui->widget->start;
 
-    FuncGate *c= new ConstGate(0xffff0000);
-    //s->connect(c,0);
-    scene->addItem(s);
-    scene->addItem(c);
-    scene->addItem(y);
-    scene->addItem(gt);
+    gt->setPos(100,50);
     y->setY(100);
+    ifg->setPos(200,30);
+    red->setPos(100,-50);
+    green->setPos(100,150);
+    s->setPos(280,50);
+    scene->addItem(s);
+    scene->addItem(red);
+    scene->addItem(green);
+    scene->addItem(c);
+    scene->addItem(gt);
+    scene->addItem(ifg);
+    scene->addItem(y);
     //gt->connect(x,0);
     //gt->connect(y,1);
 }

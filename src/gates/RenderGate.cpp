@@ -12,6 +12,6 @@ void RenderGate::paint(QPainter* painter,
     FuncGate::paint(painter, option, widget);
 }
 
-void RenderGate::connect(FuncGate *g, unsigned i){
+void RenderGate::connectGate(FuncGate *g, unsigned i){
     FuncGate::connectGate(g,i);
 }

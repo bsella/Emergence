@@ -15,7 +15,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QGraphicsScene* scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
     Palette p;
-    //p.add();
+    p.add(0xffff0000,0);
+    p.add(0xff00ff00,1);
+
+    FuncGate* plt= new PaletteGate(p);
     FuncGate* red= new ConstGate(0xffff0000);
     FuncGate* green= new ConstGate(0xff00ff00);
     FuncGate* c = new ConstGate(.75);
@@ -30,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     red->setPos(100,-50);
     green->setPos(100,150);
     s->setPos(280,50);
+    scene->addItem(plt);
     scene->addItem(s);
     scene->addItem(red);
     scene->addItem(green);

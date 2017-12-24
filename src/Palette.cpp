@@ -1,16 +1,16 @@
 #include "lib/Palette.h"
+#include <cstdint>
+/*Uint32 = [.ALPHA..][...RED..][.GREEN..][..BLUE..]*/
 
-/*Uint32 = [........][..BLUE..][.GREEN..][...RED..]*/
-
-void getRGB(unsigned color, char &r, char &g, char &b){
+void getRGB(unsigned color, uint8_t &r, uint8_t &g, uint8_t &b){
 	b=color;
-	color>>=8;
+    color>>=8;
 	g=color;
-	color>>=8;
+    color>>=8;
 	r=color;
 }
 
-unsigned makeRGB(char r, char g, char b){
+unsigned makeRGB(uint8_t r, uint8_t g, uint8_t b){
     unsigned c=0xff;
 	c<<=8; c|=r;
 	c<<=8; c|=g;
@@ -48,7 +48,7 @@ void Palette::add(unsigned color, double alpha){
 
 unsigned Palette::average(color c1, color c2, double i)const{
 	i=(i-c1.getAlpha())/(c2.getAlpha()-c1.getAlpha());
-    char r1,g1,b1, r2,g2,b2;
+    uint8_t r1,g1,b1, r2,g2,b2;
 	getRGB(c1.getClr(), r1, g1, b1);
 	getRGB(c2.getClr(), r2, g2, b2);
 
@@ -58,7 +58,7 @@ unsigned Palette::average(color c1, color c2, double i)const{
 }
 
 unsigned Palette::operator[](double alpha)const{
-	if(empty()) return 0;
+    if(empty()) return 0xff000000;
 	if(alpha<0) return colors.front().getClr();
 	if(alpha<colors.front().getAlpha()) return colors.front().getClr();
 	for(auto it= colors.cbegin(); it != colors.cend(); ++it){

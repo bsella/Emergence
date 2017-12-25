@@ -2,6 +2,8 @@
 #define CONSTGATE_H
 
 #include "FuncGate.h"
+#include <QColorDialog>
+#include <QInputDialog>
 
 class ConstGate:public FuncGate{
 public:
@@ -11,7 +13,11 @@ public:
 	inline data_t eval()const{return _v;}
 private:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget);
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	data_t _v;
+private slots:
+	void changeColor();
+	void changeNumber();
 };
 
 #endif

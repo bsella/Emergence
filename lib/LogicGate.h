@@ -1,5 +1,5 @@
-#ifndef COMPGATE_H
-#define COMPGATE_H
+#ifndef LOGICGATE_H
+#define LOGICGATE_H
 
 #include "FuncGate.h"
 

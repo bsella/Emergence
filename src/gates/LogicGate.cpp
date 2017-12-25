@@ -12,31 +12,31 @@ NOTGate::NOTGate():LogicGate(1){}
 
 void ORGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
     FuncGate::paint(painter,option, widget);
-    painter->drawText(boundingRect().center()-QPoint(5,0),"OR");
+	painter->drawText(boundingRect().center()-QPoint(10,-2),"OR");
 }
 void ANDGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
     FuncGate::paint(painter,option, widget);
-    painter->drawText(boundingRect().center()-QPoint(5,0),"AND");
+	painter->drawText(boundingRect().center()-QPoint(12,-2),"AND");
 }
 void XORGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
     FuncGate::paint(painter,option, widget);
-    painter->drawText(boundingRect().center()-QPoint(5,0),"XOR");
+	painter->drawText(boundingRect().center()-QPoint(12,-2),"XOR");
 }
 void NANDGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
     FuncGate::paint(painter,option, widget);
-    painter->drawText(boundingRect().center()-QPoint(5,0),"NAND");
+	painter->drawText(boundingRect().center()-QPoint(16,-2),"NAND");
 }
 void NORGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
     FuncGate::paint(painter,option, widget);
-    painter->drawText(boundingRect().center()-QPoint(5,0),"NOR");
+	painter->drawText(boundingRect().center()-QPoint(12,-2),"NOR");
 }
 void XNORGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
     FuncGate::paint(painter,option, widget);
-    painter->drawText(boundingRect().center()-QPoint(5,0),"XNOR");
+	painter->drawText(boundingRect().center()-QPoint(14,-2),"XNOR");
 }
 void NOTGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
     FuncGate::paint(painter,option, widget);
-    painter->drawText(boundingRect().center()-QPoint(5,0),"NOT");
+	painter->drawText(boundingRect().center()-QPoint(12,-2),"NOT");
 }
 
 data_t ORGate::eval()const{

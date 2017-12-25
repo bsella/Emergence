@@ -1,7 +1,7 @@
 #include "lib/FuncGate.h"
 #include <iostream>
 
-FuncGate::FuncGate(unsigned w, unsigned h, QColor c, uint n, bool spec):Gate(w,h,c),nbArgs(n),special(spec){
+FuncGate::FuncGate(unsigned w, unsigned h, const QColor &c, uint n, bool spec):Gate(w,h,c),nbArgs(n),special(spec){
     setAcceptDrops(!spec);
     for(uint i=0; i<nbArgs;i++){
         sockets.push_back(new Socket(i,height*((i+1.0)/(nbArgs+1.0)),this));
@@ -68,15 +68,17 @@ FuncGate::operator bool(){
 }
 
 void FuncGate::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
-    QMenu *menu = new QMenu;
-    for(unsigned i = 0; i<nbArgs; i++){
+	if(menu==nullptr)
+		menu= new QMenu;
+	for(unsigned i = 0; i<nbArgs; i++){
         QAction *a= menu->addAction(QString("Diconnect ")+QString::number(i+1));
         a->setEnabled(iGates[i]!=nullptr);
         connect(a,&QAction::triggered,this,[=](){disconnectGate(i);});
     }
     menu->addSeparator();
-    connect(menu->addAction("Delete"),&QAction::triggered,this,&FuncGate::removeGate);
-    menu->exec(event->screenPos());
+	connect(menu->addAction("Delete"),&QAction::triggered,this,&FuncGate::removeGate);
+	menu->exec(event->screenPos());
+	menu=nullptr;
 }
 
 void FuncGate::removeGate(){

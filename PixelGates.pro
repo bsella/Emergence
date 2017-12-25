@@ -38,7 +38,8 @@ SOURCES +=\
 	src/gates/FuncGate.cpp \
 	src/gates/ConstGate.cpp \
 	src/Socket.cpp \
-	src/gates/RenderGate.cpp
+	src/gates/RenderGate.cpp \
+    src/Workspace.cpp
 
 HEADERS  +=\
 	mainwindow.h \
@@ -54,6 +55,7 @@ HEADERS  +=\
 	lib/data_t.h \
 	lib/FuncGate.h \
 	lib/Socket.h \
-	lib/RenderGate.h
+	lib/RenderGate.h \
+    lib/Workspace.h
 
 FORMS    += mainwindow.ui

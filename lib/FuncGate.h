@@ -17,18 +17,19 @@ private:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent* event);
 	void dragLeaveEvent(QGraphicsSceneDragDropEvent*);
 	void dropEvent(QGraphicsSceneDragDropEvent* event);
-	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 private slots:
 	void removeGate();
 	void disconnectGate(unsigned rank);
 protected:
-	FuncGate(unsigned w, unsigned h, QColor c= Qt::white, uint n=0, bool spec=false);
+	FuncGate(unsigned w, unsigned h, const QColor& c= Qt::white, uint n=0, bool spec=false);
+	QMenu *menu=nullptr;
 	std::vector<FuncGate*> iGates;          //INPUT GATES
 	FuncGate* oGate=nullptr;                //OUTPUT GATE
 	unsigned int oRank;                     //OUTPUT RANK
 	std::vector<QGraphicsLineItem*> lines;
 	std::vector<Socket*> sockets;
 	virtual void connectGate(FuncGate *g, unsigned i);
+	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 public:
 	TypeEnum t=TypeEnum::ANY;

@@ -41,13 +41,13 @@ struct data_t{
 		}
 		return u;
 	}
-	friend bool operator>(data_t d1, data_t d2){return double(d1)>double(d2);}
-	friend bool operator<(data_t d1, data_t d2){return double(d1)<double(d2);}
+	friend bool operator> (data_t d1, data_t d2){return double(d1)>double(d2);}
+	friend bool operator< (data_t d1, data_t d2){return double(d1)<double(d2);}
 	friend bool operator==(data_t d1, data_t d2){return double(d1)==double(d2);}
 	friend bool operator!=(data_t d1, data_t d2){return double(d1)!=double(d2);}
 	friend bool operator>=(data_t d1, data_t d2){return double(d1)>=double(d2);}
 	friend bool operator<=(data_t d1, data_t d2){return double(d1)<=double(d2);}
-	friend bool operator^(data_t b1, data_t b2){return bool(b1)^bool(b2);}
+	friend bool operator^ (data_t b1, data_t b2){return bool(b1)^bool(b2);}
 	data_t& operator=(double dd){
 		t=TypeEnum::DOUBLE;
 		d=dd;

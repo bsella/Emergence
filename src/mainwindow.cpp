@@ -8,43 +8,43 @@
 
 #include <iostream>
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow){
-    ui->setupUi(this);
-    QWidget::setWindowTitle("PixelGates");
-    QGraphicsScene* scene = new QGraphicsScene(this);
-    ui->graphicsView->setScene(scene);
-    Palette p;
-    p.add(0xffff0000,0);
-    p.add(0xff00ff00,1);
+	QMainWindow(parent),
+	ui(new Ui::MainWindow){
+	ui->setupUi(this);
+	QWidget::setWindowTitle("PixelGates");
+	QGraphicsScene* scene = new QGraphicsScene(this);
+	ui->graphicsView->setScene(scene);
+	Palette p;
+	p.add(0xffff0000,0);
+	p.add(0xff00ff00,1);
 
-    FuncGate* plt= new PaletteGate(p);
-    FuncGate* red= new ConstGate(0xffff0000);
-    FuncGate* green= new ConstGate(0xff00ff00);
-    FuncGate* c = new ConstGate(.75);
-    FuncGate* gt = new GTGate;
-    FuncGate* ifg = new IfGate;
-    FuncGate *y= ui->widget->yg;
-    RenderGate*s= ui->widget->start;
+	FuncGate* plt= new PaletteGate(p);
+	FuncGate* red= new ConstGate(0xffff0000);
+	FuncGate* green= new ConstGate(0xff00ff00);
+	FuncGate* c = new ConstGate(.75);
+	FuncGate* gt = new GTGate;
+	FuncGate* ifg = new IfGate;
+	FuncGate *y= ui->widget->yg;
+	RenderGate*s= ui->widget->start;
 
-    gt->setPos(100,50);
-    y->setY(100);
-    ifg->setPos(200,30);
-    red->setPos(100,-50);
-    green->setPos(100,150);
-    s->setPos(280,50);
-    scene->addItem(plt);
-    scene->addItem(s);
-    scene->addItem(red);
-    scene->addItem(green);
-    scene->addItem(c);
-    scene->addItem(gt);
-    scene->addItem(ifg);
-    scene->addItem(y);
-    //gt->connect(x,0);
-    //gt->connect(y,1);
+	gt->setPos(100,50);
+	y->setY(100);
+	ifg->setPos(200,30);
+	red->setPos(100,-50);
+	green->setPos(100,150);
+	s->setPos(280,50);
+	scene->addItem(plt);
+	scene->addItem(s);
+	scene->addItem(red);
+	scene->addItem(green);
+	scene->addItem(c);
+	scene->addItem(gt);
+	scene->addItem(ifg);
+	scene->addItem(y);
+	//gt->connect(x,0);
+	//gt->connect(y,1);
 }
 
 MainWindow::~MainWindow(){
-    delete ui;
+	delete ui;
 }

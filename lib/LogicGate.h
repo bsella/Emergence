@@ -3,36 +3,58 @@
 
 #include "FuncGate.h"
 
-class LogicGate:public FuncGate{};
+class LogicGate:public FuncGate{
+protected:
+	LogicGate(unsigned n);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;
+};
 
 class ORGate:public LogicGate{
 public:
-    data_t eval()const;
+	ORGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 class ANDGate:public LogicGate{
 public:
-    data_t eval()const;
+	ANDGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 class XORGate:public LogicGate{
 public:
-    data_t eval()const;
+	XORGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 class NANDGate:public LogicGate{
 public:
-    data_t eval()const;
+	NANDGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 class NORGate:public LogicGate{
 public:
-    data_t eval()const;
+	NORGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 class XNORGate:public LogicGate{
 public:
-    data_t eval()const;
+	XNORGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
+class NOTGate:public LogicGate{
+public:
+	NOTGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
 #endif

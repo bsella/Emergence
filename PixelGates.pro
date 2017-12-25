@@ -25,35 +25,35 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #QMAKE_CXXFLAGS += -std=c++17
 
 SOURCES +=\
-    src/main.cpp \
-    src/mainwindow.cpp \
-    src/gates/CompGate.cpp \
-    src/gates/IfGate.cpp \
-    src/gates/LogicGate.cpp \
-    src/gates/PaletteGate.cpp \
-    src/Palette.cpp \
-    src/RenderArea.cpp \
-    src/gates/PixelGate.cpp \
-    src/gates/Gate.cpp \
-    src/gates/FuncGate.cpp \
-    src/gates/ConstGate.cpp \
-    src/Socket.cpp \
-    src/gates/RenderGate.cpp
+	src/main.cpp \
+	src/mainwindow.cpp \
+	src/gates/CompGate.cpp \
+	src/gates/IfGate.cpp \
+	src/gates/LogicGate.cpp \
+	src/gates/PaletteGate.cpp \
+	src/Palette.cpp \
+	src/RenderArea.cpp \
+	src/gates/PixelGate.cpp \
+	src/gates/Gate.cpp \
+	src/gates/FuncGate.cpp \
+	src/gates/ConstGate.cpp \
+	src/Socket.cpp \
+	src/gates/RenderGate.cpp
 
 HEADERS  +=\
-    mainwindow.h \
-    lib/Gate.h \
-    lib/IfGate.h \
-    lib/LogicGate.h \
-    lib/Palette.h \
-    lib/PaletteGate.h \
-    lib/RenderArea.h \
-    lib/CompGate.h \
-    lib/ConstGate.h \
-    lib/PixelGate.h \
-    lib/data_t.h \
-    lib/FuncGate.h \
-    lib/Socket.h \
-    lib/RenderGate.h
+	mainwindow.h \
+	lib/Gate.h \
+	lib/IfGate.h \
+	lib/LogicGate.h \
+	lib/Palette.h \
+	lib/PaletteGate.h \
+	lib/RenderArea.h \
+	lib/CompGate.h \
+	lib/ConstGate.h \
+	lib/PixelGate.h \
+	lib/data_t.h \
+	lib/FuncGate.h \
+	lib/Socket.h \
+	lib/RenderGate.h
 
 FORMS    += mainwindow.ui

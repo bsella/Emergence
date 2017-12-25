@@ -10,12 +10,12 @@
 
 class RenderArea : public QWidget {
 public:
-    RenderArea(QWidget *parent=0);
-    ~RenderArea();
-    void paintEvent(QPaintEvent*);
-    PixelXGate * xg;
-    PixelYGate * yg;
-    RenderGate* start;
+	RenderArea(QWidget *parent=0);
+	~RenderArea();
+	void paintEvent(QPaintEvent*);
+	PixelXGate * xg;
+	PixelYGate * yg;
+	RenderGate* start;
 private:
 };
 

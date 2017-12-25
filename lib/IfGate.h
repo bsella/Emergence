@@ -6,12 +6,12 @@
 
 class IfGate:public FuncGate{
 public:
-    IfGate();
-    data_t eval()const;
+	IfGate();
+	data_t eval()const;
 private:
-    virtual void paint(QPainter* painter,
-                       const QStyleOptionGraphicsItem* option,
-                       QWidget*widget);
+	virtual void paint(QPainter* painter,
+					   const QStyleOptionGraphicsItem* option,
+					   QWidget*widget);
 };
 
 #endif

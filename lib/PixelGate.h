@@ -5,27 +5,27 @@
 
 class PixelGate:public FuncGate{
 public:
-    void update(double i);
-    data_t eval()const;
+		void update(double i);
+		data_t eval()const;
 private:
-    double v;
+		double v;
 protected:
-    PixelGate();
-    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
+		PixelGate();
+		virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 };
 
 class PixelXGate:public PixelGate{
 public:
-    void paint(QPainter* painter,
-                   const QStyleOptionGraphicsItem* option,
-                   QWidget* widget);
+		void paint(QPainter* painter,
+									 const QStyleOptionGraphicsItem* option,
+									 QWidget* widget);
 };
 
 class PixelYGate:public PixelGate{
 public:
-    void paint(QPainter* painter,
-                   const QStyleOptionGraphicsItem* option,
-                   QWidget* widget);
+		void paint(QPainter* painter,
+									 const QStyleOptionGraphicsItem* option,
+									 QWidget* widget);
 };
 
 #endif

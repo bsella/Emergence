@@ -60,6 +60,58 @@
      <height>19</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuInsert">
+    <property name="title">
+     <string>Insert</string>
+    </property>
+    <widget class="QMenu" name="menuComparison">
+     <property name="title">
+      <string>Comparison</string>
+     </property>
+     <addaction name="actionGreaterThan"/>
+     <addaction name="actionGreaterorLess"/>
+     <addaction name="actionLessThan"/>
+     <addaction name="actionLess_Or_Equal"/>
+     <addaction name="actionEqual"/>
+     <addaction name="actionNot_Equal"/>
+    </widget>
+    <widget class="QMenu" name="menuLogic">
+     <property name="title">
+      <string>Logic</string>
+     </property>
+     <addaction name="actionAND"/>
+     <addaction name="actionOR"/>
+     <addaction name="actionXOR"/>
+     <addaction name="actionNOT"/>
+     <addaction name="actionNAND"/>
+     <addaction name="actionNOR"/>
+     <addaction name="actionNXOR"/>
+    </widget>
+    <widget class="QMenu" name="menuConstant">
+     <property name="title">
+      <string>Constant</string>
+     </property>
+     <addaction name="actionBool"/>
+     <addaction name="actionDouble"/>
+     <addaction name="actionColor"/>
+    </widget>
+    <widget class="QMenu" name="menuPixel">
+     <property name="title">
+      <string>Pixel</string>
+     </property>
+     <addaction name="actionX"/>
+     <addaction name="actionY"/>
+    </widget>
+    <addaction name="menuComparison"/>
+    <addaction name="menuLogic"/>
+    <addaction name="menuConstant"/>
+    <addaction name="actionPalette"/>
+    <addaction name="actionIf"/>
+    <addaction name="separator"/>
+    <addaction name="menuPixel"/>
+    <addaction name="actionRender"/>
+   </widget>
+   <addaction name="menuInsert"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -70,6 +122,116 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionIf">
+   <property name="text">
+    <string>If</string>
+   </property>
+  </action>
+  <action name="actionGreaterThan">
+   <property name="text">
+    <string>Greater Than</string>
+   </property>
+  </action>
+  <action name="actionGreaterorLess">
+   <property name="text">
+    <string>Greater or Equal</string>
+   </property>
+  </action>
+  <action name="actionLessThan">
+   <property name="text">
+    <string>Less Than</string>
+   </property>
+  </action>
+  <action name="actionLess_Or_Equal">
+   <property name="text">
+    <string>Less or Equal</string>
+   </property>
+  </action>
+  <action name="actionEqual">
+   <property name="text">
+    <string>Equal</string>
+   </property>
+  </action>
+  <action name="actionNot_Equal">
+   <property name="text">
+    <string>Not Equal</string>
+   </property>
+  </action>
+  <action name="actionAND">
+   <property name="text">
+    <string>AND</string>
+   </property>
+  </action>
+  <action name="actionOR">
+   <property name="text">
+    <string>OR</string>
+   </property>
+  </action>
+  <action name="actionXOR">
+   <property name="text">
+    <string>XOR</string>
+   </property>
+  </action>
+  <action name="actionNOT">
+   <property name="text">
+    <string>NOT</string>
+   </property>
+  </action>
+  <action name="actionNAND">
+   <property name="text">
+    <string>NAND</string>
+   </property>
+  </action>
+  <action name="actionNOR">
+   <property name="text">
+    <string>NOR</string>
+   </property>
+  </action>
+  <action name="actionNXOR">
+   <property name="text">
+    <string>NXOR</string>
+   </property>
+  </action>
+  <action name="actionNOT_2">
+   <property name="text">
+    <string>NOT</string>
+   </property>
+  </action>
+  <action name="actionBool">
+   <property name="text">
+    <string>bool</string>
+   </property>
+  </action>
+  <action name="actionDouble">
+   <property name="text">
+    <string>double</string>
+   </property>
+  </action>
+  <action name="actionColor">
+   <property name="text">
+    <string>color</string>
+   </property>
+  </action>
+  <action name="actionPalette">
+   <property name="text">
+    <string>Palette</string>
+   </property>
+  </action>
+  <action name="actionX">
+   <property name="text">
+    <string>X</string>
+   </property>
+  </action>
+  <action name="actionY">
+   <property name="text">
+    <string>Y</string>
+   </property>
+  </action>
+  <action name="actionRender">
+   <property name="text">
+    <string>Render</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

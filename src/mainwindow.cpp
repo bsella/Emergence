@@ -29,8 +29,34 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionNOT,SIGNAL(triggered(bool)),ui->workspace,SLOT(addNOTGate()));
 	connect(ui->actionColor,SIGNAL(triggered(bool)),ui->workspace,SLOT(addCColorGate()));
 	connect(ui->actionDouble,SIGNAL(triggered(bool)),ui->workspace,SLOT(addCNumberGate()));
+	connect(ui->actionRender,SIGNAL(triggered(bool)),ui->workspace,SLOT(addRenderGate()));
+	connect(ui->actionX,SIGNAL(triggered(bool)),ui->workspace,SLOT(addXGate()));
+	connect(ui->actionY,SIGNAL(triggered(bool)),ui->workspace,SLOT(addYGate()));
+	connect(ui->actionRender,SIGNAL(triggered(bool)),ui->actionRender,SLOT(setEnabled(bool)));
+	connect(ui->actionX,SIGNAL(triggered(bool)),ui->actionX,SLOT(setEnabled(bool)));
+	connect(ui->actionY,SIGNAL(triggered(bool)),ui->actionY,SLOT(setEnabled(bool)));
+	ui->actionRender->setEnabled(false);
+	ui->actionX->setEnabled(false);
+	ui->actionY->setEnabled(false);
+	connect(ui->widget->start,SIGNAL(deleted()),this,SLOT(renderDeleted()));
+	connect(ui->widget->xg,SIGNAL(deleted()),this,SLOT(xDeleted()));
+	connect(ui->widget->yg,SIGNAL(deleted()),this,SLOT(yDeleted()));
+
+	///TODO
+	ui->actionPalette->setEnabled(false);
+	ui->actionBool->setEnabled(false);
 }
 
 MainWindow::~MainWindow(){
 	delete ui;
+}
+
+void MainWindow::renderDeleted(){
+	ui->actionRender->setEnabled(true);
+}
+void MainWindow::xDeleted(){
+	ui->actionX->setEnabled(true);
+}
+void MainWindow::yDeleted(){
+	ui->actionY->setEnabled(true);
 }

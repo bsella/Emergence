@@ -8,6 +8,7 @@ public:
 	RenderGate();
 	data_t eval()const;
 private:
+	void removeGate();
 	void paint(QPainter* painter,
 			   const QStyleOptionGraphicsItem* option,
 			   QWidget* widget);

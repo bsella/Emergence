@@ -17,8 +17,9 @@ private:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent* event);
 	void dragLeaveEvent(QGraphicsSceneDragDropEvent*);
 	void dropEvent(QGraphicsSceneDragDropEvent* event);
+protected slots:
+	virtual void removeGate();
 private slots:
-	void removeGate();
 	void disconnectGate(unsigned rank);
 protected:
 	FuncGate(unsigned w, unsigned h, const QColor& c= Qt::white, uint n=0, bool spec=false);

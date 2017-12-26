@@ -36,6 +36,9 @@ public slots:
 	void addCColorGate();
 	void addCBoolGate();
 	void addCNumberGate();
+	void addRenderGate();
+	void addXGate();
+	void addYGate();
 private:
 	QGraphicsScene* scene;
 	RenderArea* renderArea;

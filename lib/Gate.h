@@ -18,6 +18,7 @@ public:
 	QRectF boundingRect() const;
 signals:
 	void notifyRA();
+	void deleted();
 protected:
 	QColor color;
 	Gate(unsigned w=50, unsigned h=50, QColor c=Qt::white);

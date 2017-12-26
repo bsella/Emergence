@@ -3,6 +3,10 @@
 void PixelGate::update(double i){
     v=i;
 }
+void PixelGate::removeGate(){
+	FuncGate::removeGate();
+	emit deleted();
+}
 data_t PixelGate::eval()const{
     return v;
 }

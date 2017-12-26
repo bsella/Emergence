@@ -82,15 +82,15 @@ void FuncGate::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 }
 
 void FuncGate::removeGate(){
-    for(uint i=0; i<nbArgs;i++)
-        disconnectGate(i);
 	if(oGate && oGate->lines[oRank]){
         scene()->removeItem(oGate->lines[oRank]);
         oGate->lines[oRank]=nullptr;
 		oGate->iGates[oRank]=nullptr;
         oGate->sockets[oRank]->setVisible(true);
     }
-    scene()->removeItem(this);
+	for(uint i=0; i<nbArgs;i++)
+		disconnectGate(i);
+	scene()->removeItem(this);
 	emit notifyRA();
 }
 

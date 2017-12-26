@@ -119,5 +119,14 @@ void Workspace::addCNumberGate(){
 void Workspace::addCBoolGate(){
 
 }
+void Workspace::addRenderGate(){
+	scene->addItem(renderArea->start);
+}
+void Workspace::addXGate(){
+	scene->addItem(renderArea->xg);
+}
+void Workspace::addYGate(){
+	scene->addItem(renderArea->yg);
+}
 
 Workspace::~Workspace(){}

@@ -16,3 +16,8 @@ void RenderGate::paint(QPainter* painter,
 void RenderGate::connectGate(FuncGate *g, unsigned i){
 	FuncGate::connectGate(g,i);
 }
+
+void RenderGate::removeGate(){
+	FuncGate::removeGate();
+	emit deleted();
+}

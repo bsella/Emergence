@@ -41,7 +41,7 @@ public slots:
 	void addYGate();
 private:
 	QGraphicsScene* scene;
-	RenderArea* renderArea;
+	RenderArea* renderArea=nullptr;
 };
 
 #endif // WORKSPACE_H

@@ -11,15 +11,15 @@ class Socket: public QGraphicsItem{
 public:
 	Socket(unsigned i, double y, QGraphicsItem *parent);
 	QRectF boundingRect() const;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
-	void mouseMoveEvent(QGraphicsSceneMouseEvent*);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
-	void mousePressEvent(QGraphicsSceneMouseEvent*);
-	QGraphicsLineItem *line;
-	unsigned rank;
-	double iy;
+	//void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
+	//QGraphicsLineItem *line;
 private:
+	unsigned rank;
 	static const int headSize=5;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
+	double iy;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent*);
+	void mousePressEvent(QGraphicsSceneMouseEvent*);
 };
 
 #endif // SOCKET_H

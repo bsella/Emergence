@@ -29,7 +29,7 @@ protected:
 	unsigned int oRank;                     //OUTPUT RANK
 	std::vector<QGraphicsLineItem*> lines;
 	std::vector<Socket*> sockets;
-	virtual void connectGate(FuncGate *g, unsigned i);
+	void connectGate(FuncGate *g, unsigned i);
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 public:

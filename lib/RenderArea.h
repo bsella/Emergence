@@ -16,9 +16,6 @@ public:
 	PixelXGate * xg;
 	PixelYGate * yg;
 	RenderGate* start;
-private:
-public slots:
-	void lol(){}
 };
 
 #endif

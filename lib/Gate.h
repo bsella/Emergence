@@ -12,12 +12,12 @@
 #include "data_t.h"
 
 class Gate: public QGraphicsObject{
+	Q_OBJECT
 public:
 	unsigned int width, height;
 	QRectF boundingRect() const;
 signals:
-	void newConnectGate(){}
-
+	void notifyRA();
 protected:
 	QColor color;
 	Gate(unsigned w=50, unsigned h=50, QColor c=Qt::white);

@@ -19,7 +19,7 @@ void FuncGate::connectGate(FuncGate *g, unsigned i){
         g->oGate=this;
         g->oRank=i;
         sockets[i]->setVisible(false);
-        emit newConnectGate();
+		emit notifyRA();
     }
 }
 
@@ -37,16 +37,16 @@ void FuncGate::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
     if(event->buttons()==Qt::LeftButton){
         Gate::mouseMoveEvent(event);
         QRectF r= boundingRect();
-        for(uint i = 0; i<iGates.size();i++){
-            if(iGates[i]==nullptr)continue;
-            lines[i]->setLine(QLine(lines[i]->line().p1().toPoint(),QPoint(x(),y()+r.height()*((i+1.0)/(iGates.size()+1.0)))));
-        }
+		for(uint i = 0; i<iGates.size();i++){
+			if(iGates[i]==nullptr)continue;
+			lines[i]->setLine(QLine(lines[i]->line().p1().toPoint(),QPoint(x(),y()+r.height()*((i+1.0)/(iGates.size()+1.0)))));
+		}
         if(oGate!=nullptr)
             oGate->lines[oRank]->setLine(QLine(QPoint(x()+r.width(),y()+r.height()/2),oGate->lines[oRank]->line().p2().toPoint()));
     }
 }
 
-void FuncGate::dragEnterEvent(QGraphicsSceneDragDropEvent* event){
+void FuncGate::dragEnterEvent(QGraphicsSceneDragDropEvent*){
     //if(event->mimeData()->parent()==this);
        //event;
     //else;
@@ -84,18 +84,23 @@ void FuncGate::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 void FuncGate::removeGate(){
     for(uint i=0; i<nbArgs;i++)
         disconnectGate(i);
-    if(oGate){
+	if(oGate && oGate->lines[oRank]){
         scene()->removeItem(oGate->lines[oRank]);
         oGate->lines[oRank]=nullptr;
+		oGate->iGates[oRank]=nullptr;
         oGate->sockets[oRank]->setVisible(true);
     }
     scene()->removeItem(this);
+	emit notifyRA();
 }
 
 void FuncGate::disconnectGate(unsigned rank){
     if(iGates[rank]){
         scene()->removeItem(lines[rank]);
+		lines[rank]=nullptr;
+		iGates[rank]->oGate=nullptr;
         iGates[rank]=nullptr;
         sockets[rank]->setVisible(true);
+		emit notifyRA();
     }
 }

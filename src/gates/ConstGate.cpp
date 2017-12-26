@@ -52,6 +52,7 @@ void ConstGate::changeColor(){
 		_v.u=c.rgba();
 		color=c;
 		update();
+		emit notifyRA();
 	}
 }
 
@@ -61,5 +62,6 @@ void ConstGate::changeNumber(){
 	if(ok){
 		_v.d=d;
 		update();
+		emit notifyRA();
 	}
 }

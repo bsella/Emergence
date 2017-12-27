@@ -6,24 +6,16 @@ Workspace::Workspace(QWidget *parent):QGraphicsView(parent),scene(new QGraphicsS
 }
 
 void Workspace::setRA(RenderArea* ra){
+	if (!ra) return ;
 	renderArea=ra;
-	if(renderArea){
-		scene->addItem(renderArea->xg);
-		renderArea->yg->setY(100);
-		scene->addItem(renderArea->yg);
-		renderArea->start->setPos(100,50);
-		scene->addItem(renderArea->start);
-		connect(renderArea->xg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-		connect(renderArea->yg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-		connect(renderArea->start,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	}
-	Palette p;
-	p.add(0xffff0000,0);
-	p.add(0xff0000ff,.5);
-	p.add(0xff00ff00,1);
-	FuncGate* g= new PaletteGate(p);
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
+	scene->addItem(renderArea->xg);
+	renderArea->yg->setY(100);
+	scene->addItem(renderArea->yg);
+	renderArea->start->setPos(100,50);
+	scene->addItem(renderArea->start);
+	connect(renderArea->xg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
+	connect(renderArea->yg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
+	connect(renderArea->start,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 }
 
 void Workspace::addIFGate(){
@@ -127,6 +119,16 @@ void Workspace::addXGate(){
 }
 void Workspace::addYGate(){
 	scene->addItem(renderArea->yg);
+}
+void Workspace::addPaletteGate(){
+	///TODO : Implement dialog for palette
+	Palette p;
+	p.add(0xffff0000,0);
+	p.add(0xff0000ff,.5);
+	p.add(0xff00ff00,1);
+	FuncGate* g= new PaletteGate(p);
+	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
+	scene->addItem(g);
 }
 
 Workspace::~Workspace(){}

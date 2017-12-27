@@ -41,9 +41,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->widget->start,SIGNAL(deleted()),this,SLOT(renderDeleted()));
 	connect(ui->widget->xg,SIGNAL(deleted()),this,SLOT(xDeleted()));
 	connect(ui->widget->yg,SIGNAL(deleted()),this,SLOT(yDeleted()));
+	connect(ui->actionPalette,SIGNAL(triggered(bool)),ui->workspace,SLOT(addPaletteGate()));
 
 	///TODO
-	ui->actionPalette->setEnabled(false);
 	ui->actionBool->setEnabled(false);
 }
 

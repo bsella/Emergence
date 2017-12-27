@@ -36,6 +36,7 @@ public slots:
 	void addCColorGate();
 	void addCBoolGate();
 	void addCNumberGate();
+	void addPaletteGate();
 	void addRenderGate();
 	void addXGate();
 	void addYGate();

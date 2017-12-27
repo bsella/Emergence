@@ -6,18 +6,17 @@ FuncGate::FuncGate(unsigned w, unsigned h, const QColor &c, uint n, bool spec):G
     for(uint i=0; i<nbArgs;i++){
         sockets.push_back(new Socket(i,height*((i+1.0)/(nbArgs+1.0)),this));
         iGates.push_back(nullptr);
-        lines.push_back(nullptr);
+		iLines.push_back(nullptr);
     }
 }
 
 void FuncGate::connectGate(FuncGate *g, unsigned i){
     if(nbArgs>=i+1){
         QRectF r= g->boundingRect();
-        lines[i]=this->scene()->addLine(g->x()+r.right(),g->y()+r.height()/2,
+		iLines[i]=this->scene()->addLine(g->x()+r.right(),g->y()+r.height()/2,
                                              x(),y()+height*((i+1.0)/(iGates.size()+1.0)));
         iGates[i]=g;
-        g->oGate=this;
-        g->oRank=i;
+		g->oConnections.push_back({this,i});
         sockets[i]->setVisible(false);
 		emit notifyRA();
     }
@@ -39,10 +38,10 @@ void FuncGate::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
         QRectF r= boundingRect();
 		for(uint i = 0; i<iGates.size();i++){
 			if(iGates[i]==nullptr)continue;
-			lines[i]->setLine(QLine(lines[i]->line().p1().toPoint(),QPoint(x(),y()+r.height()*((i+1.0)/(iGates.size()+1.0)))));
+			iLines[i]->setLine(QLine(iLines[i]->line().p1().toPoint(),QPoint(x(),y()+r.height()*((i+1.0)/(iGates.size()+1.0)))));
 		}
-        if(oGate!=nullptr)
-            oGate->lines[oRank]->setLine(QLine(QPoint(x()+r.width(),y()+r.height()/2),oGate->lines[oRank]->line().p2().toPoint()));
+		for(auto l=oConnections.begin(); l!=oConnections.end();++l)
+			l->first->iLines[l->second]->setLine(QLine(QPoint(x()+r.width(),y()+r.height()/2),l->first->iLines[l->second]->line().p2().toPoint()));
     }
 }
 
@@ -82,12 +81,13 @@ void FuncGate::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 }
 
 void FuncGate::removeGate(){
-	if(oGate && oGate->lines[oRank]){
-        scene()->removeItem(oGate->lines[oRank]);
-        oGate->lines[oRank]=nullptr;
-		oGate->iGates[oRank]=nullptr;
-        oGate->sockets[oRank]->setVisible(true);
-    }
+	for(auto l=oConnections.begin(); l!=oConnections.end();){
+		scene()->removeItem(l->first->iLines[l->second]);
+		l->first->iLines[l->second]=nullptr;
+		l->first->iGates[l->second]=nullptr;
+		l->first->sockets[l->second]->setVisible(true);
+		l=oConnections.erase(l);
+	}
 	for(uint i=0; i<nbArgs;i++)
 		disconnectGate(i);
 	scene()->removeItem(this);
@@ -96,10 +96,14 @@ void FuncGate::removeGate(){
 
 void FuncGate::disconnectGate(unsigned rank){
     if(iGates[rank]){
-        scene()->removeItem(lines[rank]);
-		lines[rank]=nullptr;
-		iGates[rank]->oGate=nullptr;
-        iGates[rank]=nullptr;
+		scene()->removeItem(iLines[rank]);
+		iLines[rank]=nullptr;
+		for(auto l=iGates[rank]->oConnections.begin(); l!=iGates[rank]->oConnections.end();++l)
+			if(l->first==this){
+				iGates[rank]->oConnections.erase(l);
+				break;
+			}
+		iGates[rank]=nullptr;
         sockets[rank]->setVisible(true);
 		emit notifyRA();
     }

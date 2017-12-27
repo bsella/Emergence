@@ -102,6 +102,18 @@
      <addaction name="actionX"/>
      <addaction name="actionY"/>
     </widget>
+    <widget class="QMenu" name="menuCalc">
+     <property name="title">
+      <string>Calc</string>
+     </property>
+     <addaction name="actionADD"/>
+     <addaction name="actionSUB"/>
+     <addaction name="actionMUL"/>
+     <addaction name="actionDIV"/>
+     <addaction name="actionNEG"/>
+     <addaction name="actionSQRT"/>
+    </widget>
+    <addaction name="menuCalc"/>
     <addaction name="menuComparison"/>
     <addaction name="menuLogic"/>
     <addaction name="menuConstant"/>
@@ -221,6 +233,36 @@
   <action name="actionRender">
    <property name="text">
     <string>Render</string>
+   </property>
+  </action>
+  <action name="actionADD">
+   <property name="text">
+    <string>Addition</string>
+   </property>
+  </action>
+  <action name="actionSUB">
+   <property name="text">
+    <string>Substration</string>
+   </property>
+  </action>
+  <action name="actionMUL">
+   <property name="text">
+    <string>Multiply</string>
+   </property>
+  </action>
+  <action name="actionDIV">
+   <property name="text">
+    <string>Division</string>
+   </property>
+  </action>
+  <action name="actionNEG">
+   <property name="text">
+    <string>Negative</string>
+   </property>
+  </action>
+  <action name="actionSQRT">
+   <property name="text">
+    <string>Square Root</string>
    </property>
   </action>
  </widget>

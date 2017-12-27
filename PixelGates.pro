@@ -39,7 +39,8 @@ SOURCES +=\
 	src/gates/ConstGate.cpp \
 	src/Socket.cpp \
 	src/gates/RenderGate.cpp \
-    src/Workspace.cpp
+    src/Workspace.cpp \
+    src/gates/MathGate.cpp
 
 HEADERS  +=\
 	mainwindow.h \
@@ -56,6 +57,7 @@ HEADERS  +=\
 	lib/FuncGate.h \
 	lib/Socket.h \
 	lib/RenderGate.h \
-    lib/Workspace.h
+    lib/Workspace.h \
+    lib/MathGate.h
 
 FORMS    += mainwindow.ui

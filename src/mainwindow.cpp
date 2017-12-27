@@ -1,10 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "lib/RenderArea.h"
-#include "lib/CompGate.h"
-#include "lib/PaletteGate.h"
-#include "lib/IfGate.h"
-#include "lib/ConstGate.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -13,25 +9,33 @@ MainWindow::MainWindow(QWidget *parent) :
 	QWidget::setWindowTitle("PixelGates");
 
 	ui->workspace->setRA(ui->widget);
-	connect(ui->actionIf,SIGNAL(triggered(bool)),ui->workspace,SLOT(addIFGate()));
-	connect(ui->actionGreaterThan,SIGNAL(triggered(bool)),ui->workspace,SLOT(addGTGate()));
-	connect(ui->actionGreaterOrEqual,SIGNAL(triggered(bool)),ui->workspace,SLOT(addGEGate()));
-	connect(ui->actionLessThan,SIGNAL(triggered(bool)),ui->workspace,SLOT(addLTGate()));
-	connect(ui->actionLess_Or_Equal,SIGNAL(triggered(bool)),ui->workspace,SLOT(addLEGate()));
-	connect(ui->actionEqual,SIGNAL(triggered(bool)),ui->workspace,SLOT(addEQGate()));
-	connect(ui->actionNot_Equal,SIGNAL(triggered(bool)),ui->workspace,SLOT(addNEGate()));
-	connect(ui->actionAND,SIGNAL(triggered(bool)),ui->workspace,SLOT(addANDGate()));
-	connect(ui->actionOR,SIGNAL(triggered(bool)),ui->workspace,SLOT(addORGate()));
-	connect(ui->actionXOR,SIGNAL(triggered(bool)),ui->workspace,SLOT(addXORGate()));
-	connect(ui->actionNAND,SIGNAL(triggered(bool)),ui->workspace,SLOT(addNANDGate()));
-	connect(ui->actionNOR,SIGNAL(triggered(bool)),ui->workspace,SLOT(addNORGate()));
-	connect(ui->actionXNOR,SIGNAL(triggered(bool)),ui->workspace,SLOT(addXNORGate()));
-	connect(ui->actionNOT,SIGNAL(triggered(bool)),ui->workspace,SLOT(addNOTGate()));
-	connect(ui->actionColor,SIGNAL(triggered(bool)),ui->workspace,SLOT(addCColorGate()));
-	connect(ui->actionDouble,SIGNAL(triggered(bool)),ui->workspace,SLOT(addCNumberGate()));
-	connect(ui->actionRender,SIGNAL(triggered(bool)),ui->workspace,SLOT(addRenderGate()));
-	connect(ui->actionX,SIGNAL(triggered(bool)),ui->workspace,SLOT(addXGate()));
-	connect(ui->actionY,SIGNAL(triggered(bool)),ui->workspace,SLOT(addYGate()));
+	connect(ui->actionSQRT,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(SQRT_G);});
+	connect(ui->actionADD,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(ADD_G);});
+	connect(ui->actionSUB,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(SUB_G);});
+	connect(ui->actionMUL,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(MUL_G);});
+	connect(ui->actionDIV,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(DIV_G);});
+	connect(ui->actionNEG,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NEG_G);});
+	connect(ui->actionIf,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(IF_G);});
+	//connect(ui->actionAND,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(BOOL_G);});
+	connect(ui->actionDouble,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(DOUBLE_G);});
+	connect(ui->actionColor,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(COLOR_G);});
+	connect(ui->actionPalette,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(PALETTE_G);});
+	connect(ui->actionGreaterThan,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(GT_G);});
+	connect(ui->actionGreaterOrEqual,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(GE_G);});
+	connect(ui->actionLessThan,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(LT_G);});
+	connect(ui->actionLess_Or_Equal,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(LE_G);});
+	connect(ui->actionEqual,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(EQ_G);});
+	connect(ui->actionNot_Equal,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NE_G);});
+	connect(ui->actionOR,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(OR_G);});
+	connect(ui->actionAND,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(AND_G);});
+	connect(ui->actionXOR,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(XOR_G);});
+	connect(ui->actionNAND,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NAND_G);});
+	connect(ui->actionNOR,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NOR_G);});
+	connect(ui->actionXNOR,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(XNOR_G);});
+	connect(ui->actionNOT,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NOT_G);});
+	connect(ui->actionX,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(X_G);});
+	connect(ui->actionY,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(Y_G);});
+	connect(ui->actionRender,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(RENDER_G);});
 	connect(ui->actionRender,SIGNAL(triggered(bool)),ui->actionRender,SLOT(setEnabled(bool)));
 	connect(ui->actionX,SIGNAL(triggered(bool)),ui->actionX,SLOT(setEnabled(bool)));
 	connect(ui->actionY,SIGNAL(triggered(bool)),ui->actionY,SLOT(setEnabled(bool)));
@@ -41,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->widget->start,SIGNAL(deleted()),this,SLOT(renderDeleted()));
 	connect(ui->widget->xg,SIGNAL(deleted()),this,SLOT(xDeleted()));
 	connect(ui->widget->yg,SIGNAL(deleted()),this,SLOT(yDeleted()));
-	connect(ui->actionPalette,SIGNAL(triggered(bool)),ui->workspace,SLOT(addPaletteGate()));
 
 	///TODO
 	ui->actionBool->setEnabled(false);

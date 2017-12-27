@@ -17,118 +17,60 @@ void Workspace::setRA(RenderArea* ra){
 	connect(renderArea->yg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 	connect(renderArea->start,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 }
-
-void Workspace::addIFGate(){
-	FuncGate * g= new IfGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addGTGate(){
-	FuncGate* g=new GTGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addGEGate(){
-	FuncGate* g=new GEGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addLTGate(){
-	FuncGate* g=new LTGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addLEGate(){
-	FuncGate* g=new LEGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addEQGate(){
-	FuncGate* g=new EQGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addNEGate(){
-	FuncGate* g=new NEGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addANDGate(){
-	FuncGate* g=new ANDGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addORGate(){
-	FuncGate* g=new ORGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addXORGate(){
-	FuncGate* g=new XORGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addNANDGate(){
-	FuncGate* g=new NANDGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addNORGate(){
-	FuncGate* g=new NORGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addXNORGate(){
-	FuncGate* g=new XNORGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-void Workspace::addNOTGate(){
-	FuncGate* g=new NOTGate;
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
-}
-
-void Workspace::addCColorGate(){
-	QColor c =QColorDialog::getColor();
-	if(c.isValid()){
-		FuncGate* g=new ConstGate(c.rgba());
-		connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-		scene->addItem(g);
+#include <iostream>
+void Workspace::addFuncGate(uint g){
+	FuncGate* gate;
+	switch(g){
+	case BOOL_G:return;
+	case DOUBLE_G:{
+		bool ok;
+		double d =QInputDialog::getDouble(this,"Choose Number","",0,-2147483647,2147483647,3,&ok);
+		if(!ok) return;
+		gate=new ConstGate(d);
+		break;
 	}
-}
-
-void Workspace::addCNumberGate(){
-	bool ok;
-	double d =QInputDialog::getDouble(this,"Choose Number","",0,-2147483647,2147483647,3,&ok);
-	if(ok){
-		FuncGate* g=new ConstGate(d);
-		connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-		scene->addItem(g);
+	case COLOR_G:{
+		QColor c =QColorDialog::getColor();
+		if(!c.isValid()) return;
+		gate=new ConstGate(c.rgba());
+		break;
 	}
-}
-
-void Workspace::addCBoolGate(){
-
-}
-void Workspace::addRenderGate(){
-	scene->addItem(renderArea->start);
-}
-void Workspace::addXGate(){
-	scene->addItem(renderArea->xg);
-}
-void Workspace::addYGate(){
-	scene->addItem(renderArea->yg);
-}
-void Workspace::addPaletteGate(){
-	///TODO : Implement dialog for palette
-	Palette p;
-	p.add(0xffff0000,0);
-	p.add(0xff0000ff,.5);
-	p.add(0xff00ff00,1);
-	FuncGate* g= new PaletteGate(p);
-	connect(g,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	scene->addItem(g);
+	case PALETTE_G:{
+		///TODO : Implement dialog for palette
+		Palette p;
+		p.add(0xffff0000,0);
+		p.add(0xff0000ff,.5);
+		p.add(0xff00ff00,1);
+		gate= new PaletteGate(p);
+		break;
+	}
+	case IF_G:		gate=new IfGate;break;
+	case GT_G:		gate=new GTGate;break;
+	case GE_G:		gate=new GEGate;break;
+	case LT_G:		gate=new LTGate;break;
+	case LE_G:		gate=new LEGate;break;
+	case EQ_G:		gate=new EQGate;break;
+	case NE_G:		gate=new NEGate;break;
+	case OR_G:		gate=new ORGate;break;
+	case AND_G:		gate=new ANDGate;break;
+	case XOR_G:		gate=new XORGate;break;
+	case NAND_G:	gate=new NANDGate;break;
+	case NOR_G:		gate=new NORGate;break;
+	case XNOR_G:	gate=new XNORGate;break;
+	case NOT_G:		gate=new NOTGate;break;
+	case X_G:		gate=new PixelXGate;break;
+	case Y_G:		gate=new PixelYGate;break;
+	case RENDER_G:	gate=new RenderGate;break;
+	case ADD_G:		gate=new ADDGate;break;
+	case SUB_G:		gate=new SUBGate;break;
+	case MUL_G:		gate=new MULGate;break;
+	case DIV_G:		gate=new DIVGate;break;
+	case NEG_G:		gate=new NEGGate;break;
+	case SQRT_G:	gate=new SQRTGate;break;
+	default:return;
+	}
+	connect(gate,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
+	scene->addItem(gate);
 }
 
 Workspace::~Workspace(){}

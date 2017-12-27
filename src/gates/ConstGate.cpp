@@ -31,7 +31,7 @@ void ConstGate::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 
 void ConstGate::contextMenuEvent(QGraphicsSceneContextMenuEvent* event){
 	menu=new QMenu;
-	switch (t) {
+	switch(t){
 	case TypeEnum::BOOL:
 		break;
 	case TypeEnum::DOUBLE:
@@ -44,6 +44,21 @@ void ConstGate::contextMenuEvent(QGraphicsSceneContextMenuEvent* event){
 		break;
 	}
 	FuncGate::contextMenuEvent(event);
+}
+
+void ConstGate::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*){
+	switch(t){
+	case TypeEnum::BOOL:
+		break;
+	case TypeEnum::DOUBLE:
+		changeNumber();
+		break;
+	case TypeEnum::UINT:
+		changeColor();
+		break;
+	default:
+		break;
+	}
 }
 
 void ConstGate::changeColor(){

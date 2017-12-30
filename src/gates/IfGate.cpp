@@ -1,4 +1,4 @@
-#include "lib/IfGate.h"
+#include "include/IfGate.h"
 
 IfGate::IfGate():FuncGate(50,100,QColor(180,180,255),3){}
 

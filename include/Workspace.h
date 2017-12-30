@@ -19,27 +19,25 @@
 #define IF_G		3
 #define PALETTE_G	4
 #define GT_G		5
-#define GE_G		6
-#define LT_G		7
-#define LE_G		8
-#define EQ_G		9
-#define NE_G		10
-#define OR_G		11
-#define AND_G		12
-#define XOR_G		13
-#define NOT_G		14
-#define X_G			15
-#define Y_G			16
-#define RENDER_G	17
-#define ADD_G		18
-#define SUB_G		19
-#define MUL_G		20
-#define DIV_G		21
-#define NEG_G		22
-#define SQRT_G		23
-#define ABS_G		24
-#define LERP_G		25
-#define CLAMP_G		26
+#define LT_G		6
+#define EQ_G		7
+#define NE_G		8
+#define OR_G		9
+#define AND_G		10
+#define XOR_G		11
+#define NOT_G		12
+#define X_G			13
+#define Y_G			14
+#define RENDER_G	15
+#define ADD_G		16
+#define SUB_G		17
+#define MUL_G		18
+#define DIV_G		19
+#define NEG_G		20
+#define SQRT_G		21
+#define ABS_G		22
+#define LERP_G		23
+#define CLAMP_G		24
 
 class Workspace : public QGraphicsView{
 	Q_OBJECT

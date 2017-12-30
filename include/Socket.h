@@ -12,7 +12,6 @@ public:
 	Socket(unsigned i, double y, QGraphicsItem *parent);
 	QRectF boundingRect() const;
 	//void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
-	//QGraphicsLineItem *line;
 private:
 	unsigned rank;
 	static const int headSize=5;
@@ -20,6 +19,7 @@ private:
 	double iy;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent*);
 	void mousePressEvent(QGraphicsSceneMouseEvent*);
+	//QGraphicsLineItem *line;
 };
 
 #endif // SOCKET_H

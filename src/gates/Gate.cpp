@@ -1,4 +1,4 @@
-#include "lib/Gate.h"
+#include "include/Gate.h"
 #include <iostream>
 
 Gate::Gate(unsigned w, unsigned h, QColor c):width(w),height(h),color(c),pen(QPen(Qt::black,1)){

@@ -1,12 +1,17 @@
 #ifndef DATA_T_H
 #define DATA_T_H
 
+#include <complex>
+
 enum class TypeEnum{
 	BOOL=0x1,
 	DOUBLE=0x2,
-	UINT=0x4,
+	COLOR=0x4,
+	COMPLEX=0x8,
 	ANY=0x7
 };
+
+typedef std::complex<double> cplx;
 
 struct data_t{
 	TypeEnum t;
@@ -14,19 +19,23 @@ struct data_t{
 		bool b;
 		double d;
 		unsigned int u;
+		cplx c;
 	};
 	explicit data_t():t(TypeEnum::ANY){}
 	data_t(double v):t(TypeEnum::DOUBLE), d(v){}
 	data_t(bool v):t(TypeEnum::BOOL), b(v){}
-	data_t(unsigned v):t(TypeEnum::UINT), u(v){}
+	data_t(unsigned v):t(TypeEnum::COLOR), u(v){}
+	data_t(cplx v):t(TypeEnum::COMPLEX), c(v){}
 	operator bool(){
 		if(t==TypeEnum::DOUBLE) return d>=1;
-		if(t==TypeEnum::UINT) return u!=0;
+		if(t==TypeEnum::COLOR) return u!=0;
+		if(t==TypeEnum::COMPLEX) return std::real(c)>0 && std::imag(c)>0;
 		return b;
 	}
 	operator double(){
 		if(t==TypeEnum::BOOL) return b? 1.0:0.0;
-		if(t==TypeEnum::UINT) return double(u);
+		if(t==TypeEnum::COLOR) return double(u);
+		if(t==TypeEnum::COMPLEX) return std::abs(c);
 		return d;
 	}
 	operator unsigned(){
@@ -41,7 +50,16 @@ struct data_t{
 			i<<=8; i|=c;
 			return i;
 		}
+		///TODO : convert complex to color
+		if(t==TypeEnum::COMPLEX){
+			return 0xff000000;
+		}
 		return u;
+	}
+	operator cplx(){
+		if(t==TypeEnum::BOOL) return b? 1:0;
+		if(t==TypeEnum::DOUBLE) return cplx(d,0);
+		return c;
 	}
 	friend bool operator> (data_t d1, data_t d2){return double(d1)>double(d2);}
 	friend bool operator< (data_t d1, data_t d2){return double(d1)<double(d2);}
@@ -66,7 +84,7 @@ struct data_t{
 		return *this;
 	}
 	data_t& operator=(unsigned uu){
-		t=TypeEnum::UINT;
+		t=TypeEnum::COLOR;
 		u=uu;
 		return *this;
 	}

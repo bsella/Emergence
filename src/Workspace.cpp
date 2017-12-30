@@ -1,6 +1,6 @@
-#include "lib/Workspace.h"
-#include "lib/Palette.h"
-#include "lib/PaletteGate.h"
+#include "include/Workspace.h"
+#include "include/Palette.h"
+#include "include/PaletteGate.h"
 
 Workspace::Workspace(QWidget *parent):QGraphicsView(parent),scene(new QGraphicsScene){
 	setScene(scene);
@@ -47,9 +47,7 @@ void Workspace::addFuncGate(uint g){
 	}
 	case IF_G:		gate=new IfGate;break;
 	case GT_G:		gate=new GTGate;break;
-	case GE_G:		gate=new GEGate;break;
 	case LT_G:		gate=new LTGate;break;
-	case LE_G:		gate=new LEGate;break;
 	case EQ_G:		gate=new EQGate;break;
 	case NE_G:		gate=new NEGate;break;
 	case OR_G:		gate=new ORGate;break;

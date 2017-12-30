@@ -1,4 +1,4 @@
-#include "lib/RenderArea.h"
+#include "include/RenderArea.h"
 
 RenderArea::RenderArea(QWidget *parent):QWidget(parent){
 	xg=new PixelXGate;

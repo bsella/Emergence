@@ -1,4 +1,4 @@
-#include "lib/Palette.h"
+#include "include/Palette.h"
 #include <cstdint>
 /*Uint32 = [.ALPHA..][...RED..][.GREEN..][..BLUE..]*/
 

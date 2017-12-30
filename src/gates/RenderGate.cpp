@@ -1,4 +1,4 @@
-#include "lib/RenderGate.h"
+#include "include/RenderGate.h"
 
 RenderGate::RenderGate():FuncGate(50, 50, Qt::white,1,true){}
 data_t RenderGate::eval()const{

@@ -1,4 +1,4 @@
-#include "lib/Socket.h"
+#include "include/Socket.h"
 #include <iostream>
 
 Socket::Socket(unsigned i, double y, QGraphicsItem *parent):rank(i),iy(y),QGraphicsItem(parent){

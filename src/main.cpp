@@ -1,6 +1,6 @@
 #include <QApplication>
 #include "mainwindow.h"
-#include "lib/RenderArea.h"
+#include "include/RenderArea.h"
 
 int main(int argc, char *argv[]){
 	QApplication a(argc, argv);

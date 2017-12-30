@@ -1,4 +1,4 @@
-#include "lib/FuncGate.h"
+#include "include/FuncGate.h"
 #include <iostream>
 
 FuncGate::FuncGate(unsigned w, unsigned h, const QColor &c, uint n, bool spec):Gate(w,h,c),nbArgs(n),special(spec){

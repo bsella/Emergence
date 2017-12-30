@@ -1,4 +1,4 @@
-#include "lib/PaletteGate.h"
+#include "include/PaletteGate.h"
 
 PaletteGate::PaletteGate(const Palette& p): FuncGate(140,70,Qt::white,1), plt(p){}
 

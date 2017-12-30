@@ -23,20 +23,6 @@ private:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class GEGate:public CompGate{
-public:
-	data_t eval()const;
-private:
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-};
-
-class LEGate:public CompGate{
-public:
-	data_t eval()const;
-private:
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-};
-
 class EQGate:public CompGate{
 public:
 	data_t eval()const;

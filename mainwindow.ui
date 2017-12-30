@@ -69,9 +69,7 @@
       <string>Compare</string>
      </property>
      <addaction name="actionGreaterThan"/>
-     <addaction name="actionGreaterOrEqual"/>
      <addaction name="actionLessThan"/>
-     <addaction name="actionLess_Or_Equal"/>
      <addaction name="actionEqual"/>
      <addaction name="actionNot_Equal"/>
     </widget>
@@ -134,7 +132,7 @@
   </action>
   <action name="actionGreaterThan">
    <property name="text">
-    <string>Greater Than</string>
+    <string>Greater</string>
    </property>
   </action>
   <action name="actionGreaterOrEqual">
@@ -144,7 +142,7 @@
   </action>
   <action name="actionLessThan">
    <property name="text">
-    <string>Less Than</string>
+    <string>Less</string>
    </property>
   </action>
   <action name="actionLess_Or_Equal">

@@ -1,4 +1,4 @@
-#include "lib/MathGate.h"
+#include "include/MathGate.h"
 
 MathGate::MathGate(unsigned n, unsigned w, unsigned h):FuncGate(w,h,QColor(180,255,180),n){}
 

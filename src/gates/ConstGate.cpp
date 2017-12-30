@@ -1,4 +1,4 @@
-#include "lib/ConstGate.h"
+#include "include/ConstGate.h"
 
 ConstGate::ConstGate(double v):FuncGate(50,50,QColor(255,255,180)),_v(v){
     t=TypeEnum::DOUBLE;
@@ -9,7 +9,7 @@ ConstGate::ConstGate(bool v):FuncGate(50,50,QColor(255,255,180)),_v(v){
 }
 
 ConstGate::ConstGate(uint v):FuncGate(50,50,QColor(v)),_v(v){
-    t=TypeEnum::UINT;
+	t=TypeEnum::COLOR;
 }
 
 void ConstGate::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget){
@@ -21,7 +21,7 @@ void ConstGate::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
     case TypeEnum::DOUBLE:
         painter->drawText(boundingRect().center()-QPoint(12,-2),QString::number(_v.d));
         break;
-    case TypeEnum::UINT:
+	case TypeEnum::COLOR:
         painter->drawText(boundingRect().center()-QPoint(16,-2),"Color");
         break;
     default:
@@ -37,7 +37,7 @@ void ConstGate::contextMenuEvent(QGraphicsSceneContextMenuEvent* event){
 	case TypeEnum::DOUBLE:
 		connect(menu->addAction(QString("Change number")), &QAction::triggered,this,&ConstGate::changeNumber);
 		break;
-	case TypeEnum::UINT:
+	case TypeEnum::COLOR:
 		connect(menu->addAction(QString("Change color")), &QAction::triggered,this,&ConstGate::changeColor);
 		break;
 	default:
@@ -53,7 +53,7 @@ void ConstGate::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*){
 	case TypeEnum::DOUBLE:
 		changeNumber();
 		break;
-	case TypeEnum::UINT:
+	case TypeEnum::COLOR:
 		changeColor();
 		break;
 	default:

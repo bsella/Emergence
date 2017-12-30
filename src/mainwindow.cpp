@@ -21,9 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionColor,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(COLOR_G);});
 	connect(ui->actionPalette,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(PALETTE_G);});
 	connect(ui->actionGreaterThan,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(GT_G);});
-	connect(ui->actionGreaterOrEqual,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(GE_G);});
 	connect(ui->actionLessThan,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(LT_G);});
-	connect(ui->actionLess_Or_Equal,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(LE_G);});
 	connect(ui->actionEqual,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(EQ_G);});
 	connect(ui->actionNot_Equal,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NE_G);});
 	connect(ui->actionOR,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(OR_G);});

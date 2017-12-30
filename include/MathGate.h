@@ -6,7 +6,7 @@
 
 class MathGate:public FuncGate{
 protected:
-	MathGate(unsigned n);
+	MathGate(unsigned n, unsigned w=50, unsigned h=50);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;
 };
 
@@ -52,4 +52,22 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
+class ABSGate:public MathGate{
+public:
+	ABSGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
+class LERPGate:public MathGate{
+public:
+	LERPGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
+class CLAMPGate:public MathGate{
+public:
+	CLAMPGate();
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
 #endif // MATHGATE_H

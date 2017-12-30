@@ -30,27 +30,6 @@ public:
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class NANDGate:public LogicGate{
-public:
-	NANDGate();
-	data_t eval()const;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-};
-
-class NORGate:public LogicGate{
-public:
-	NORGate();
-	data_t eval()const;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-};
-
-class XNORGate:public LogicGate{
-public:
-	XNORGate();
-	data_t eval()const;
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-};
-
 class NOTGate:public LogicGate{
 public:
 	NOTGate();

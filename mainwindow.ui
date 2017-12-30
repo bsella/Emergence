@@ -66,7 +66,7 @@
     </property>
     <widget class="QMenu" name="menuComparison">
      <property name="title">
-      <string>Comparison</string>
+      <string>Compare</string>
      </property>
      <addaction name="actionGreaterThan"/>
      <addaction name="actionGreaterOrEqual"/>
@@ -83,9 +83,6 @@
      <addaction name="actionOR"/>
      <addaction name="actionXOR"/>
      <addaction name="actionNOT"/>
-     <addaction name="actionNAND"/>
-     <addaction name="actionNOR"/>
-     <addaction name="actionXNOR"/>
     </widget>
     <widget class="QMenu" name="menuConstant">
      <property name="title">
@@ -104,14 +101,19 @@
     </widget>
     <widget class="QMenu" name="menuCalc">
      <property name="title">
-      <string>Calc</string>
+      <string>Math</string>
      </property>
      <addaction name="actionADD"/>
      <addaction name="actionSUB"/>
      <addaction name="actionMUL"/>
      <addaction name="actionDIV"/>
+     <addaction name="separator"/>
      <addaction name="actionNEG"/>
      <addaction name="actionSQRT"/>
+     <addaction name="actionAbsolute_Value"/>
+     <addaction name="separator"/>
+     <addaction name="actionLerp"/>
+     <addaction name="actionClamp"/>
     </widget>
     <addaction name="menuCalc"/>
     <addaction name="menuComparison"/>
@@ -127,7 +129,7 @@
   </widget>
   <action name="actionIf">
    <property name="text">
-    <string>If</string>
+    <string>Condition</string>
    </property>
   </action>
   <action name="actionGreaterThan">
@@ -180,26 +182,6 @@
     <string>NOT</string>
    </property>
   </action>
-  <action name="actionNAND">
-   <property name="text">
-    <string>NAND</string>
-   </property>
-  </action>
-  <action name="actionNOR">
-   <property name="text">
-    <string>NOR</string>
-   </property>
-  </action>
-  <action name="actionXNOR">
-   <property name="text">
-    <string>NXOR</string>
-   </property>
-  </action>
-  <action name="actionNOT_2">
-   <property name="text">
-    <string>NOT</string>
-   </property>
-  </action>
   <action name="actionBool">
    <property name="text">
     <string>Boolean</string>
@@ -237,12 +219,12 @@
   </action>
   <action name="actionADD">
    <property name="text">
-    <string>Addition</string>
+    <string>Add</string>
    </property>
   </action>
   <action name="actionSUB">
    <property name="text">
-    <string>Substration</string>
+    <string>Substract</string>
    </property>
   </action>
   <action name="actionMUL">
@@ -252,7 +234,7 @@
   </action>
   <action name="actionDIV">
    <property name="text">
-    <string>Division</string>
+    <string>Divide</string>
    </property>
   </action>
   <action name="actionNEG">
@@ -263,6 +245,21 @@
   <action name="actionSQRT">
    <property name="text">
     <string>Square Root</string>
+   </property>
+  </action>
+  <action name="actionAbsolute_Value">
+   <property name="text">
+    <string>Absolute Value</string>
+   </property>
+  </action>
+  <action name="actionLerp">
+   <property name="text">
+    <string>lerp</string>
+   </property>
+  </action>
+  <action name="actionClamp">
+   <property name="text">
+    <string>clamp</string>
    </property>
   </action>
  </widget>

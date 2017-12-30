@@ -44,20 +44,20 @@ SOURCES +=\
 
 HEADERS  +=\
 	mainwindow.h \
-	lib/Gate.h \
-	lib/IfGate.h \
-	lib/LogicGate.h \
-	lib/Palette.h \
-	lib/PaletteGate.h \
-	lib/RenderArea.h \
-	lib/CompGate.h \
-	lib/ConstGate.h \
-	lib/PixelGate.h \
-	lib/data_t.h \
-	lib/FuncGate.h \
-	lib/Socket.h \
-	lib/RenderGate.h \
-    lib/Workspace.h \
-    lib/MathGate.h
+        include/Gate.h \
+        include/IfGate.h \
+        include/LogicGate.h \
+        include/Palette.h \
+        include/PaletteGate.h \
+        include/RenderArea.h \
+        include/CompGate.h \
+        include/ConstGate.h \
+        include/PixelGate.h \
+        include/data_t.h \
+        include/FuncGate.h \
+        include/Socket.h \
+        include/RenderGate.h \
+    include/Workspace.h \
+    include/MathGate.h
 
 FORMS    += mainwindow.ui

@@ -10,9 +10,11 @@ enum class TypeEnum{
 
 struct data_t{
 	TypeEnum t;
-	bool b;
-	double d;
-	unsigned int u;
+	union{
+		bool b;
+		double d;
+		unsigned int u;
+	};
 	explicit data_t():t(TypeEnum::ANY){}
 	data_t(double v):t(TypeEnum::DOUBLE), d(v){}
 	data_t(bool v):t(TypeEnum::BOOL), b(v){}
@@ -30,8 +32,8 @@ struct data_t{
 	operator unsigned(){
 		if(t==TypeEnum::BOOL) return b? 0xffffffff:0xff000000;
 		if(t==TypeEnum::DOUBLE){
-			if(d>1)return 0xffffffff;
-			if(d<0)return 0;
+			if(d>=1)return 0xffffffff;
+			if(d<=0)return 0xff000000;
 			unsigned char c= d*256;
 			unsigned int i=0xff;
 			i<<=8; i|=c;

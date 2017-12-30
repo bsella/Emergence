@@ -5,13 +5,13 @@
 #include <QColorDialog>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include "lib/Gate.h"
-#include "lib/IfGate.h"
-#include "lib/LogicGate.h"
-#include "lib/CompGate.h"
-#include "lib/RenderArea.h"
-#include "lib/ConstGate.h"
-#include "lib/MathGate.h"
+#include "include/Gate.h"
+#include "include/IfGate.h"
+#include "include/LogicGate.h"
+#include "include/CompGate.h"
+#include "include/RenderArea.h"
+#include "include/ConstGate.h"
+#include "include/MathGate.h"
 
 #define BOOL_G		0
 #define DOUBLE_G	1
@@ -27,19 +27,19 @@
 #define OR_G		11
 #define AND_G		12
 #define XOR_G		13
-#define NAND_G		14
-#define NOR_G		15
-#define XNOR_G		16
-#define NOT_G		17
-#define X_G			18
-#define Y_G			19
-#define RENDER_G	20
-#define ADD_G		21
-#define SUB_G		22
-#define MUL_G		23
-#define DIV_G		24
-#define NEG_G		25
-#define SQRT_G		26
+#define NOT_G		14
+#define X_G			15
+#define Y_G			16
+#define RENDER_G	17
+#define ADD_G		18
+#define SUB_G		19
+#define MUL_G		20
+#define DIV_G		21
+#define NEG_G		22
+#define SQRT_G		23
+#define ABS_G		24
+#define LERP_G		25
+#define CLAMP_G		26
 
 class Workspace : public QGraphicsView{
 	Q_OBJECT

@@ -1,6 +1,7 @@
 #include "lib/Workspace.h"
 #include "lib/Palette.h"
 #include "lib/PaletteGate.h"
+
 Workspace::Workspace(QWidget *parent):QGraphicsView(parent),scene(new QGraphicsScene){
 	setScene(scene);
 }
@@ -17,7 +18,7 @@ void Workspace::setRA(RenderArea* ra){
 	connect(renderArea->yg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 	connect(renderArea->start,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 }
-#include <iostream>
+
 void Workspace::addFuncGate(uint g){
 	FuncGate* gate;
 	switch(g){
@@ -54,9 +55,6 @@ void Workspace::addFuncGate(uint g){
 	case OR_G:		gate=new ORGate;break;
 	case AND_G:		gate=new ANDGate;break;
 	case XOR_G:		gate=new XORGate;break;
-	case NAND_G:	gate=new NANDGate;break;
-	case NOR_G:		gate=new NORGate;break;
-	case XNOR_G:	gate=new XNORGate;break;
 	case NOT_G:		gate=new NOTGate;break;
 	case X_G:		gate=new PixelXGate;break;
 	case Y_G:		gate=new PixelYGate;break;
@@ -67,6 +65,9 @@ void Workspace::addFuncGate(uint g){
 	case DIV_G:		gate=new DIVGate;break;
 	case NEG_G:		gate=new NEGGate;break;
 	case SQRT_G:	gate=new SQRTGate;break;
+	case ABS_G:		gate=new ABSGate;break;
+	case LERP_G:	gate=new LERPGate;break;
+	case CLAMP_G:	gate=new CLAMPGate;break;
 	default:return;
 	}
 	connect(gate,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));

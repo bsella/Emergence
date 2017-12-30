@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "lib/RenderArea.h"
+#include "include/RenderArea.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionDIV,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(DIV_G);});
 	connect(ui->actionNEG,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NEG_G);});
 	connect(ui->actionIf,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(IF_G);});
-	//connect(ui->actionAND,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(BOOL_G);});
+	//connect(ui->actionBOOL,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(BOOL_G);});
 	connect(ui->actionDouble,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(DOUBLE_G);});
 	connect(ui->actionColor,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(COLOR_G);});
 	connect(ui->actionPalette,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(PALETTE_G);});
@@ -29,9 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionOR,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(OR_G);});
 	connect(ui->actionAND,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(AND_G);});
 	connect(ui->actionXOR,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(XOR_G);});
-	connect(ui->actionNAND,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NAND_G);});
-	connect(ui->actionNOR,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NOR_G);});
-	connect(ui->actionXNOR,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(XNOR_G);});
 	connect(ui->actionNOT,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(NOT_G);});
 	connect(ui->actionX,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(X_G);});
 	connect(ui->actionY,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(Y_G);});
@@ -45,6 +42,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->widget->start,SIGNAL(deleted()),this,SLOT(renderDeleted()));
 	connect(ui->widget->xg,SIGNAL(deleted()),this,SLOT(xDeleted()));
 	connect(ui->widget->yg,SIGNAL(deleted()),this,SLOT(yDeleted()));
+	connect(ui->actionAbsolute_Value,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(ABS_G);});
+	connect(ui->actionLerp,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(LERP_G);});
+	connect(ui->actionClamp,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(CLAMP_G);});
 
 	///TODO
 	ui->actionBool->setEnabled(false);

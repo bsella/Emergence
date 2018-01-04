@@ -8,7 +8,7 @@ enum class TypeEnum{
 	DOUBLE=0x2,
 	COLOR=0x4,
 	COMPLEX=0x8,
-	ANY=0x7
+	ANY=0xf
 };
 
 typedef std::complex<double> cplx;
@@ -34,7 +34,19 @@ struct data_t{
 	}
 	operator double(){
 		if(t==TypeEnum::BOOL) return b? 1.0:0.0;
-		if(t==TypeEnum::COLOR) return double(u);
+		if(t==TypeEnum::COLOR){
+			uint temp=u;
+			double ret=0;
+			uint8_t color= temp;
+			ret+=color*.0722;	///BLUE
+			temp>>=8;
+			color=temp;
+			ret+=color*.7152;	///GREEN
+			temp>>=8;
+			color=temp;
+			ret+=color*.2126;	///RED
+			return ret/256.0;
+		}
 		if(t==TypeEnum::COMPLEX) return std::abs(c);
 		return d;
 	}
@@ -86,6 +98,11 @@ struct data_t{
 	data_t& operator=(unsigned uu){
 		t=TypeEnum::COLOR;
 		u=uu;
+		return *this;
+	}
+	data_t& operator=(cplx cc){
+		t=TypeEnum::COMPLEX;
+		c=cc;
 		return *this;
 	}
 };

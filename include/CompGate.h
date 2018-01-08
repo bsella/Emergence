@@ -1,9 +1,9 @@
 #ifndef COMPGATE_H
 #define COMPGATE_H
 
-#include "FuncGate.h"
+#include "Gate.h"
 
-class CompGate:public FuncGate{
+class CompGate:public Gate{
 protected:
 	CompGate();
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget)=0;

@@ -2,9 +2,8 @@
 #define IFGATE_H
 
 #include "Gate.h"
-#include "FuncGate.h"
 
-class IfGate:public FuncGate{
+class IfGate:public Gate{
 public:
 	IfGate();
 	data_t eval()const;

@@ -1,9 +1,9 @@
 #ifndef RENDERGATE_H
 #define RENDERGATE_H
 
-#include "FuncGate.h"
+#include "Gate.h"
 
-class RenderGate : public FuncGate{
+class RenderGate : public Gate{
 public:
 	RenderGate();
 	data_t eval()const;

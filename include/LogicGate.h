@@ -1,9 +1,9 @@
 #ifndef LOGICGATE_H
 #define LOGICGATE_H
 
-#include "FuncGate.h"
+#include "Gate.h"
 
-class LogicGate:public FuncGate{
+class LogicGate:public Gate{
 protected:
 	LogicGate(unsigned n);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;

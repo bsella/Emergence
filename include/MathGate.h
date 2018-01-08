@@ -1,10 +1,10 @@
 #ifndef MATHGATE_H
 #define MATHGATE_H
 
-#include "FuncGate.h"
+#include "Gate.h"
 #include <QtMath>
 
-class MathGate:public FuncGate{
+class MathGate:public Gate{
 protected:
 	MathGate(unsigned n, unsigned w=50, unsigned h=50);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;

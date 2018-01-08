@@ -1,19 +1,19 @@
 #include "include/ConstGate.h"
 
-ConstGate::ConstGate(double v):FuncGate(50,50,QColor(255,255,180)),_v(v){
-    t=TypeEnum::DOUBLE;
+ConstGate::ConstGate(double v):Gate(50,50,QColor(255,255,180)),_v(v){
+	t=TypeEnum::DOUBLE;
 }
 
-ConstGate::ConstGate(bool v):FuncGate(50,50,QColor(255,255,180)),_v(v){
-    t=TypeEnum::BOOL;
+ConstGate::ConstGate(bool v):Gate(50,50,QColor(255,255,180)),_v(v){
+	t=TypeEnum::BOOL;
 }
 
-ConstGate::ConstGate(uint v):FuncGate(50,50,QColor(v)),_v(v){
+ConstGate::ConstGate(uint v):Gate(50,50,QColor(v)),_v(v){
 	t=TypeEnum::COLOR;
 }
 
 void ConstGate::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget){
-    FuncGate::paint(painter,option,widget);
+	Gate::paint(painter,option,widget);
     switch (t) {
     case TypeEnum::BOOL:
         painter->drawText(boundingRect().center()-QPoint(12,-2),_v.b?"True":"False");
@@ -43,7 +43,7 @@ void ConstGate::contextMenuEvent(QGraphicsSceneContextMenuEvent* event){
 	default:
 		break;
 	}
-	FuncGate::contextMenuEvent(event);
+	Gate::contextMenuEvent(event);
 }
 
 void ConstGate::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*){

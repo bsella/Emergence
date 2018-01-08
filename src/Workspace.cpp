@@ -20,7 +20,7 @@ void Workspace::setRA(RenderArea* ra){
 }
 
 void Workspace::addFuncGate(uint g){
-	FuncGate* gate;
+	Gate* gate;
 	switch(g){
 	case BOOL_G:return;
 	case DOUBLE_G:{

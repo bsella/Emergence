@@ -2,9 +2,9 @@
 #define PALETTEGATE_H
 
 #include "Palette.h"
-#include "FuncGate.h"
+#include "Gate.h"
 
-class PaletteGate:public FuncGate{
+class PaletteGate:public Gate{
 public:
 	PaletteGate(const Palette& p);
 	data_t eval()const;

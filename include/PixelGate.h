@@ -1,9 +1,9 @@
 #ifndef PXYGATE_H
 #define PXYGATE_H
 
-#include "FuncGate.h"
+#include "Gate.h"
 
-class PixelGate:public FuncGate{
+class PixelGate:public Gate{
 public:
 		void update(double i);
 		data_t eval()const;

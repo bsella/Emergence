@@ -1,11 +1,11 @@
 #include "include/IfGate.h"
 
-IfGate::IfGate():FuncGate(50,100,QColor(180,180,255),3){}
+IfGate::IfGate():Gate(50,100,QColor(180,180,255),3){}
 
 void IfGate::paint(QPainter* painter,
                const QStyleOptionGraphicsItem*option,
                QWidget*widget){
-    FuncGate::paint(painter,option,widget);
+	Gate::paint(painter,option,widget);
     QRectF rect=boundingRect();
     rect.setLeft(rect.left()+socketSize); rect.setRight(rect.right()-socketSize);
     painter->drawLine(rect.center()+QPointF(rect.width()/2,0),rect.center()+QPointF(rect.width()/2+socketSize,0));

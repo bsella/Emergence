@@ -76,4 +76,3 @@ void Workspace::addFuncGate(uint g){
 	scene->addItem(gate);
 }
 
-Workspace::~Workspace(){}

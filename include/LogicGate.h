@@ -12,6 +12,7 @@ protected:
 class ORGate:public LogicGate{
 public:
 	ORGate();
+private:
 	data_t eval()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
@@ -19,6 +20,7 @@ public:
 class ANDGate:public LogicGate{
 public:
 	ANDGate();
+private:
 	data_t eval()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
@@ -26,6 +28,7 @@ public:
 class XORGate:public LogicGate{
 public:
 	XORGate();
+private:
 	data_t eval()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
@@ -33,6 +36,7 @@ public:
 class NOTGate:public LogicGate{
 public:
 	NOTGate();
+private:
 	data_t eval()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };

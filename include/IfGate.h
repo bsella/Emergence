@@ -6,8 +6,8 @@
 class IfGate:public Gate{
 public:
 	IfGate();
-	data_t eval()const;
 private:
+	data_t eval()const;
 	void paint(QPainter* painter,
 					   const QStyleOptionGraphicsItem* option,
 					   QWidget*widget);

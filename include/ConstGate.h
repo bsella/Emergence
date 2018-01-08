@@ -10,10 +10,10 @@ public:
 	ConstGate(double v);
 	ConstGate(bool v);
 	ConstGate(uint v);
-	inline data_t eval()const{return _v;}
 private:
 	data_t _v;
 	TypeEnum t;
+	inline data_t eval()const{return _v;}
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event);

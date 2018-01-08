@@ -266,13 +266,13 @@
   <customwidget>
    <class>RenderArea</class>
    <extends>QWidget</extends>
-   <header location="global">lib/RenderArea.h</header>
+   <header location="global">include/RenderArea.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>Workspace</class>
    <extends>QGraphicsView</extends>
-   <header location="global">lib/Workspace.h</header>
+   <header location="global">include/Workspace.h</header>
    <slots>
     <slot>addIFGate(QPoint)</slot>
    </slots>

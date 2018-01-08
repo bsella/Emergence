@@ -44,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionLerp,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(LERP_G);});
 	connect(ui->actionClamp,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(CLAMP_G);});
 	connect(ui->actionBitmap,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(BITMAP_G);});
+	connect(ui->actionSin,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(SIN_G);});
+	connect(ui->actionCos,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(COS_G);});
 
 	///TODO
 	ui->actionBool->setEnabled(false);

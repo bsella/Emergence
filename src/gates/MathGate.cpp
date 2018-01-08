@@ -11,6 +11,8 @@ SQRTGate::SQRTGate():MathGate(1){}
 ABSGate::ABSGate():MathGate(1){}
 LERPGate::LERPGate():MathGate(3,50,100){}
 CLAMPGate::CLAMPGate():MathGate(3,50,100){}
+SINGate::SINGate():MathGate(1){}
+COSGate::COSGate():MathGate(1){}
 
 void ADDGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);
@@ -59,6 +61,14 @@ void CLAMPGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	painter->drawText(rect.topLeft()+QPointF(width/2-10,2*rect.height()/4.0+4),"clamp");
 	painter->drawText(rect.topLeft()+QPointF(8,3*rect.height()/4.0+4),"0");
 }
+void SINGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+	Gate::paint(painter,option,widget);
+	painter->drawText(boundingRect().center()-QPointF(12,0),"sin");
+}
+void COSGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+	Gate::paint(painter,option,widget);
+	painter->drawText(boundingRect().center()-QPointF(12,0),"cos");
+}
 data_t ADDGate::eval()const{
 	return iGates[0]->eval()+iGates[1]->eval();
 }
@@ -88,4 +98,10 @@ data_t CLAMPGate::eval()const{
 	double min=iGates[2]->eval(), max=iGates[0]->eval();
 	if(!(max-min)) return 0.0;
 	return (double(iGates[1]->eval())-min)/(max-min);
+}
+data_t SINGate::eval()const{
+	return qSin(iGates[0]->eval());
+}
+data_t COSGate::eval()const{
+	return qCos(iGates[0]->eval());
 }

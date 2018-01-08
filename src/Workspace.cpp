@@ -70,6 +70,8 @@ void Workspace::addFuncGate(uint g){
 	case ABS_G:		gate=new ABSGate;break;
 	case LERP_G:	gate=new LERPGate;break;
 	case CLAMP_G:	gate=new CLAMPGate;break;
+	case SIN_G:		gate=new SINGate;break;
+	case COS_G:		gate=new COSGate;break;
 	default:return;
 	}
 	connect(gate,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));

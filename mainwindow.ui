@@ -112,6 +112,9 @@
      <addaction name="separator"/>
      <addaction name="actionLerp"/>
      <addaction name="actionClamp"/>
+     <addaction name="separator"/>
+     <addaction name="actionSin"/>
+     <addaction name="actionCos"/>
     </widget>
     <addaction name="menuCalc"/>
     <addaction name="menuComparison"/>
@@ -264,6 +267,16 @@
   <action name="actionBitmap">
    <property name="text">
     <string>Bitmap</string>
+   </property>
+  </action>
+  <action name="actionSin">
+   <property name="text">
+    <string>sin</string>
+   </property>
+  </action>
+  <action name="actionCos">
+   <property name="text">
+    <string>cos</string>
    </property>
   </action>
  </widget>

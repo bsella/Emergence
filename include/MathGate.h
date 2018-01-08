@@ -79,4 +79,18 @@ private:
 	data_t eval()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
+class SINGate:public MathGate{
+public:
+	SINGate();
+private:
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
+class COSGate:public MathGate{
+public:
+	COSGate();
+private:
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
 #endif // MATHGATE_H

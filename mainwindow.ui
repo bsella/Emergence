@@ -119,6 +119,7 @@
     <addaction name="menuConstant"/>
     <addaction name="actionPalette"/>
     <addaction name="actionIf"/>
+    <addaction name="actionBitmap"/>
     <addaction name="separator"/>
     <addaction name="menuPixel"/>
     <addaction name="actionRender"/>
@@ -258,6 +259,11 @@
   <action name="actionClamp">
    <property name="text">
     <string>clamp</string>
+   </property>
+  </action>
+  <action name="actionBitmap">
+   <property name="text">
+    <string>Bitmap</string>
    </property>
   </action>
  </widget>

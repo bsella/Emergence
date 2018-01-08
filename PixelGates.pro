@@ -34,13 +34,13 @@ SOURCES +=\
 	src/Palette.cpp \
 	src/RenderArea.cpp \
 	src/gates/PixelGate.cpp \
-	src/gates/Gate.cpp \
-	src/gates/FuncGate.cpp \
+        src/gates/Gate.cpp \
 	src/gates/ConstGate.cpp \
 	src/Socket.cpp \
 	src/gates/RenderGate.cpp \
     src/Workspace.cpp \
-    src/gates/MathGate.cpp
+    src/gates/MathGate.cpp \
+    src/gates/BitmapGate.cpp
 
 HEADERS  +=\
 	mainwindow.h \
@@ -54,10 +54,10 @@ HEADERS  +=\
         include/ConstGate.h \
         include/PixelGate.h \
         include/data_t.h \
-        include/FuncGate.h \
         include/Socket.h \
         include/RenderGate.h \
     include/Workspace.h \
-    include/MathGate.h
+    include/MathGate.h \
+    include/BitmapGate.h
 
 FORMS    += mainwindow.ui

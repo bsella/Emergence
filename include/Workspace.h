@@ -1,6 +1,7 @@
 #ifndef WORKSPACE_H
 #define WORKSPACE_H
 
+#include <QFileDialog>
 #include <QInputDialog>
 #include <QColorDialog>
 #include <QGraphicsView>
@@ -12,6 +13,8 @@
 #include "include/RenderArea.h"
 #include "include/ConstGate.h"
 #include "include/MathGate.h"
+#include "include/PaletteGate.h"
+#include "include/BitmapGate.h"
 
 #define BOOL_G		0
 #define DOUBLE_G	1
@@ -38,6 +41,7 @@
 #define ABS_G		22
 #define LERP_G		23
 #define CLAMP_G		24
+#define BITMAP_G	25
 
 class Workspace : public QGraphicsView{
 	Q_OBJECT

@@ -8,7 +8,7 @@ public:
 	IfGate();
 	data_t eval()const;
 private:
-	virtual void paint(QPainter* painter,
+	void paint(QPainter* painter,
 					   const QStyleOptionGraphicsItem* option,
 					   QWidget*widget);
 };

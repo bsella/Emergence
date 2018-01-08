@@ -1,6 +1,4 @@
 #include "include/Workspace.h"
-#include "include/Palette.h"
-#include "include/PaletteGate.h"
 
 Workspace::Workspace(QWidget *parent):QGraphicsView(parent),scene(new QGraphicsScene){
 	setScene(scene);
@@ -43,6 +41,12 @@ void Workspace::addFuncGate(uint g){
 		p.add(0xff0000ff,.5);
 		p.add(0xff00ff00,1);
 		gate= new PaletteGate(p);
+		break;
+	}
+	case BITMAP_G:{
+		QString f= QFileDialog::getOpenFileName(this,"Choose Image",".","Images (*.bmp)");
+		if(f.isNull())return;
+		gate = new BitmapGate(f);
 		break;
 	}
 	case IF_G:		gate=new IfGate;break;

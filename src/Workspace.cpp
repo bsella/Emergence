@@ -58,9 +58,18 @@ void Workspace::addFuncGate(uint g){
 	case AND_G:		gate=new ANDGate;break;
 	case XOR_G:		gate=new XORGate;break;
 	case NOT_G:		gate=new NOTGate;break;
-	case X_G:		gate=new PixelXGate;break;
-	case Y_G:		gate=new PixelYGate;break;
-	case RENDER_G:	gate=new RenderGate;break;
+	case X_G:
+		if(!renderArea) return;
+		gate=renderArea->xg;
+		break;
+	case Y_G:
+		if(!renderArea) return;
+		gate= renderArea->yg;
+		break;
+	case RENDER_G:
+		if(!renderArea) return;
+		gate=renderArea->start;
+		break;
 	case ADD_G:		gate=new ADDGate;break;
 	case SUB_G:		gate=new SUBGate;break;
 	case MUL_G:		gate=new MULGate;break;

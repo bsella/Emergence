@@ -44,6 +44,8 @@
 #define BITMAP_G	25
 #define SIN_G		26
 #define COS_G		27
+#define MIN_G		28
+#define MAX_G		29
 
 class Workspace : public QGraphicsView{
 	Q_OBJECT

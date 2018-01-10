@@ -115,6 +115,9 @@
      <addaction name="separator"/>
      <addaction name="actionSin"/>
      <addaction name="actionCos"/>
+     <addaction name="separator"/>
+     <addaction name="actionMin"/>
+     <addaction name="actionMax"/>
     </widget>
     <addaction name="menuCalc"/>
     <addaction name="menuComparison"/>
@@ -277,6 +280,16 @@
   <action name="actionCos">
    <property name="text">
     <string>cos</string>
+   </property>
+  </action>
+  <action name="actionMin">
+   <property name="text">
+    <string>min</string>
+   </property>
+  </action>
+  <action name="actionMax">
+   <property name="text">
+    <string>max</string>
    </property>
   </action>
  </widget>

@@ -93,4 +93,19 @@ private:
 	data_t eval()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
+
+class MINGate:public MathGate{
+public:
+	MINGate();
+private:
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
+class MAXGate:public MathGate{
+public:
+	MAXGate();
+private:
+	data_t eval()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
 #endif // MATHGATE_H

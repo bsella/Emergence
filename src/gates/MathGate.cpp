@@ -13,6 +13,8 @@ LERPGate::LERPGate():MathGate(3,50,100){}
 CLAMPGate::CLAMPGate():MathGate(3,50,100){}
 SINGate::SINGate():MathGate(1){}
 COSGate::COSGate():MathGate(1){}
+MINGate::MINGate():MathGate(2){}
+MAXGate::MAXGate():MathGate(2){}
 
 void ADDGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);
@@ -69,6 +71,14 @@ void COSGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	Gate::paint(painter,option,widget);
 	painter->drawText(boundingRect().center()-QPointF(12,0),"cos");
 }
+void MINGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+	Gate::paint(painter,option,widget);
+	painter->drawText(boundingRect().center()-QPointF(12,0),"min");
+}
+void MAXGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+	Gate::paint(painter,option,widget);
+	painter->drawText(boundingRect().center()-QPointF(12,0),"max");
+}
 data_t ADDGate::eval()const{
 	return iGates[0]->eval()+iGates[1]->eval();
 }
@@ -104,4 +114,10 @@ data_t SINGate::eval()const{
 }
 data_t COSGate::eval()const{
 	return qCos(iGates[0]->eval());
+}
+data_t MINGate::eval()const{
+	return qMin(iGates[0]->eval(),iGates[1]->eval());
+}
+data_t MAXGate::eval()const{
+	return qMax(iGates[0]->eval(),iGates[1]->eval());
 }

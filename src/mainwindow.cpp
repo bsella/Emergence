@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionBitmap,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(BITMAP_G);});
 	connect(ui->actionSin,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(SIN_G);});
 	connect(ui->actionCos,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(COS_G);});
+	connect(ui->actionMin,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(MIN_G);});
+	connect(ui->actionMax,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(MAX_G);});
 
 	///TODO
 	ui->actionBool->setEnabled(false);

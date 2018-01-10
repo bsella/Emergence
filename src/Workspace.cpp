@@ -81,6 +81,8 @@ void Workspace::addFuncGate(uint g){
 	case CLAMP_G:	gate=new CLAMPGate;break;
 	case SIN_G:		gate=new SINGate;break;
 	case COS_G:		gate=new COSGate;break;
+	case MIN_G:		gate=new MINGate;break;
+	case MAX_G:		gate=new MAXGate;break;
 	default:return;
 	}
 	connect(gate,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));

@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "include/ExportImageDialog.h"
+#include <memory>
 
 namespace Ui {
 class MainWindow;
@@ -16,7 +18,9 @@ public:
 
 private:
 	Ui::MainWindow *ui;
+
 private slots:
+	void exportImage();
 	void renderDeleted();
 	void xDeleted();
 	void yDeleted();

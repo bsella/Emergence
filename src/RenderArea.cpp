@@ -6,16 +6,28 @@ RenderArea::RenderArea(QWidget *parent):QWidget(parent){
 	start=new RenderGate;
 }
 
-void RenderArea::paintEvent(QPaintEvent*){
-	if(!*start) return;
-	QImage image(size(),QImage::Format_ARGB32_Premultiplied);
-	for(int x=0;x<width();x++)
-		for(int y=0;y<height();y++){
-			xg->update((double)x/width());
-			yg->update((double)y/height());
+QImage RenderArea::renderImage(int w, int h){
+	QImage image(w,h ,QImage::Format_ARGB32_Premultiplied);
+	for(int x=0;x<w;x++)
+		for(int y=0;y<h;y++){
+			xg->update((double)x/w);
+			yg->update((double)y/h);
 			image.setPixel(x,y,start->eval());
 		}
-	QPainter(this).drawImage(0,0,image);
+	return image;
+}
+
+void RenderArea::paintEvent(QPaintEvent*){
+	if(!isValid()){
+		emit notValid();
+		return;
+	}
+	emit valid();
+	QPainter(this).drawImage(0,0,renderImage(width(),height()));
+}
+
+bool RenderArea::isValid(){
+	return *start;
 }
 
 RenderArea::~RenderArea(){

@@ -40,7 +40,8 @@ SOURCES +=\
 	src/gates/RenderGate.cpp \
     src/Workspace.cpp \
     src/gates/MathGate.cpp \
-    src/gates/BitmapGate.cpp
+    src/gates/BitmapGate.cpp \
+    src/ExportImageDialog.cpp
 
 HEADERS  +=\
 	mainwindow.h \
@@ -58,6 +59,8 @@ HEADERS  +=\
         include/RenderGate.h \
     include/Workspace.h \
     include/MathGate.h \
-    include/BitmapGate.h
+    include/BitmapGate.h \
+    include/ExportImageDialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    exportimagedialog.ui

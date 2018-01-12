@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 	QWidget::setWindowTitle("PixelGates");
 
-	ui->workspace->setRA(ui->widget);
+	ui->workspace->setRA(ui->renderArea);
 	connect(ui->actionSQRT,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(SQRT_G);});
 	connect(ui->actionADD,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(ADD_G);});
 	connect(ui->actionSUB,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(SUB_G);});
@@ -37,9 +37,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->actionRender->setEnabled(false);
 	ui->actionX->setEnabled(false);
 	ui->actionY->setEnabled(false);
-	connect(ui->widget->start,SIGNAL(deleted()),this,SLOT(renderDeleted()));
-	connect(ui->widget->xg,SIGNAL(deleted()),this,SLOT(xDeleted()));
-	connect(ui->widget->yg,SIGNAL(deleted()),this,SLOT(yDeleted()));
+	connect(ui->renderArea->start,SIGNAL(deleted()),this,SLOT(renderDeleted()));
+	connect(ui->renderArea->xg,SIGNAL(deleted()),this,SLOT(xDeleted()));
+	connect(ui->renderArea->yg,SIGNAL(deleted()),this,SLOT(yDeleted()));
 	connect(ui->actionAbsolute_Value,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(ABS_G);});
 	connect(ui->actionLerp,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(LERP_G);});
 	connect(ui->actionClamp,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(CLAMP_G);});
@@ -49,6 +49,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionMin,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(MIN_G);});
 	connect(ui->actionMax,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(MAX_G);});
 
+	connect(ui->actionExport,SIGNAL(triggered(bool)),this,SLOT(exportImage()));
+	connect(ui->actionExit,SIGNAL(triggered(bool)), this, SLOT(close()));
+	connect(ui->renderArea,&RenderArea::notValid,ui->actionExport,[this]{ui->actionExport->setEnabled(false);});
+	connect(ui->renderArea,&RenderArea::valid,ui->actionExport,[this]{ui->actionExport->setEnabled(true);});
 	///TODO
 	ui->actionBool->setEnabled(false);
 }
@@ -65,4 +69,8 @@ void MainWindow::xDeleted(){
 }
 void MainWindow::yDeleted(){
 	ui->actionY->setEnabled(true);
+}
+
+void MainWindow::exportImage(){
+	ExportImageDialog::exportBMP(ui->renderArea);
 }

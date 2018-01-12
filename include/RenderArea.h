@@ -8,11 +8,16 @@
 #include <QPainter>
 
 class RenderArea : public QWidget {
-	//Q_OBJECT
+	Q_OBJECT
+signals:
+	void notValid();
+	void valid();
 public:
 	RenderArea(QWidget *parent=0);
-	virtual ~RenderArea();
+	~RenderArea();
 	void paintEvent(QPaintEvent*);
+	QImage renderImage(int w, int h);
+	bool isValid();
 	PixelXGate * xg;
 	PixelYGate * yg;
 	RenderGate* start;

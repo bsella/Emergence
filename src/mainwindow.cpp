@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow){
 	ui->setupUi(this);
 	QWidget::setWindowTitle("PixelGates");
+	QWidget::setWindowIcon(QIcon("../PG.ico"));
 
 	ui->workspace->setRA(ui->renderArea);
 	connect(ui->actionSQRT,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(SQRT_G);});

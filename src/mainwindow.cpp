@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QWidget::setWindowTitle("PixelGates");
 	QWidget::setWindowIcon(QIcon("../PG.ico"));
 
+	//QMainWindow::tabifyDockWidget(ui->dockWidget,ui->dockWidget_2);
 	ui->workspace->setRA(ui->renderArea);
 	connect(ui->actionSQRT,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(SQRT_G);});
 	connect(ui->actionADD,&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncGate(ADD_G);});

@@ -3,8 +3,6 @@
 
 Socket::Socket(unsigned i, double y, QGraphicsItem *parent):rank(i),iy(y),QGraphicsItem(parent){
 	setZValue(parent->zValue()+1);
-	//line = new QGraphicsLineItem(this);
-	//line->setPos(5,0);
 	setPos(-5,y);
 	setAcceptedMouseButtons(Qt::LeftButton);
 }
@@ -16,19 +14,17 @@ QRectF Socket::boundingRect()const{
 void Socket::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
 	painter->setRenderHint(QPainter::Antialiasing);
 	painter->drawEllipse(boundingRect().center(),headSize,headSize);
-//	line->update();
 }
 
 void Socket::mouseMoveEvent(QGraphicsSceneMouseEvent*){
-//    QGraphicsItem* p= parentItem();
-//    this->setPos(event->scenePos()-p->pos()- boundingRect().center());
-//    line->setLine(0,0,-x()-5,-y()+iy);
 	QDrag *drag = new QDrag(parentObject());
 	QMimeData *mime = new QMimeData;
 	drag->setMimeData(mime);
 	mime->setParent(parentObject());
 	mime->setData("rank",QByteArray::number(rank));
+	mime->setData("socket",QByteArray::number(1));
 	drag->exec();
+	parentObject()->setAcceptDrops(true);
 }
 
 void Socket::mousePressEvent(QGraphicsSceneMouseEvent*){}

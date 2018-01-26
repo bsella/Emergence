@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow){
 	ui->setupUi(this);
 	QWidget::setWindowTitle("PixelGates");
-	QWidget::setWindowIcon(QIcon("../PG.ico"));
+	QWidget::setWindowIcon(QIcon(":/icons/PG.ico"));
 
 	//QMainWindow::tabifyDockWidget(ui->dockWidget,ui->dockWidget_2);
 	ui->workspace->setRA(ui->renderArea);

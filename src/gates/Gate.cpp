@@ -63,8 +63,16 @@ void Gate::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
     }
 }
 
+void Gate::dragEnterEvent(QGraphicsSceneDragDropEvent *event){
+	if(event->mimeData()->parent()==this)
+		setAcceptDrops(false);
+	else
+		setAcceptDrops(!special);
+}
+
 void Gate::dropEvent(QGraphicsSceneDragDropEvent* event){
-	((Gate*)(event->mimeData()->parent()))->connectGate(this,(event->mimeData()->data("rank")).toInt());
+	if(event->mimeData()->data("socket")=="1")
+		((Gate*)(event->mimeData()->parent()))->connectGate(this,(event->mimeData()->data("rank")).toInt());
 }
 
 void Gate::removeGate(){

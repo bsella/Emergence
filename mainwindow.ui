@@ -121,7 +121,7 @@
     <bool>false</bool>
    </property>
    <property name="windowTitle">
-    <string>Custom Gates</string>
+    <string>Toolbox</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -129,13 +129,34 @@
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
-      <widget class="QListWidget" name="listWidget">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+      <widget class="QToolBox" name="toolBox">
+       <widget class="QWidget" name="page">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>68</width>
+          <height>287</height>
+         </rect>
+        </property>
+        <attribute name="label">
+         <string>Math</string>
+        </attribute>
+        <layout class="QFormLayout" name="formLayout"/>
+       </widget>
+       <widget class="QWidget" name="page_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>68</width>
+          <height>287</height>
+         </rect>
+        </property>
+        <attribute name="label">
+         <string>Compare</string>
+        </attribute>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -368,9 +389,6 @@
    </slots>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>listWidget</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

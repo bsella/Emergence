@@ -46,6 +46,7 @@ protected:
 	std::vector<Socket*> sockets;
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void dropEvent(QGraphicsSceneDragDropEvent *event);
+	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
 	void connectGate(Gate *g, unsigned i);
 private:
 	bool special;

@@ -74,3 +74,6 @@ HEADERS  +=\
 
 FORMS    += mainwindow.ui \
     exportimagedialog.ui
+
+RESOURCES += \
+    application.qrc

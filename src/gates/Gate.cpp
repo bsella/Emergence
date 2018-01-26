@@ -111,6 +111,7 @@ Gate::operator bool(){
 }
 
 void Gate::connectGate(Gate *g, unsigned i){
+	if(g==this) return;
 	if(nbArgs>=i+1){
 		QRectF r= g->boundingRect();
 		iLines[i]=this->scene()->addLine(g->x()+r.right(),g->y()+r.height()/2,
@@ -135,4 +136,9 @@ void Gate::disconnectGate(unsigned rank){
 		sockets[rank]->setVisible(true);
 		emit notifyRA();
 	}
+}
+
+void Gate::drawIcon(QPainter *painter, QString filename){
+	QImage icon=QImage(filename);
+	painter->drawImage(width/2-icon.width()/2+socketSize,height/2-icon.height()/2,icon);
 }

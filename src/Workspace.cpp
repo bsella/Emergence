@@ -40,7 +40,7 @@ void Workspace::addFuncGate(uint g){
 		p.add(0xffff0000,0);
 		p.add(0xff0000ff,.5);
 		p.add(0xff00ff00,1);
-		gate= new PaletteGate(p);
+		gate= new LUTGate(p);
 		break;
 	}
 	case BITMAP_G:{

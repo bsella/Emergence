@@ -18,32 +18,33 @@ MAXGate::MAXGate():MathGate(2){}
 
 void ADDGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);
-	painter->drawText(boundingRect().center(),"+");
+	drawIcon(painter,":/icons/add.png");
 }
 
 void SUBGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);
-	painter->drawText(boundingRect().center(),"-");
+	drawIcon(painter,":/icons/subtract.png");
 }
 
 void MULGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);
-	painter->drawText(boundingRect().center(),"*");
+	drawIcon(painter,":/icons/multiply.png");
 }
 
 void DIVGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);
-	painter->drawText(boundingRect().center(),"/");
+	drawIcon(painter,":/icons/divide.png");
 }
 
 void NEGGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);
-	painter->drawText(boundingRect().center(),"(-)");
+	drawIcon(painter,":/icons/subtract.png");
 }
 
 void SQRTGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);
-	painter->drawText(boundingRect().center()-QPointF(12,0),"sqrt");
+	QImage icon=QImage(":/icons/sqrt.png");
+	painter->drawImage(width/2-icon.width()/2+5,height/2-icon.height()/2,icon);
 }
 void ABSGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);

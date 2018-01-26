@@ -48,6 +48,7 @@ protected:
 	void dropEvent(QGraphicsSceneDragDropEvent *event);
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
 	void connectGate(Gate *g, unsigned i);
+	void drawIcon(QPainter *painter, QString filename);
 private:
 	bool special;
 };

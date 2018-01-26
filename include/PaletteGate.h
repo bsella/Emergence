@@ -4,9 +4,9 @@
 #include "Palette.h"
 #include "Gate.h"
 
-class PaletteGate:public Gate{
+class LUTGate:public Gate{
 public:
-	PaletteGate(const Palette& p);
+	LUTGate(const Palette& p);
 private:
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem*option, QWidget*widget);
 	data_t eval()const;

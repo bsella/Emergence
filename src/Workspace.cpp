@@ -12,9 +12,18 @@ void Workspace::setRA(RenderArea* ra){
 	scene->addItem(renderArea->yg);
 	renderArea->start->setPos(100,50);
 	scene->addItem(renderArea->start);
+	gates.push_back(renderArea->start);
+	gates.push_back(renderArea->xg);
+	gates.push_back(renderArea->yg);
 	connect(renderArea->xg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 	connect(renderArea->yg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 	connect(renderArea->start,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
+	connect(renderArea->xg,SIGNAL(addToWS(Gate*)),this,SLOT(addToList(Gate*)));
+	connect(renderArea->xg,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
+	connect(renderArea->yg,SIGNAL(addToWS(Gate*)),this,SLOT(addToList(Gate*)));
+	connect(renderArea->yg,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
+	connect(renderArea->start,SIGNAL(addToWS(Gate*)),this,SLOT(addToList(Gate*)));
+	connect(renderArea->start,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
 }
 
 void Workspace::addFuncGate(uint g){
@@ -86,6 +95,17 @@ void Workspace::addFuncGate(uint g){
 	default:return;
 	}
 	connect(gate,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
+	connect(gate,SIGNAL(addToWS(Gate*)),this,SLOT(addToList(Gate*)));
+	connect(gate,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
+	gate->setPos(scene->sceneRect().center());
+	gates.push_back(gate);
 	scene->addItem(gate);
 }
 
+void Workspace::removeFromList(Gate *g){
+	gates.remove(g);
+}
+
+void Workspace::addToList(Gate *g){
+	gates.push_back(g);
+}

@@ -54,7 +54,10 @@ public:
 	void setRA(RenderArea* ra);
 public slots:
 	void addFuncGate(uint g);
+	void addToList(Gate *g);
+	void removeFromList(Gate *g);
 private:
+	std::list<Gate*> gates;
 	QGraphicsScene* scene;
 	RenderArea* renderArea=nullptr;
 };

@@ -21,6 +21,8 @@ public:
 	operator bool();
 signals:
 	void notifyRA();
+	void removeFromWS(Gate* g);
+	void addToWS(Gate* g);
 	void deleted();
 private slots:
 	void disconnectGate(unsigned rank);

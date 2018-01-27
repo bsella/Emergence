@@ -105,9 +105,9 @@ void Gate::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 
 Gate::operator bool(){
 	for(auto g:iGates)
-			if(g==nullptr || !(*g))
-				return false;
-		return true;
+		if(g==nullptr || !(*g))
+			return false;
+	return true;
 }
 
 void Gate::connectGate(Gate *g, unsigned i){
@@ -115,16 +115,18 @@ void Gate::connectGate(Gate *g, unsigned i){
 	if(nbArgs>=i+1){
 		QRectF r= g->boundingRect();
 		iLines[i]=this->scene()->addLine(g->x()+r.right(),g->y()+r.height()/2,
-											 x(),y()+height*((i+1.0)/(iGates.size()+1.0)));
+											x(),y()+height*((i+1.0)/(iGates.size()+1.0)));
 		iGates[i]=g;
 		g->oConnections.push_back({this,i});
 		sockets[i]->setVisible(false);
 		emit notifyRA();
+		emit removeFromWS(g);
 	}
 }
 
 void Gate::disconnectGate(unsigned rank){
 	if(iGates[rank]){
+		emit addToWS(iGates[rank]);
 		scene()->removeItem(iLines[rank]);
 		iLines[rank]=nullptr;
 		for(auto l=iGates[rank]->oConnections.begin(); l!=iGates[rank]->oConnections.end();++l)

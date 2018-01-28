@@ -26,11 +26,15 @@ void Workspace::setRA(RenderArea* ra){
 	connect(renderArea->start,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
 }
 
-void Workspace::addFuncGate(uint g){
+void Workspace::addFuncGate(uint g, bool load){
 	Gate* gate;
 	switch(g){
 	case BOOL_G:return;
 	case DOUBLE_G:{
+		if(load){
+			gate=new ConstGate(0.0);
+			break;
+		}
 		bool ok;
 		double d =QInputDialog::getDouble(this,"Choose Number","",0,-2147483647,2147483647,3,&ok);
 		if(!ok) return;
@@ -38,6 +42,10 @@ void Workspace::addFuncGate(uint g){
 		break;
 	}
 	case COLOR_G:{
+		if(load){
+			gate=new ConstGate(0xffffffff);
+			break;
+		}
 		QColor c =QColorDialog::getColor();
 		if(!c.isValid()) return;
 		gate=new ConstGate(c.rgba());
@@ -53,6 +61,10 @@ void Workspace::addFuncGate(uint g){
 		break;
 	}
 	case BITMAP_G:{
+		if(load){
+			gate=new BitmapGate;
+			break;
+		}
 		QString f= QFileDialog::getOpenFileName(this,"Choose Image",".","Images (*.bmp)");
 		if(f.isNull())return;
 		gate = new BitmapGate(f);
@@ -100,6 +112,10 @@ void Workspace::addFuncGate(uint g){
 	gate->setPos(scene->sceneRect().center());
 	gates.push_back(gate);
 	scene->addItem(gate);
+	gate->setZValue(0);
+	for(const auto& i: gate->collidingItems())
+		if(gate->zValue()<= i->zValue())
+			gate->setZValue(i->zValue()+1);
 }
 
 void Workspace::removeFromList(Gate *g){
@@ -108,4 +124,105 @@ void Workspace::removeFromList(Gate *g){
 
 void Workspace::addToList(Gate *g){
 	gates.push_back(g);
+}
+
+void Workspace::createFile()const{
+	QString f= QFileDialog::getSaveFileName(0,"Save as...",".","Gate Files (*.gate)");
+	if(f.isNull()) return;
+	if(!f.endsWith(".gate"))
+		f.append(".gate");
+	QFile file(f);
+	file.open(QIODevice::WriteOnly);
+	file.resize(0);
+	QDataStream out(&file);
+
+	out << MAGIC_NUMBER;
+	out << SAVE_VERSION;
+
+	for(const auto& g : gates)
+		makeBinary(*g,out);
+}
+
+void Workspace::clearGate(Gate *g){
+	for(uint i=0; i<g->nbArgs;i++)
+		if(g->iGates[i]) clearGate(g->iGates[i]);
+	if(g) g->removeGate();
+}
+
+void Workspace::clearAll(){
+	for(auto& g: gates){
+		clearGate(g);
+	}
+	gates.clear();
+}
+
+#include <iostream>
+void Workspace::loadGatesFromFile(){
+	QString f= QFileDialog::getOpenFileName(0,"Open File",".","Gate Files (*.gate)");
+	if(f.isNull()) return;
+	QFile file(f);
+	file.open(QIODevice::ReadOnly);
+	QDataStream in(&file);
+	uint magic; in>>magic;
+	if(magic!=MAGIC_NUMBER){
+		QMessageBox::warning(0,"Wrong format","Wrong File Format");
+		return;
+	}
+	uint version; in>>version;
+	clearAll();
+	while(!in.atEnd())
+		makeGate(in,-1,nullptr);
+	scene->setSceneRect(scene->itemsBoundingRect());
+}
+
+
+void Workspace::makeGate(QDataStream& in, int argument, Gate* toGate){
+	uint size;
+	unsigned char id,n;
+	in.setFloatingPointPrecision(QDataStream::SinglePrecision);
+	float x,y;
+	in>>size;
+	if(size){
+		in>>id;
+		in>>x; in>>y;
+		in>>n;
+		addFuncGate(id,true);
+		Gate* g = gates.back();
+		g->setPos(x,y);
+		if(argument!=-1)
+			toGate->connectGate(g,argument);
+		for(int i=0; i<n;i++)
+			makeGate(in,i,g);
+	}
+}
+
+static void ftoc(float *f, char* c){
+	memcpy(c,f,4);
+	char a=c[0],a2=c[1];
+	c[0]=c[3];
+	c[1]=c[2];
+	c[2]=a2;
+	c[3]=a;
+}
+
+void Workspace::makeBinary(const Gate& g, QDataStream& out) const{
+	out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+	QByteArray ret;
+	ret.append(g.id);		// id
+	char s[4];
+	float f=g.x();
+	ftoc(&f,s);
+	ret.append(s,4);
+	f=g.y();
+	ftoc(&f,s);
+	ret.append(s,4);
+	unsigned n= g.nbArgs;
+	ret.append(uchar(n));		//char[4]: nbArgs
+	out <<ret;
+	for(unsigned i =0; i<n; i++){
+		if(!g.iGates[i])
+			out<<0x0;
+		else
+			makeBinary(*g.iGates[i],out);
+	}
 }

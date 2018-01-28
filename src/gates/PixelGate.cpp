@@ -10,7 +10,9 @@ void PixelGate::removeGate(){
 data_t PixelGate::eval()const{
     return v;
 }
-PixelGate::PixelGate():Gate(70,50,Qt::lightGray){}
+PixelGate::PixelGate(unsigned i):Gate(i,70,50,Qt::lightGray){}
+PixelXGate::PixelXGate():PixelGate(X_G){}
+PixelYGate::PixelYGate():PixelGate(Y_G){}
 
 void PixelGate::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*){
     QRectF rect=boundingRect();

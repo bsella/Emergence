@@ -1,14 +1,14 @@
 #include "include/ConstGate.h"
 
-ConstGate::ConstGate(double v):Gate(50,50,QColor(255,255,180)),_v(v){
+ConstGate::ConstGate(double v):Gate(DOUBLE_G,50,50,QColor(255,255,180)),_v(v){
 	t=TypeEnum::DOUBLE;
 }
 
-ConstGate::ConstGate(bool v):Gate(50,50,QColor(255,255,180)),_v(v){
+ConstGate::ConstGate(bool v):Gate(BOOL_G,50,50,QColor(255,255,180)),_v(v){
 	t=TypeEnum::BOOL;
 }
 
-ConstGate::ConstGate(uint v):Gate(50,50,QColor(v)),_v(v){
+ConstGate::ConstGate(uint v):Gate(COLOR_G,50,50,QColor(v)),_v(v){
 	t=TypeEnum::COLOR;
 }
 

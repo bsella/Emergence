@@ -1,20 +1,20 @@
 #include "include/MathGate.h"
 
-MathGate::MathGate(unsigned n, unsigned w, unsigned h):Gate(w,h,QColor(180,255,180),n){}
+MathGate::MathGate(unsigned i, unsigned n, unsigned w, unsigned h):Gate(i,w,h,QColor(180,255,180),n){}
 
-ADDGate::ADDGate():MathGate(2){}
-SUBGate::SUBGate():MathGate(2){}
-MULGate::MULGate():MathGate(2){}
-DIVGate::DIVGate():MathGate(2){}
-NEGGate::NEGGate():MathGate(1){}
-SQRTGate::SQRTGate():MathGate(1){}
-ABSGate::ABSGate():MathGate(1){}
-LERPGate::LERPGate():MathGate(3,50,100){}
-CLAMPGate::CLAMPGate():MathGate(3,50,100){}
-SINGate::SINGate():MathGate(1){}
-COSGate::COSGate():MathGate(1){}
-MINGate::MINGate():MathGate(2){}
-MAXGate::MAXGate():MathGate(2){}
+ADDGate::ADDGate():MathGate(ADD_G,2){}
+SUBGate::SUBGate():MathGate(SUB_G,2){}
+MULGate::MULGate():MathGate(MUL_G,2){}
+DIVGate::DIVGate():MathGate(DIV_G,2){}
+NEGGate::NEGGate():MathGate(NEG_G,1){}
+SQRTGate::SQRTGate():MathGate(SQRT_G,1){}
+ABSGate::ABSGate():MathGate(ABS_G,1){}
+LERPGate::LERPGate():MathGate(LERP_G,3,50,100){}
+CLAMPGate::CLAMPGate():MathGate(CLAMP_G,3,50,100){}
+SINGate::SINGate():MathGate(SIN_G,1){}
+COSGate::COSGate():MathGate(COS_G,1){}
+MINGate::MINGate():MathGate(MIN_G,2){}
+MAXGate::MAXGate():MathGate(MAX_G,2){}
 
 void ADDGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);

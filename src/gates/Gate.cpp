@@ -1,7 +1,7 @@
 #include "include/Gate.h"
 #include <iostream>
 
-Gate::Gate(unsigned w, unsigned h, QColor c, uint n, bool spec):width(w),height(h),
+Gate::Gate(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):id(i), width(w),height(h),
 	color(c),pen(QPen(Qt::black,1)), nbArgs(n),special(spec){
 	setCursor(Qt::OpenHandCursor);
 	setAcceptDrops(!spec);

@@ -5,7 +5,7 @@
 
 class LogicGate:public Gate{
 protected:
-	LogicGate(unsigned n);
+	LogicGate(unsigned i,unsigned n);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;
 };
 

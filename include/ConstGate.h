@@ -16,7 +16,7 @@ private:
 	inline data_t eval()const{return _v;}
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
-	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event);
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
 private slots:
 	void changeColor();
 	void changeNumber();

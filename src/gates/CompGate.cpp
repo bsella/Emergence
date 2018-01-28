@@ -1,6 +1,11 @@
 #include "include/CompGate.h"
 
-CompGate::CompGate():Gate(50,50,QColor(255,180,180),2){}
+CompGate::CompGate(unsigned i):Gate(i,50,50,QColor(255,180,180),2){}
+
+GTGate::GTGate():CompGate(GT_G){}
+LTGate::LTGate():CompGate(LT_G){}
+EQGate::EQGate():CompGate(EQ_G){}
+NEGate::NEGate():CompGate(NE_G){}
 
 void GTGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option,widget);

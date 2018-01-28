@@ -1,6 +1,6 @@
 #include "include/RenderGate.h"
 
-RenderGate::RenderGate():Gate(50, 50, Qt::white,1,true){}
+RenderGate::RenderGate():Gate(RENDER_G,50, 50, Qt::white,1,true){}
 data_t RenderGate::eval()const{
 	return iGates[0]->eval();
 }

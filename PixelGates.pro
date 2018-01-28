@@ -48,13 +48,13 @@ SOURCES +=\
 	src/gates/ConstGate.cpp \
 	src/Socket.cpp \
 	src/gates/RenderGate.cpp \
-    src/Workspace.cpp \
-    src/gates/MathGate.cpp \
-    src/gates/BitmapGate.cpp \
-    src/ExportImageDialog.cpp
+        src/Workspace.cpp \
+        src/gates/MathGate.cpp \
+        src/gates/BitmapGate.cpp \
+        src/ExportImageDialog.cpp
 
 HEADERS  +=\
-	mainwindow.h \
+        include/mainwindow.h \
         include/Gate.h \
         include/IfGate.h \
         include/LogicGate.h \
@@ -67,13 +67,13 @@ HEADERS  +=\
         include/data_t.h \
         include/Socket.h \
         include/RenderGate.h \
-    include/Workspace.h \
-    include/MathGate.h \
-    include/BitmapGate.h \
-    include/ExportImageDialog.h
+        include/Workspace.h \
+        include/MathGate.h \
+        include/BitmapGate.h \
+        include/ExportImageDialog.h
 
-FORMS    += mainwindow.ui \
-    exportimagedialog.ui
+FORMS    += forms/mainwindow.ui \
+            forms/exportimagedialog.ui
 
 RESOURCES += \
     application.qrc

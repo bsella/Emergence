@@ -6,7 +6,7 @@
 
 class MathGate:public Gate{
 protected:
-	MathGate(unsigned n, unsigned w=50, unsigned h=50);
+	MathGate(unsigned i, unsigned n, unsigned w=50, unsigned h=50);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;
 };
 

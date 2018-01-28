@@ -1,11 +1,11 @@
 #include "include/LogicGate.h"
 
-LogicGate::LogicGate(unsigned n):Gate(50,50,QColor(255,180,180),n){}
+LogicGate::LogicGate(unsigned i,unsigned n):Gate(i,50,50,QColor(255,180,180),n){}
 
-ORGate::ORGate():LogicGate(2){}
-ANDGate::ANDGate():LogicGate(2){}
-XORGate::XORGate():LogicGate(2){}
-NOTGate::NOTGate():LogicGate(1){}
+ORGate::ORGate():LogicGate(OR_G,2){}
+ANDGate::ANDGate():LogicGate(AND_G,2){}
+XORGate::XORGate():LogicGate(XOR_G,2){}
+NOTGate::NOTGate():LogicGate(NOT_G,1){}
 
 void ORGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Gate::paint(painter,option, widget);

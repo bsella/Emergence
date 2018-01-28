@@ -1,6 +1,6 @@
 #include "include/PaletteGate.h"
 
-LUTGate::LUTGate(const Palette& p): Gate(140,70,Qt::white,1), plt(p){}
+LUTGate::LUTGate(const Palette& p): Gate(PALETTE_G,140,70,Qt::white,1), plt(p){}
 
 data_t LUTGate::eval()const{
 	return plt[iGates[0]->eval()];

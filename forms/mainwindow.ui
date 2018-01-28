@@ -104,6 +104,8 @@
      <string>File</string>
     </property>
     <addaction name="actionExport"/>
+    <addaction name="actionSave_as"/>
+    <addaction name="actionOpen"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -158,7 +160,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>0</y>
+          <y>-90</y>
           <width>165</width>
           <height>331</height>
          </rect>
@@ -188,7 +190,7 @@
             <string>Add</string>
            </property>
            <property name="icon">
-            <iconset resource="application.qrc">
+            <iconset resource="../application.qrc">
              <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
            </property>
            <property name="iconSize">
@@ -214,7 +216,7 @@
             <string>Subtract</string>
            </property>
            <property name="icon">
-            <iconset resource="application.qrc">
+            <iconset resource="../application.qrc">
              <normaloff>:/icons/subtract.png</normaloff>:/icons/subtract.png</iconset>
            </property>
            <property name="iconSize">
@@ -240,7 +242,7 @@
             <string>Multiply</string>
            </property>
            <property name="icon">
-            <iconset resource="application.qrc">
+            <iconset resource="../application.qrc">
              <normaloff>:/icons/multiply.png</normaloff>:/icons/multiply.png</iconset>
            </property>
            <property name="iconSize">
@@ -266,7 +268,7 @@
             <string>Divide</string>
            </property>
            <property name="icon">
-            <iconset resource="application.qrc">
+            <iconset resource="../application.qrc">
              <normaloff>:/icons/divide.png</normaloff>:/icons/divide.png</iconset>
            </property>
            <property name="iconSize">
@@ -292,7 +294,7 @@
             <string>Square Root</string>
            </property>
            <property name="icon">
-            <iconset resource="application.qrc">
+            <iconset resource="../application.qrc">
              <normaloff>:/icons/sqrt.png</normaloff>:/icons/sqrt.png</iconset>
            </property>
            <property name="iconSize">
@@ -470,7 +472,7 @@
             <string>Greater</string>
            </property>
            <property name="icon">
-            <iconset resource="application.qrc">
+            <iconset resource="../application.qrc">
              <normaloff>:/icons/greater_than.png</normaloff>:/icons/greater_than.png</iconset>
            </property>
            <property name="iconSize">
@@ -496,7 +498,7 @@
             <string>Less</string>
            </property>
            <property name="icon">
-            <iconset resource="application.qrc">
+            <iconset resource="../application.qrc">
              <normaloff>:/icons/less_than.png</normaloff>:/icons/less_than.png</iconset>
            </property>
            <property name="iconSize">
@@ -522,7 +524,7 @@
             <string>Equal</string>
            </property>
            <property name="icon">
-            <iconset resource="application.qrc">
+            <iconset resource="../application.qrc">
              <normaloff>:/icons/equal.png</normaloff>:/icons/equal.png</iconset>
            </property>
            <property name="iconSize">
@@ -548,7 +550,7 @@
             <string>Not Equal</string>
            </property>
            <property name="icon">
-            <iconset resource="application.qrc">
+            <iconset resource="../application.qrc">
              <normaloff>:/icons/not_equal.png</normaloff>:/icons/not_equal.png</iconset>
            </property>
            <property name="iconSize">
@@ -887,6 +889,16 @@
     <string>Exit</string>
    </property>
   </action>
+  <action name="actionSave_as">
+   <property name="text">
+    <string>Save As...</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -903,7 +915,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="application.qrc"/>
+  <include location="../application.qrc"/>
  </resources>
  <connections/>
 </ui>

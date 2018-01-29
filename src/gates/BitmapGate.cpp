@@ -54,3 +54,6 @@ void BitmapGate::changeBMP(){
 	emit notifyRA();
 }
 
+BitmapGate::~BitmapGate(){
+	delete bmp;
+}

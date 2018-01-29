@@ -78,6 +78,7 @@ void Gate::dropEvent(QGraphicsSceneDragDropEvent* event){
 void Gate::removeGate(){
 	for(auto l=oConnections.begin(); l!=oConnections.end();){
 		scene()->removeItem(l->first->iLines[l->second]);
+		delete l->first->iLines[l->second];
 		l->first->iLines[l->second]=nullptr;
 		l->first->iGates[l->second]=nullptr;
 		l->first->sockets[l->second]->setVisible(true);
@@ -101,6 +102,7 @@ void Gate::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 	menu->addSeparator();
 	connect(menu->addAction("Delete"),&QAction::triggered,this,&Gate::removeGate);
 	menu->exec(event->screenPos());
+	delete menu;
 	menu=nullptr;
 }
 
@@ -128,9 +130,10 @@ void Gate::disconnectGate(unsigned rank){
 	if(iGates[rank]){
 		emit addToWS(iGates[rank]);
 		scene()->removeItem(iLines[rank]);
+		delete iLines[rank];
 		iLines[rank]=nullptr;
 		for(auto l=iGates[rank]->oConnections.begin(); l!=iGates[rank]->oConnections.end();++l)
-			if(l->first==this){
+			if(l->first==this && l->second==rank){
 				iGates[rank]->oConnections.erase(l);
 				break;
 			}
@@ -143,4 +146,12 @@ void Gate::disconnectGate(unsigned rank){
 void Gate::drawIcon(QPainter *painter, QString filename){
 	QImage icon=QImage(filename);
 	painter->drawImage(width/2-icon.width()/2+socketSize,height/2-icon.height()/2,icon);
+}
+
+Gate::~Gate(){
+	delete menu;
+	for(auto& s : sockets)
+		delete s;
+	for(auto& l : iLines)
+		delete l;
 }

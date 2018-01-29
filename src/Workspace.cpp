@@ -215,3 +215,9 @@ void Workspace::loadGatesFromFile(){
 				g->connectGate(gateID[n],i);
 		}
 }
+
+Workspace::~Workspace(){
+	clear();
+	delete scene;
+	delete renderArea;
+}

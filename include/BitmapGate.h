@@ -8,6 +8,7 @@
 class BitmapGate : public Gate{
 public:
 	BitmapGate();
+	~BitmapGate();
 	BitmapGate(const QString& filename);
 	void setBMP(const QString& filename);
 private:

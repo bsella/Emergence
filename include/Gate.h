@@ -47,6 +47,7 @@
 class Gate: public QGraphicsObject{
 	Q_OBJECT
 public:
+	~Gate();
 	unsigned id, width, height;
 	virtual data_t eval()const=0;
 	operator bool();

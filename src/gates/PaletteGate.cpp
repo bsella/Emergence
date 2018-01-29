@@ -12,5 +12,4 @@ void LUTGate::paint(QPainter *painter, const QStyleOptionGraphicsItem* option, Q
 		painter->setPen(plt[i/(double)width]);
 		painter->drawLine(QPoint(i,10),QPoint(i,height-10));
 	}
-
 }

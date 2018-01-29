@@ -24,6 +24,7 @@ class Workspace : public QGraphicsView{
 	Q_OBJECT
 public:
 	Workspace(QWidget *parent=0);
+	~Workspace();
 	void setRA(RenderArea* ra);
 public slots:
 	void addFuncGate(uint g, bool load);

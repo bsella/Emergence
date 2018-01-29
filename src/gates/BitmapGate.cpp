@@ -1,6 +1,8 @@
 #include "include/BitmapGate.h"
 
-BitmapGate::BitmapGate():Gate(BITMAP_G,70,70,Qt::lightGray,2){}
+BitmapGate::BitmapGate():Gate(BITMAP_G,70,70,Qt::lightGray,2){
+	bmp=nullptr;
+}
 BitmapGate::BitmapGate(const QString& filename):Gate(BITMAP_G,70,70,Qt::lightGray,2){
 	setBMP(filename);
 }
@@ -29,6 +31,8 @@ void BitmapGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 				painter->setPen(bmp->toImage().pixel(double(x)/width*bmpWidth,double(y)/height*bmpHeight));
 				painter->drawPoint(x,y);
 			}
+	else
+		painter->drawText(boundingRect().center()-QPointF(12,-2),"BMP");
 }
 
 void BitmapGate::contextMenuEvent(QGraphicsSceneContextMenuEvent* event){

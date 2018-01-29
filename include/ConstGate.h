@@ -17,6 +17,7 @@ private:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
+	friend class Workspace;
 private slots:
 	void changeColor();
 	void changeNumber();

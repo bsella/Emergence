@@ -60,7 +60,7 @@ void Gate::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
 		}
 		for(auto l=oConnections.begin(); l!=oConnections.end();++l)
 			l->first->iLines[l->second]->setLine(QLine(QPoint(x()+r.width(),y()+r.height()/2),l->first->iLines[l->second]->line().p2().toPoint()));
-    }
+	}
 }
 
 void Gate::dragEnterEvent(QGraphicsSceneDragDropEvent *event){
@@ -87,6 +87,7 @@ void Gate::removeGate(){
 		disconnectGate(i);
 	scene()->removeItem(this);
 	emit notifyRA();
+	emit removeFromWS(this);
 }
 
 void Gate::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
@@ -120,7 +121,6 @@ void Gate::connectGate(Gate *g, unsigned i){
 		g->oConnections.push_back({this,i});
 		sockets[i]->setVisible(false);
 		emit notifyRA();
-		emit removeFromWS(g);
 	}
 }
 

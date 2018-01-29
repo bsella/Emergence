@@ -7,23 +7,12 @@ Workspace::Workspace(QWidget *parent):QGraphicsView(parent),scene(new QGraphicsS
 void Workspace::setRA(RenderArea* ra){
 	if (!ra) return ;
 	renderArea=ra;
-	scene->addItem(renderArea->xg);
-	renderArea->yg->setY(100);
-	scene->addItem(renderArea->yg);
+	addFuncGate(RENDER_G,false);
+	addFuncGate(X_G,false);
+	addFuncGate(Y_G,false);
+	renderArea->xg->setPos(0,0);
+	renderArea->yg->setPos(0,100);
 	renderArea->start->setPos(100,50);
-	scene->addItem(renderArea->start);
-	gates.push_back(renderArea->start);
-	gates.push_back(renderArea->xg);
-	gates.push_back(renderArea->yg);
-	connect(renderArea->xg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	connect(renderArea->yg,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	connect(renderArea->start,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	connect(renderArea->xg,SIGNAL(addToWS(Gate*)),this,SLOT(addToList(Gate*)));
-	connect(renderArea->xg,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
-	connect(renderArea->yg,SIGNAL(addToWS(Gate*)),this,SLOT(addToList(Gate*)));
-	connect(renderArea->yg,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
-	connect(renderArea->start,SIGNAL(addToWS(Gate*)),this,SLOT(addToList(Gate*)));
-	connect(renderArea->start,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
 }
 
 void Workspace::addFuncGate(uint g, bool load){
@@ -107,7 +96,6 @@ void Workspace::addFuncGate(uint g, bool load){
 	default:return;
 	}
 	connect(gate,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	connect(gate,SIGNAL(addToWS(Gate*)),this,SLOT(addToList(Gate*)));
 	connect(gate,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
 	gate->setPos(scene->sceneRect().center());
 	gates.push_back(gate);
@@ -118,12 +106,14 @@ void Workspace::addFuncGate(uint g, bool load){
 			gate->setZValue(i->zValue()+1);
 }
 
+#include <iostream>
 void Workspace::removeFromList(Gate *g){
 	gates.remove(g);
 }
 
-void Workspace::addToList(Gate *g){
-	gates.push_back(g);
+void Workspace::clear(){
+	while(!gates.empty())
+		gates.back()->removeGate();
 }
 
 void Workspace::createFile()const{
@@ -139,24 +129,35 @@ void Workspace::createFile()const{
 	out << MAGIC_NUMBER;
 	out << SAVE_VERSION;
 
+	QByteArray gateType, gatePos;
+	std::map<Gate*,int> gateID;
+	int id=0;
 	for(const auto& g : gates)
-		makeBinary(*g,out);
-}
-
-void Workspace::clearGate(Gate *g){
-	for(uint i=0; i<g->nbArgs;i++)
-		if(g->iGates[i]) clearGate(g->iGates[i]);
-	if(g) g->removeGate();
-}
-
-void Workspace::clearAll(){
-	for(auto& g: gates){
-		clearGate(g);
+		gateID[g]=id++;
+	for(const auto& g : gates){
+		//saving gate type
+		gateType.append(g->id);
+		if(g->id==DOUBLE_G){		//Special case for double gate
+			double d=((ConstGate*)g)->_v;
+			gateType.append(reinterpret_cast<const char*>(&d), sizeof(d));
+		}else if(g->id==COLOR_G){		//Special case for color gate
+			uint color=((ConstGate*)g)->_v;
+			gateType.append(reinterpret_cast<const char*>(&color), sizeof(color));
+		}
+		//saving gate position
+		float fx= g->x(), fy= g->y();
+		gatePos.append(reinterpret_cast<const char*>(&fx), sizeof(fx));
+		gatePos.append(reinterpret_cast<const char*>(&fy), sizeof(fy));
 	}
-	gates.clear();
+
+	out<<int(gates.size());
+	out.writeRawData(gateType.data(),gateType.size());
+	out<<gatePos;
+	for(const auto& g : gates)
+		for(unsigned i=0; i<g->nbArgs;i++)
+			out << (g->iGates[i]? gateID.at(g->iGates[i]): -1);
 }
 
-#include <iostream>
 void Workspace::loadGatesFromFile(){
 	QString f= QFileDialog::getOpenFileName(0,"Open File",".","Gate Files (*.gate)");
 	if(f.isNull()) return;
@@ -165,64 +166,52 @@ void Workspace::loadGatesFromFile(){
 	QDataStream in(&file);
 	uint magic; in>>magic;
 	if(magic!=MAGIC_NUMBER){
-		QMessageBox::warning(0,"Wrong format","Wrong File Format");
+		QMessageBox::warning(0,"Wrong format","Bad File Format");
 		return;
 	}
 	uint version; in>>version;
-	clearAll();
-	while(!in.atEnd())
-		makeGate(in,-1,nullptr);
-	scene->setSceneRect(scene->itemsBoundingRect());
-}
-
-
-void Workspace::makeGate(QDataStream& in, int argument, Gate* toGate){
-	uint size;
-	unsigned char id,n;
-	in.setFloatingPointPrecision(QDataStream::SinglePrecision);
-	float x,y;
-	in>>size;
-	if(size){
-		in>>id;
-		in>>x; in>>y;
-		in>>n;
+	if(version<SAVE_VERSION){
+		QMessageBox::warning(0,"Wrong version","Sorry, this save file is too old.");
+		return;
+	}
+	clear();
+	int n; in>>n;
+	std::map<int,Gate*> gateID;
+	for(int i=0;i<n;i++){
+		uchar id; in>>id;
 		addFuncGate(id,true);
-		Gate* g = gates.back();
-		g->setPos(x,y);
-		if(argument!=-1)
-			toGate->connectGate(g,argument);
-		for(int i=0; i<n;i++)
-			makeGate(in,i,g);
+		if(id==DOUBLE_G){
+			char c[sizeof(double)];
+			in.readRawData(c,sizeof(double));
+			QByteArray dArray(c,sizeof(double));
+			((ConstGate*)gates.back())->_v=*reinterpret_cast<const double*>(dArray.data());
+		}else if(id==COLOR_G){
+			char c[sizeof(unsigned)];
+			in.readRawData(c,sizeof(unsigned));
+			QByteArray cArray(c,sizeof(unsigned));
+			unsigned color =*reinterpret_cast<const unsigned*>(cArray.data());
+			((ConstGate*)gates.back())->_v= color;
+			((ConstGate*)gates.back())->color=color;
+		}
+		gateID[i]=gates.back();
 	}
-}
-
-static void ftoc(float *f, char* c){
-	memcpy(c,f,4);
-	char a=c[0],a2=c[1];
-	c[0]=c[3];
-	c[1]=c[2];
-	c[2]=a2;
-	c[3]=a;
-}
-
-void Workspace::makeBinary(const Gate& g, QDataStream& out) const{
-	out.setFloatingPointPrecision(QDataStream::SinglePrecision);
-	QByteArray ret;
-	ret.append(g.id);		// id
-	char s[4];
-	float f=g.x();
-	ftoc(&f,s);
-	ret.append(s,4);
-	f=g.y();
-	ftoc(&f,s);
-	ret.append(s,4);
-	unsigned n= g.nbArgs;
-	ret.append(uchar(n));		//char[4]: nbArgs
-	out <<ret;
-	for(unsigned i =0; i<n; i++){
-		if(!g.iGates[i])
-			out<<0x0;
-		else
-			makeBinary(*g.iGates[i],out);
+	in>>n;
+	char c[n];
+	in.readRawData(c,n);
+	QByteArray floats(c,n);
+	for(auto& g : gates){
+		float fx,fy;
+		fx = *reinterpret_cast<const float*>(floats.data());
+		floats=floats.mid(4);
+		fy = *reinterpret_cast<const float*>(floats.data());
+		floats=floats.mid(4);
+		g->setPos(fx,fy);
 	}
+	scene->setSceneRect(scene->itemsBoundingRect());
+	for(auto& g: gates)
+		for(unsigned i=0; i<g->nbArgs; i++){
+			in>>n;
+			if(n>=0)
+				g->connectGate(gateID[n],i);
+		}
 }

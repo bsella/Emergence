@@ -10,8 +10,7 @@
 class RenderArea : public QWidget {
 	Q_OBJECT
 signals:
-	void notValid();
-	void valid();
+	void valid(bool);
 public:
 	RenderArea(QWidget *parent=0);
 	~RenderArea();

@@ -18,12 +18,10 @@ QImage RenderArea::renderImage(int w, int h){
 }
 
 void RenderArea::paintEvent(QPaintEvent*){
-	if(!isValid()){
-		emit notValid();
-		return;
-	}
-	emit valid();
-	QPainter(this).drawImage(0,0,renderImage(width(),height()));
+	if(isValid()){
+		emit valid(true);
+		QPainter(this).drawImage(0,0,renderImage(width(),height()));
+	}else emit valid(false);
 }
 
 bool RenderArea::isValid(){

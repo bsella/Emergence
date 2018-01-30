@@ -1,24 +1,12 @@
 #include "include/ConstGate.h"
 
-ConstGate::ConstGate(double v):Gate(DOUBLE_G,50,50,QColor(255,255,180)),_v(v){
-	t=TypeEnum::DOUBLE;
-}
-
-ConstGate::ConstGate(bool v):Gate(BOOL_G,50,50,QColor(255,255,180)),_v(v){
-	t=TypeEnum::BOOL;
-}
-
-ConstGate::ConstGate(uint v):Gate(COLOR_G,50,50,QColor(v)),_v(v){
-	t=TypeEnum::COLOR;
-}
+ConstGate::ConstGate(double v):Gate(DOUBLE_G,50,50,QColor(255,255,180)),_v(v){}
+ConstGate::ConstGate(uint v):Gate(COLOR_G,50,50,QColor(v)),_v(v){}
 
 void ConstGate::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget){
 	Gate::paint(painter,option,widget);
-    switch (t) {
-    case TypeEnum::BOOL:
-        painter->drawText(boundingRect().center()-QPoint(12,-2),_v.b?"True":"False");
-        break;
-    case TypeEnum::DOUBLE:
+	switch(_v.t){
+	case TypeEnum::DOUBLE:
         painter->drawText(boundingRect().center()-QPoint(12,-2),QString::number(_v.d));
         break;
 	case TypeEnum::COLOR:
@@ -31,9 +19,7 @@ void ConstGate::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 
 void ConstGate::contextMenuEvent(QGraphicsSceneContextMenuEvent* event){
 	menu=new QMenu;
-	switch(t){
-	case TypeEnum::BOOL:
-		break;
+	switch(_v.t){
 	case TypeEnum::DOUBLE:
 		connect(menu->addAction(QString("Change number")), &QAction::triggered,this,&ConstGate::changeNumber);
 		break;
@@ -47,9 +33,7 @@ void ConstGate::contextMenuEvent(QGraphicsSceneContextMenuEvent* event){
 }
 
 void ConstGate::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*){
-	switch(t){
-	case TypeEnum::BOOL:
-		break;
+	switch(_v.t){
 	case TypeEnum::DOUBLE:
 		changeNumber();
 		break;
@@ -62,7 +46,7 @@ void ConstGate::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*){
 }
 
 void ConstGate::changeColor(){
-	QColor c =QColorDialog::getColor();
+	QColor c =QColorDialog::getColor(Qt::white,(QWidget*)parentWidget());
 	if(c.isValid()){
 		_v.u=c.rgba();
 		color=c;
@@ -73,7 +57,7 @@ void ConstGate::changeColor(){
 
 void ConstGate::changeNumber(){
 	bool ok;
-	double d =QInputDialog::getDouble(0,"Choose Number","",0,-2147483647,2147483647,3,&ok);
+	double d =QInputDialog::getDouble((QWidget*)parentWidget(),"Choose Number","",0,-2147483647,2147483647,3,&ok);
 	if(ok){
 		_v.d=d;
 		update();

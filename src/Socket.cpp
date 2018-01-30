@@ -25,7 +25,6 @@ void Socket::mouseMoveEvent(QGraphicsSceneMouseEvent*){
 	mime->setData("socket",QByteArray::number(1));
 	drag->exec();
 	parentObject()->setAcceptDrops(true);
-	delete mime;
 	delete drag;
 }
 

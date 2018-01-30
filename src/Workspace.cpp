@@ -18,7 +18,6 @@ void Workspace::setRA(RenderArea* ra){
 void Workspace::addFuncGate(uint g, bool load){
 	Gate* gate;
 	switch(g){
-	case BOOL_G:return;
 	case DOUBLE_G:{
 		if(load){
 			gate=new ConstGate(0.0);
@@ -35,7 +34,7 @@ void Workspace::addFuncGate(uint g, bool load){
 			gate=new ConstGate(0xffffffff);
 			break;
 		}
-		QColor c =QColorDialog::getColor();
+		QColor c =QColorDialog::getColor(Qt::white,this);
 		if(!c.isValid()) return;
 		gate=new ConstGate(c.rgba());
 		break;
@@ -117,7 +116,7 @@ void Workspace::clear(){
 }
 
 void Workspace::createFile()const{
-	QString f= QFileDialog::getSaveFileName(0,"Save as...",".","Gate Files (*.gate)");
+	QString f= QFileDialog::getSaveFileName(parentWidget(),"Save as...",".","Gate Files (*.gate)");
 	if(f.isNull()) return;
 	if(!f.endsWith(".gate"))
 		f.append(".gate");
@@ -159,7 +158,7 @@ void Workspace::createFile()const{
 }
 
 void Workspace::loadGatesFromFile(){
-	QString f= QFileDialog::getOpenFileName(0,"Open File",".","Gate Files (*.gate)");
+	QString f= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Gate Files (*.gate)");
 	if(f.isNull()) return;
 	QFile file(f);
 	file.open(QIODevice::ReadOnly);

@@ -21,9 +21,6 @@ private:
 
 private slots:
 	void exportImage();
-	void renderDeleted();
-	void xDeleted();
-	void yDeleted();
 };
 
 #endif // MAINWINDOW_H

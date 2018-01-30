@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>641</width>
-    <height>490</height>
+    <height>493</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
+    <item row="0" column="1">
      <widget class="Workspace" name="workspace"/>
     </item>
    </layout>
@@ -77,7 +77,7 @@
      <addaction name="separator"/>
      <addaction name="actionNEG"/>
      <addaction name="actionSQRT"/>
-     <addaction name="actionAbsolute_Value"/>
+     <addaction name="actionABS"/>
      <addaction name="separator"/>
      <addaction name="actionLerp"/>
      <addaction name="actionClamp"/>
@@ -160,7 +160,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-90</y>
+          <y>0</y>
           <width>165</width>
           <height>331</height>
          </rect>
@@ -444,7 +444,7 @@
           <x>0</x>
           <y>0</y>
           <width>179</width>
-          <height>241</height>
+          <height>221</height>
          </rect>
         </property>
         <attribute name="label">
@@ -572,7 +572,7 @@
           <x>0</x>
           <y>0</y>
           <width>179</width>
-          <height>241</height>
+          <height>221</height>
          </rect>
         </property>
         <attribute name="label">
@@ -654,6 +654,166 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="miscPage">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>179</width>
+          <height>221</height>
+         </rect>
+        </property>
+        <attribute name="label">
+         <string>Miscellaneous</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QToolButton" name="numButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Number</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="colorButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Color</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QToolButton" name="lutButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>LUT</string>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="ifButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Condition</string>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="imgButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Image</string>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QToolButton" name="xButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>X</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="yButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Y</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="renderButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Render</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -662,7 +822,7 @@
   <widget class="QDockWidget" name="outputDock">
    <property name="minimumSize">
     <size>
-     <width>100</width>
+     <width>124</width>
      <height>140</height>
     </size>
    </property>
@@ -839,7 +999,7 @@
     <string>Square Root</string>
    </property>
   </action>
-  <action name="actionAbsolute_Value">
+  <action name="actionABS">
    <property name="text">
     <string>Absolute Value</string>
    </property>
@@ -914,6 +1074,38 @@
    <header location="global">include/Workspace.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>workspace</tabstop>
+  <tabstop>numButton</tabstop>
+  <tabstop>colorButton</tabstop>
+  <tabstop>lutButton</tabstop>
+  <tabstop>ifButton</tabstop>
+  <tabstop>imgButton</tabstop>
+  <tabstop>xButton</tabstop>
+  <tabstop>yButton</tabstop>
+  <tabstop>lerpButton</tabstop>
+  <tabstop>clampButton</tabstop>
+  <tabstop>sinButton</tabstop>
+  <tabstop>renderButton</tabstop>
+  <tabstop>cosButton</tabstop>
+  <tabstop>absButton</tabstop>
+  <tabstop>gtButton</tabstop>
+  <tabstop>ltButton</tabstop>
+  <tabstop>eqButton</tabstop>
+  <tabstop>neButton</tabstop>
+  <tabstop>andButton</tabstop>
+  <tabstop>orButton</tabstop>
+  <tabstop>xorButton</tabstop>
+  <tabstop>notButton</tabstop>
+  <tabstop>addButton</tabstop>
+  <tabstop>subButton</tabstop>
+  <tabstop>mulButton</tabstop>
+  <tabstop>divButton</tabstop>
+  <tabstop>sqrtButton</tabstop>
+  <tabstop>negButton</tabstop>
+  <tabstop>minButton</tabstop>
+  <tabstop>maxButton</tabstop>
+ </tabstops>
  <resources>
   <include location="../application.qrc"/>
  </resources>

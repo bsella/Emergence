@@ -46,7 +46,6 @@
 class Gate: public QGraphicsObject{
 	Q_OBJECT
 public:
-	~Gate();
 	unsigned id, width, height;
 	virtual data_t eval()const=0;
 	operator bool();
@@ -60,6 +59,7 @@ private slots:
 protected slots:
 	virtual void removeGate();
 protected:
+	~Gate();
 	QMenu *menu=nullptr;
 	QColor color;
 	Gate(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);

@@ -137,10 +137,10 @@ void Workspace::createFile()const{
 		//saving gate type
 		gateType.append(g->id);
 		if(g->id==DOUBLE_G){		//Special case for double gate
-			double d=((ConstGate*)g)->_v;
+			double d=((ConstGate*)g)->val;
 			gateType.append(reinterpret_cast<const char*>(&d), sizeof(d));
 		}else if(g->id==COLOR_G){		//Special case for color gate
-			uint color=((ConstGate*)g)->_v;
+			uint color=((ConstGate*)g)->val;
 			gateType.append(reinterpret_cast<const char*>(&color), sizeof(color));
 		}
 		//saving gate position
@@ -183,13 +183,13 @@ void Workspace::loadGatesFromFile(){
 			char c[sizeof(double)];
 			in.readRawData(c,sizeof(double));
 			QByteArray dArray(c,sizeof(double));
-			((ConstGate*)gates.back())->_v=*reinterpret_cast<const double*>(dArray.data());
+			((ConstGate*)gates.back())->val=*reinterpret_cast<const double*>(dArray.data());
 		}else if(id==COLOR_G){
 			char c[sizeof(unsigned)];
 			in.readRawData(c,sizeof(unsigned));
 			QByteArray cArray(c,sizeof(unsigned));
 			unsigned color =*reinterpret_cast<const unsigned*>(cArray.data());
-			((ConstGate*)gates.back())->_v= color;
+			((ConstGate*)gates.back())->val= color;
 			((ConstGate*)gates.back())->color=color;
 		}
 		gateID[i]=gates.back();

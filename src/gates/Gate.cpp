@@ -13,17 +13,17 @@ Gate::Gate(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):id(i
 }
 
 QRectF Gate::boundingRect()const{
-    return QRectF(0,0,width+2*socketSize,height);
+	return QRectF(0,0,width+2*socketSize,height);
 }
 
 void Gate::paint(QPainter* painter, const QStyleOptionGraphicsItem*,QWidget*){
-    QRectF rect=boundingRect();
-    rect.setLeft(rect.left()+socketSize); rect.setRight(rect.right()-socketSize);
-    painter->setRenderHint(QPainter::Antialiasing);
-    QPainterPath path;
-    path.addRoundedRect(rect, 10, 10);
-    painter->setPen(pen);
-    painter->fillPath(path, color);
+	QRectF rect=boundingRect();
+	rect.setLeft(rect.left()+socketSize); rect.setRight(rect.right()-socketSize);
+	painter->setRenderHint(QPainter::Antialiasing);
+	QPainterPath path;
+	path.addRoundedRect(rect, 10, 10);
+	painter->setPen(pen);
+	painter->fillPath(path, color);
 	painter->drawPath(path);
 	rect = boundingRect();
 	rect.setLeft(rect.left()+socketSize); rect.setRight(rect.right()-socketSize);
@@ -34,25 +34,25 @@ void Gate::paint(QPainter* painter, const QStyleOptionGraphicsItem*,QWidget*){
 }
 
 void Gate::mousePressEvent(QGraphicsSceneMouseEvent* event){
-    if(event->button()==Qt::LeftButton){
-        setCursor(Qt::ClosedHandCursor);
-        pen.setWidth(2);
-    }else
-        setCursor(Qt::ArrowCursor);
+	if(event->button()==Qt::LeftButton){
+		setCursor(Qt::ClosedHandCursor);
+		pen.setWidth(2);
+	}else
+		setCursor(Qt::ArrowCursor);
 }
 void Gate::mouseReleaseEvent(QGraphicsSceneMouseEvent*){
-    this->scene()->setSceneRect(this->scene()->itemsBoundingRect());
-    setCursor(Qt::OpenHandCursor);
-    setZValue(0);
-    for(const auto& i: collidingItems())
-        if(zValue()<= i->zValue())
-            setZValue(i->zValue()+1);
-    pen.setWidth(1);
+	this->scene()->setSceneRect(this->scene()->itemsBoundingRect());
+	setCursor(Qt::OpenHandCursor);
+	setZValue(0);
+	for(const auto& i: collidingItems())
+		if(zValue()<= i->zValue())
+			setZValue(i->zValue()+1);
+	pen.setWidth(1);
 }
 void Gate::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
-    if(event->buttons()==Qt::LeftButton){
-        setZValue(INT32_MAX);
-        this->setPos(event->scenePos()- boundingRect().center());
+	if(event->buttons()==Qt::LeftButton){
+		setZValue(INT32_MAX);
+		this->setPos(event->scenePos()- boundingRect().center());
 		QRectF r= boundingRect();
 		for(uint i = 0; i<iGates.size();i++){
 			if(iGates[i]==nullptr)continue;
@@ -122,6 +122,7 @@ void Gate::connectGate(Gate *g, unsigned i){
 		iGates[i]=g;
 		g->oConnections.push_back({this,i});
 		sockets[i]->setVisible(false);
+		updateVal();
 		emit notifyRA();
 	}
 }
@@ -139,8 +140,19 @@ void Gate::disconnectGate(unsigned rank){
 			}
 		iGates[rank]=nullptr;
 		sockets[rank]->setVisible(true);
+		validVal=false;
 		emit notifyRA();
 	}
+}
+
+void Gate::updateVal(){
+	validVal=false;
+	for(auto& i : oConnections)
+		i.first->updateVal();
+}
+void Gate::updateOutputVal(){
+	for(auto& i : oConnections)
+		i.first->updateVal();
 }
 
 void Gate::drawIcon(QPainter *painter, QString filename){

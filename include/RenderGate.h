@@ -6,7 +6,7 @@
 class RenderGate : public Gate{
 public:
 	RenderGate();
-	data_t eval()const;
+	data_t eval();
 private:
 	void removeGate();
 	void paint(QPainter* painter,

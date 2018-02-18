@@ -10,28 +10,28 @@ protected:
 };
 
 class GTGate:public CompGate{
-	data_t eval()const;
+	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
 	GTGate();
 };
 
 class LTGate:public CompGate{
-	data_t eval()const;
+	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
 	LTGate();
 };
 
 class EQGate:public CompGate{
-	data_t eval()const;
+	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
 	EQGate();
 };
 
 class NEGate:public CompGate{
-	data_t eval()const;
+	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
 	NEGate();

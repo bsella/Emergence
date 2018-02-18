@@ -2,8 +2,11 @@
 
 LUTGate::LUTGate(const Palette& p): Gate(PALETTE_G,140,70,Qt::white,1), plt(p){}
 
-data_t LUTGate::eval()const{
-	return plt[iGates[0]->eval()];
+data_t LUTGate::eval(){
+	if(validVal) return val;
+	val= plt[iGates[0]->eval()];
+	validVal=true;
+	return val;
 }
 
 void LUTGate::paint(QPainter *painter, const QStyleOptionGraphicsItem* option, QWidget* widget){

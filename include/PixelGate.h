@@ -10,8 +10,7 @@ protected:
 		PixelGate(unsigned i);
 		virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 private:
-		data_t eval()const;
-		double v;
+		inline data_t eval(){return val;}
 		void removeGate();
 };
 
@@ -24,11 +23,11 @@ public:
 };
 
 class PixelYGate:public PixelGate{
-		void paint(QPainter* painter,
-				   const QStyleOptionGraphicsItem* option,
-				   QWidget* widget);
+	void paint(QPainter* painter,
+				const QStyleOptionGraphicsItem* option,
+				QWidget* widget);
 public:
-		PixelYGate();
+	PixelYGate();
 };
 
 #endif

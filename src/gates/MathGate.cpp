@@ -80,45 +80,88 @@ void MAXGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	Gate::paint(painter,option,widget);
 	painter->drawText(boundingRect().center()-QPointF(12,0),"max");
 }
-data_t ADDGate::eval()const{
-	return iGates[0]->eval()+iGates[1]->eval();
+#include <iostream>
+data_t ADDGate::eval(){
+	if(validVal) {
+		std::cout << val.d << std::endl;
+		return val;
+	}
+	val= iGates[0]->eval()+iGates[1]->eval();
+	validVal=true;
+	return val;
 }
-data_t SUBGate::eval()const{
-	return iGates[0]->eval()-iGates[1]->eval();
+data_t SUBGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval()-iGates[1]->eval();
+	validVal=true;
+	return val;
 }
-data_t MULGate::eval()const{
-	return iGates[0]->eval()*iGates[1]->eval();
+data_t MULGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval()*iGates[1]->eval();
+	validVal=true;
+	return val;
 }
-data_t DIVGate::eval()const{
-	return iGates[0]->eval()/iGates[1]->eval();
+data_t DIVGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval()/iGates[1]->eval();
+	validVal=true;
+	return val;
 }
-data_t NEGGate::eval()const{
-	return -iGates[0]->eval();
+data_t NEGGate::eval(){
+	if(validVal) return val;
+	val= -iGates[0]->eval();
+	validVal=true;
+	return val;
 }
-data_t SQRTGate::eval()const{
-	return qSqrt(iGates[0]->eval());
+data_t SQRTGate::eval(){
+	if(validVal) return val;
+	val= qSqrt(iGates[0]->eval());
+	validVal=true;
+	return val;
 }
-data_t ABSGate::eval()const{
-	return qAbs((double)iGates[0]->eval());
+data_t ABSGate::eval(){
+	if(validVal) return val;
+	val= qAbs((double)iGates[0]->eval());
+	validVal=true;
+	return val;
 }
-data_t LERPGate::eval()const{
+data_t LERPGate::eval(){
+	if(validVal) return val;
 	double alpha=iGates[1]->eval();
-	return (1.0-alpha)*double(iGates[2]->eval())+alpha*double(iGates[0]->eval());
+	val=(1.0-alpha)*double(iGates[2]->eval())+alpha*double(iGates[0]->eval());
+	validVal=true;
+	return val;
 }
-data_t CLAMPGate::eval()const{
+data_t CLAMPGate::eval(){
+	if(validVal) return val;
 	double min=iGates[2]->eval(), max=iGates[0]->eval();
 	if(!(max-min)) return 0.0;
-	return (double(iGates[1]->eval())-min)/(max-min);
+	val= (double(iGates[1]->eval())-min)/(max-min);
+	validVal=true;
+	return val;
 }
-data_t SINGate::eval()const{
-	return qSin(iGates[0]->eval());
+data_t SINGate::eval(){
+	if(validVal) return val;
+	val= qSin(iGates[0]->eval());
+	validVal=true;
+	return val;
 }
-data_t COSGate::eval()const{
-	return qCos(iGates[0]->eval());
+data_t COSGate::eval(){
+	if(validVal) return val;
+	val= qCos(iGates[0]->eval());
+	validVal=true;
+	return val;
 }
-data_t MINGate::eval()const{
-	return qMin(iGates[0]->eval(),iGates[1]->eval());
+data_t MINGate::eval(){
+	if(validVal) return val;
+	val= qMin(iGates[0]->eval(),iGates[1]->eval());
+	validVal=true;
+	return val;
 }
-data_t MAXGate::eval()const{
-	return qMax(iGates[0]->eval(),iGates[1]->eval());
+data_t MAXGate::eval(){
+	if(validVal) return val;
+	val= qMax(iGates[0]->eval(),iGates[1]->eval());
+	validVal=true;
+	return val;
 }

@@ -10,9 +10,8 @@ public:
 	ConstGate(double v);
 	ConstGate(uint v);
 private:
-	data_t _v;
 	ConstGate()=delete;
-	inline data_t eval()const{return _v;}
+	data_t eval();
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);

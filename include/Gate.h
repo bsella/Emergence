@@ -47,7 +47,7 @@ class Gate: public QGraphicsObject{
 	Q_OBJECT
 public:
 	unsigned id, width, height;
-	virtual data_t eval()const=0;
+	virtual data_t eval()=0;
 	operator bool();
 signals:
 	void notifyRA();
@@ -60,12 +60,15 @@ protected slots:
 	virtual void removeGate();
 protected:
 	~Gate();
-	QMenu *menu=nullptr;
+	data_t val;			//value returned by gate
+	bool validVal;		//value is valid
 	QColor color;
+	QMenu *menu=nullptr;
+	void updateOutputVal();
 	Gate(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
 	virtual void paint(QPainter* painter,
-			   const QStyleOptionGraphicsItem* option,
-			   QWidget* widget);
+			const QStyleOptionGraphicsItem* option,
+			QWidget* widget);
 	QPen pen;
 	QRectF boundingRect()const;
 	uint nbArgs;
@@ -73,7 +76,7 @@ protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-	std::vector<Gate*> iGates;          //INPUT GATES
+	std::vector<Gate*> iGates;		//INPUT GATES
 	std::vector<QGraphicsLineItem*> iLines;
 	std::list<std::pair<Gate*,uint>> oConnections;
 	std::vector<Socket*> sockets;
@@ -84,6 +87,7 @@ protected:
 	void drawIcon(QPainter *painter, QString filename);
 private:
 	bool special;
+	void updateVal();	//value is update (not valid)
 	friend class Workspace;
 };
 

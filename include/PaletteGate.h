@@ -9,7 +9,7 @@ public:
 	LUTGate(const Palette& p);
 private:
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem*option, QWidget*widget);
-	data_t eval()const;
+	data_t eval();
 	Palette plt;
 };
 

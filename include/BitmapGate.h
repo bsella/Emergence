@@ -14,7 +14,7 @@ public:
 private:
 	QPixmap *bmp;
 	int bmpWidth, bmpHeight;
-	data_t eval()const;
+	data_t eval();
 	void paint(QPainter *painter,
 			   const QStyleOptionGraphicsItem* option,
 			   QWidget* widget);

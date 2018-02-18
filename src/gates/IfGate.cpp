@@ -15,6 +15,9 @@ void IfGate::paint(QPainter* painter,
     painter->drawText(rect.topLeft()+QPointF(8,3*rect.height()/4.0+4),"ELSE");
 }
 
-data_t IfGate::eval()const{
-    return iGates[1]->eval()? iGates[0]->eval() : iGates[2]->eval();
+data_t IfGate::eval(){
+	if(validVal) return val;
+	val=iGates[1]->eval()? iGates[0]->eval() : iGates[2]->eval();
+	validVal=true;
+	return val;
 }

@@ -23,18 +23,30 @@ void LTGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 	Gate::paint(painter,option,widget);
 	drawIcon(painter,":/icons/less_than.png");
 }
-data_t GTGate::eval()const{
-	return iGates[0]->eval() > iGates[1]->eval();
+data_t GTGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval() > iGates[1]->eval();
+	validVal=true;
+	return val;
 }
 
-data_t LTGate::eval()const{
-	return iGates[0]->eval() < iGates[1]->eval();
+data_t LTGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval() < iGates[1]->eval();
+	validVal=true;
+	return val;
 }
 
-data_t EQGate::eval()const{
-	return iGates[0]->eval() == iGates[1]->eval();
+data_t EQGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval() == iGates[1]->eval();
+	validVal=true;
+	return val;
 }
 
-data_t NEGate::eval()const{
-	return iGates[0]->eval() != iGates[1]->eval();
+data_t NEGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval() != iGates[1]->eval();
+	validVal=true;
+	return val;
 }

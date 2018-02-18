@@ -24,18 +24,30 @@ void NOTGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	painter->drawText(boundingRect().center()-QPoint(12,-2),"NOT");
 }
 
-data_t ORGate::eval()const{
-    return iGates[0]->eval() || iGates[1]->eval();
+data_t ORGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval() || iGates[1]->eval();
+	validVal=true;
+	return val;
 }
 
-data_t ANDGate::eval()const{
-    return iGates[0]->eval() && iGates[1]->eval();
+data_t ANDGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval() && iGates[1]->eval();
+	validVal=true;
+	return val;
 }
 
-data_t XORGate::eval()const{
-    return iGates[0]->eval() ^ iGates[1]->eval();
+data_t XORGate::eval(){
+	if(validVal) return val;
+	val= iGates[0]->eval() ^ iGates[1]->eval();
+	validVal=true;
+	return val;
 }
 
-data_t NOTGate::eval()const{
-    return !iGates[0]->eval();
+data_t NOTGate::eval(){
+	if(validVal) return val;
+	val= !iGates[0]->eval();
+	validVal=true;
+	return val;
 }

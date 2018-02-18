@@ -1,16 +1,16 @@
 #include "include/PixelGate.h"
 
 void PixelGate::update(double i){
-    v=i;
+	val=i;
+	updateOutputVal();
 }
 void PixelGate::removeGate(){
 	Gate::removeGate();
 	emit deleted();
 }
-data_t PixelGate::eval()const{
-    return v;
+PixelGate::PixelGate(unsigned i):Gate(i,70,50,Qt::lightGray){
+	validVal=true;
 }
-PixelGate::PixelGate(unsigned i):Gate(i,70,50,Qt::lightGray){}
 PixelXGate::PixelXGate():PixelGate(X_G){}
 PixelYGate::PixelYGate():PixelGate(Y_G){}
 

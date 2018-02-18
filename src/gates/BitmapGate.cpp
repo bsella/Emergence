@@ -13,14 +13,16 @@ void BitmapGate::setBMP(const QString &filename){
 	bmpHeight=bmp->height();
 }
 
-data_t BitmapGate::eval()const{
-	if(!bmp)
-		return 0xff000000;
+data_t BitmapGate::eval(){
+	if(validVal) return val;
+	if(!bmp) return 0xff000000;
 	int g0 = double(iGates[0]->eval())*bmpWidth;
 	int g1 = double(iGates[1]->eval())*bmpHeight;
 	if(g0<0 || g0>=bmpWidth || g1<0 || g1>=bmpHeight)
 		return 0xff000000;
-	return bmp->toImage().pixel(g0,g1);
+	val= bmp->toImage().pixel(g0,g1);
+	validVal=true;
+	return val;
 }
 
 void BitmapGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){

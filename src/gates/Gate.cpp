@@ -140,15 +140,17 @@ void Gate::disconnectGate(unsigned rank){
 			}
 		iGates[rank]=nullptr;
 		sockets[rank]->setVisible(true);
-		validVal=false;
+		updateVal();
 		emit notifyRA();
 	}
 }
 
 void Gate::updateVal(){
-	validVal=false;
-	for(auto& i : oConnections)
-		i.first->updateVal();
+	if(validVal){
+		validVal=false;
+		for(auto& i : oConnections)
+			i.first->updateVal();
+	}
 }
 void Gate::updateOutputVal(){
 	for(auto& i : oConnections)

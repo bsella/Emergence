@@ -1,4 +1,4 @@
-#include "include/MathGate.h"
+#include "include/gates/MathGate.h"
 
 MathGate::MathGate(unsigned i, unsigned n, unsigned w, unsigned h):Gate(i,w,h,QColor(180,255,180),n){}
 
@@ -80,12 +80,9 @@ void MAXGate::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	Gate::paint(painter,option,widget);
 	painter->drawText(boundingRect().center()-QPointF(12,0),"max");
 }
-#include <iostream>
+
 data_t ADDGate::eval(){
-	if(validVal) {
-		std::cout << val.d << std::endl;
-		return val;
-	}
+	if(validVal) return val;
 	val= iGates[0]->eval()+iGates[1]->eval();
 	validVal=true;
 	return val;

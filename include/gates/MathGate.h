@@ -1,7 +1,7 @@
 #ifndef MATHGATE_H
 #define MATHGATE_H
 
-#include "Gate.h"
+#include <include/gates/Gate.h>
 #include <QtMath>
 
 class MathGate:public Gate{

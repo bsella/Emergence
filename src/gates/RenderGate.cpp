@@ -1,4 +1,4 @@
-#include "include/RenderGate.h"
+#include "include/gates/RenderGate.h"
 
 RenderGate::RenderGate():Gate(RENDER_G,50, 50, Qt::white,1,true){}
 data_t RenderGate::eval(){

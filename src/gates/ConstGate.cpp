@@ -1,4 +1,4 @@
-#include "include/ConstGate.h"
+#include "include/gates/ConstGate.h"
 
 ConstGate::ConstGate(double v):Gate(DOUBLE_G,50,50,QColor(255,255,180)){
 	val=v;

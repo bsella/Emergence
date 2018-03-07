@@ -1,7 +1,7 @@
 #ifndef PALETTEGATE_H
 #define PALETTEGATE_H
 
-#include "Palette.h"
+#include <include/Palette.h>
 #include "Gate.h"
 
 class LUTGate:public Gate{

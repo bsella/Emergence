@@ -1,4 +1,4 @@
-#include "include/PaletteGate.h"
+#include "include/gates/PaletteGate.h"
 
 LUTGate::LUTGate(const Palette& p): Gate(PALETTE_G,140,70,Qt::white,1), plt(p){}
 

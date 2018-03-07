@@ -1,4 +1,4 @@
-#include "include/LogicGate.h"
+#include "include/gates/LogicGate.h"
 
 LogicGate::LogicGate(unsigned i,unsigned n):Gate(i,50,50,QColor(255,180,180),n){}
 

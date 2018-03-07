@@ -11,10 +11,10 @@
     QT_VER_MIN = $$member(QT_VERSION, 1)
 
     lessThan(QT_VER_MAJ, 5) | lessThan(QT_VER_MIN, 7) {
-       error(PixelGates requires Qt 5.7 or newer but Qt $$[QT_VERSION] was detected.)
+        error(PixelGates requires Qt 5.7 or newer but Qt $$[QT_VERSION] was detected.)
     }
 
-QT       += core gui
+QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -43,37 +43,39 @@ SOURCES +=\
 	src/gates/PaletteGate.cpp \
 	src/Palette.cpp \
 	src/RenderArea.cpp \
-	src/gates/PixelGate.cpp \
-        src/gates/Gate.cpp \
+    src/gates/PixelGate.cpp \
+    src/gates/Gate.cpp \
 	src/gates/ConstGate.cpp \
 	src/Socket.cpp \
 	src/gates/RenderGate.cpp \
-        src/Workspace.cpp \
-        src/gates/MathGate.cpp \
-        src/gates/BitmapGate.cpp \
-        src/ExportImageDialog.cpp
+    src/Workspace.cpp \
+    src/gates/MathGate.cpp \
+    src/gates/BitmapGate.cpp \
+    src/ExportImageDialog.cpp \
+    src/gates/ColorGate.cpp
 
 HEADERS  +=\
-        include/mainwindow.h \
-        include/Gate.h \
-        include/IfGate.h \
-        include/LogicGate.h \
-        include/Palette.h \
-        include/PaletteGate.h \
-        include/RenderArea.h \
-        include/CompGate.h \
-        include/ConstGate.h \
-        include/PixelGate.h \
-        include/data_t.h \
-        include/Socket.h \
-        include/RenderGate.h \
-        include/Workspace.h \
-        include/MathGate.h \
-        include/BitmapGate.h \
-        include/ExportImageDialog.h
+    include/mainwindow.h \
+    include/gates/Gate.h \
+    include/gates/IfGate.h \
+    include/gates/LogicGate.h \
+    include/Palette.h \
+    include/gates/PaletteGate.h \
+    include/RenderArea.h \
+    include/gates/CompGate.h \
+    include/gates/ConstGate.h \
+    include/gates/PixelGate.h \
+    include/data_t.h \
+    include/Socket.h \
+    include/gates/RenderGate.h \
+    include/Workspace.h \
+    include/gates/MathGate.h \
+    include/gates/BitmapGate.h \
+    include/ExportImageDialog.h \
+    include/gates/ColorGate.h
 
-FORMS    += forms/mainwindow.ui \
-            forms/exportimagedialog.ui
+FORMS += forms/mainwindow.ui \
+    forms/exportimagedialog.ui
 
 RESOURCES += \
     application.qrc

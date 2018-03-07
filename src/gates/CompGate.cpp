@@ -1,4 +1,4 @@
-#include "include/CompGate.h"
+#include "include/gates/CompGate.h"
 
 CompGate::CompGate(unsigned i):Gate(i,50,50,QColor(255,180,180),2){}
 

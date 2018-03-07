@@ -92,6 +92,8 @@ void Workspace::addFuncGate(uint g, bool load){
 	case COS_G:		gate=new COSGate;break;
 	case MIN_G:		gate=new MINGate;break;
 	case MAX_G:		gate=new MAXGate;break;
+	case RGB_G:		gate=new RGBGate;break;
+	case HSV_G:		gate=new HSVGate;break;
 	default:return;
 	}
 	connect(gate,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));

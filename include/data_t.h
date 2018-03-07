@@ -2,6 +2,7 @@
 #define DATA_T_H
 
 #include <complex>
+#include <QColor>
 
 enum class TypeEnum{
 	BOOL=0x1,
@@ -98,6 +99,11 @@ struct data_t{
 	data_t& operator=(unsigned uu){
 		t=TypeEnum::COLOR;
 		u=uu;
+		return *this;
+	}
+	data_t& operator=(QColor uu){
+		t=TypeEnum::COLOR;
+		u=uu.rgb();
 		return *this;
 	}
 	data_t& operator=(cplx cc){

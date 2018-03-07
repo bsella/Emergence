@@ -1,4 +1,4 @@
-#include "include/PixelGate.h"
+#include "include/gates/PixelGate.h"
 
 void PixelGate::update(double i){
 	val=i;

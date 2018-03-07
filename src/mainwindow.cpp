@@ -84,6 +84,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->cosButton,		&QToolButton::clicked,ui->workspace,[&]{ui->workspace->addFuncGate(COS_G,false);});
 	connect(ui->minButton,		&QToolButton::clicked,ui->workspace,[&]{ui->workspace->addFuncGate(MIN_G,false);});
 	connect(ui->maxButton,		&QToolButton::clicked,ui->workspace,[&]{ui->workspace->addFuncGate(MAX_G,false);});
+	connect(ui->rgbButton,		&QToolButton::clicked,ui->workspace,[&]{ui->workspace->addFuncGate(RGB_G,false);});
+	connect(ui->hsvButton,		&QToolButton::clicked,ui->workspace,[&]{ui->workspace->addFuncGate(HSV_G,false);});
 	connect(ui->xButton,		SIGNAL(clicked()),ui->actionX,SLOT(trigger()));
 	connect(ui->yButton,		SIGNAL(clicked()),ui->actionY,SLOT(trigger()));
 	connect(ui->renderButton,	SIGNAL(clicked()),ui->actionRender,SLOT(trigger()));

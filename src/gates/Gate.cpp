@@ -1,4 +1,4 @@
-#include "include/Gate.h"
+#include "include/gates/Gate.h"
 #include <iostream>
 
 Gate::Gate(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):id(i), width(w),height(h),

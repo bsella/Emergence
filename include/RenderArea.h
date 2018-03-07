@@ -1,8 +1,8 @@
 #ifndef RENDERPANEL_H
 #define RENDERPANEL_H
 
-#include "RenderGate.h"
-#include "PixelGate.h"
+#include "gates/RenderGate.h"
+#include "gates/PixelGate.h"
 
 #include <QWidget>
 #include <QPainter>

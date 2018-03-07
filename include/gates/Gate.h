@@ -10,8 +10,8 @@
 #include <QGraphicsScene>
 #include <QMenu>
 
-#include "data_t.h"
-#include "Socket.h"
+#include "include/data_t.h"
+#include <include/Socket.h>
 
 #define DOUBLE_G	1
 #define COLOR_G		2
@@ -42,6 +42,8 @@
 #define COS_G		27
 #define MIN_G		28
 #define MAX_G		29
+#define RGB_G		30
+#define HSV_G		31
 
 class Gate: public QGraphicsObject{
 	Q_OBJECT

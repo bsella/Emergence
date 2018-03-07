@@ -1,4 +1,4 @@
-#include "include/BitmapGate.h"
+#include "include/gates/BitmapGate.h"
 
 BitmapGate::BitmapGate():Gate(BITMAP_G,70,70,Qt::lightGray,2){
 	bmp=nullptr;

@@ -7,15 +7,16 @@
 #include <QColorDialog>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include "include/Gate.h"
-#include "include/IfGate.h"
-#include "include/LogicGate.h"
-#include "include/CompGate.h"
-#include "include/RenderArea.h"
-#include "include/ConstGate.h"
-#include "include/MathGate.h"
-#include "include/PaletteGate.h"
-#include "include/BitmapGate.h"
+#include <include/gates/Gate.h>
+#include <include/gates/IfGate.h>
+#include <include/gates/LogicGate.h>
+#include <include/gates/CompGate.h>
+#include <include/RenderArea.h>
+#include <include/gates/ConstGate.h>
+#include <include/gates/MathGate.h>
+#include <include/gates/PaletteGate.h>
+#include <include/gates/BitmapGate.h>
+#include <include/gates/ColorGate.h>
 
 #define MAGIC_NUMBER 0xa1b2affd
 #define SAVE_VERSION 0x00000002

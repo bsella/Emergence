@@ -44,6 +44,7 @@
 #define MAX_G		29
 #define RGB_G		30
 #define HSV_G		31
+#define RATIO_G		32
 
 class Gate: public QGraphicsObject{
 	Q_OBJECT

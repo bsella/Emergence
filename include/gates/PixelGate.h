@@ -30,4 +30,13 @@ public:
 	PixelYGate();
 };
 
+class RatioGate:public PixelGate{
+	void paint(QPainter* painter,
+				const QStyleOptionGraphicsItem* option,
+				QWidget* widget);
+public:
+	RatioGate();
+	void update(unsigned x, unsigned y);
+};
+
 #endif

@@ -63,10 +63,10 @@ struct data_t{
 			i<<=8; i|=c;
 			return i;
 		}
-		///TODO : convert complex to color
-		if(t==TypeEnum::COMPLEX){
-			return 0xff000000;
-		}
+		if(t==TypeEnum::COMPLEX)
+			return QColor::fromHsv(359*(std::arg(c)+M_PI)/(M_PI*2),
+								   255,
+								   qMin(int(255*std::abs(c)),255)).rgb();
 		return u;
 	}
 	operator cplx(){

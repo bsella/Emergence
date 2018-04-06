@@ -79,6 +79,10 @@ void Workspace::addFuncGate(uint g, bool load){
 		if(!renderArea) return;
 		gate=renderArea->start;
 		break;
+	case RATIO_G:
+		if(!renderArea) return;
+		gate=renderArea->ratio;
+		break;
 	case ADD_G:		gate=new ADDGate;break;
 	case SUB_G:		gate=new SUBGate;break;
 	case MUL_G:		gate=new MULGate;break;

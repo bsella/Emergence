@@ -4,6 +4,7 @@ RenderArea::RenderArea(QWidget *parent):QWidget(parent){
 	xg=new PixelXGate;
 	yg=new PixelYGate;
 	start=new RenderGate;
+	ratio=new RatioGate;
 }
 
 QImage RenderArea::renderImage(int w, int h){
@@ -28,8 +29,13 @@ bool RenderArea::isValid(){
 	return *start;
 }
 
+void RenderArea::resizeEvent(QResizeEvent*){
+	ratio->update(QWidget::width(),QWidget::height());
+}
+
 RenderArea::~RenderArea(){
 	delete xg;
 	delete yg;
 	delete start;
+	delete ratio;
 }

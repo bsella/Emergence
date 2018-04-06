@@ -65,6 +65,7 @@
      </property>
      <addaction name="actionX"/>
      <addaction name="actionY"/>
+     <addaction name="actionRatio"/>
     </widget>
     <widget class="QMenu" name="menuCalc">
      <property name="title">
@@ -160,7 +161,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>0</y>
+          <y>-110</y>
           <width>165</width>
           <height>331</height>
          </rect>
@@ -659,8 +660,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>179</width>
-          <height>221</height>
+          <width>183</width>
+          <height>207</height>
          </rect>
         </property>
         <attribute name="label">
@@ -815,6 +816,22 @@
             </widget>
            </item>
            <item>
+            <widget class="QToolButton" name="ratioButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>X/Y</string>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QToolButton" name="yButton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -839,7 +856,7 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Render</string>
+              <string>Output</string>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -1002,7 +1019,7 @@
   </action>
   <action name="actionRender">
    <property name="text">
-    <string>Render</string>
+    <string>Output</string>
    </property>
   </action>
   <action name="actionADD">
@@ -1093,6 +1110,11 @@
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
+   </property>
+  </action>
+  <action name="actionRatio">
+   <property name="text">
+    <string>X/Y Ratio</string>
    </property>
   </action>
  </widget>

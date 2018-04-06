@@ -15,11 +15,13 @@ public:
 	RenderArea(QWidget *parent=0);
 	~RenderArea();
 	void paintEvent(QPaintEvent*);
+	void resizeEvent(QResizeEvent*);
 	QImage renderImage(int w, int h);
 	bool isValid();
 	PixelXGate * xg;
 	PixelYGate * yg;
 	RenderGate* start;
+	RatioGate* ratio;
 };
 
 #endif

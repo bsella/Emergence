@@ -11,6 +11,7 @@ void BitmapGate::setBMP(const QString &filename){
 	bmp= new QPixmap(filename);
 	bmpWidth=bmp->width();
 	bmpHeight=bmp->height();
+	updateOutputVal();
 }
 
 data_t BitmapGate::eval(){

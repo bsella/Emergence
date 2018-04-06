@@ -46,6 +46,11 @@ MainWindow::MainWindow(QWidget *parent) :
 		ui->actionY->setEnabled(false);
 		ui->yButton->setEnabled(false);
 	});
+	connect(ui->actionRatio,			&QAction::triggered,ui->workspace,[this]{
+		ui->workspace->addFuncGate(RATIO_G,false);
+		ui->actionRatio->setEnabled(false);
+		ui->ratioButton->setEnabled(false);
+	});
 	connect(ui->actionRender,		&QAction::triggered,ui->workspace,[this]{
 		ui->workspace->addFuncGate(RENDER_G,false);
 		ui->actionRender->setEnabled(false);
@@ -88,15 +93,20 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->hsvButton,		&QToolButton::clicked,ui->workspace,[&]{ui->workspace->addFuncGate(HSV_G,false);});
 	connect(ui->xButton,		SIGNAL(clicked()),ui->actionX,SLOT(trigger()));
 	connect(ui->yButton,		SIGNAL(clicked()),ui->actionY,SLOT(trigger()));
+	connect(ui->ratioButton,	SIGNAL(clicked()),ui->actionRatio,SLOT(trigger()));
 	connect(ui->renderButton,	SIGNAL(clicked()),ui->actionRender,SLOT(trigger()));
 
 	connect(ui->renderArea->xg,	&PixelXGate::deleted,ui->actionX,[&]{
 		ui->actionX->setEnabled(true);
 		ui->xButton->setEnabled(true);
 	});
-	connect(ui->renderArea->yg,	&PixelXGate::deleted,ui->actionX,[&]{
+	connect(ui->renderArea->yg,	&PixelXGate::deleted,ui->actionY,[&]{
 		ui->actionY->setEnabled(true);
 		ui->yButton->setEnabled(true);
+	});
+	connect(ui->renderArea->ratio,	&PixelXGate::deleted,ui->actionRatio,[&]{
+		ui->actionRatio->setEnabled(true);
+		ui->ratioButton->setEnabled(true);
 	});
 	connect(ui->renderArea->start,&PixelXGate::deleted,ui->actionRender,[&]{
 		ui->actionRender->setEnabled(true);

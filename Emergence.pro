@@ -11,14 +11,14 @@
     QT_VER_MIN = $$member(QT_VERSION, 1)
 
     lessThan(QT_VER_MAJ, 5) | lessThan(QT_VER_MIN, 7) {
-        error(PixelGates requires Qt 5.7 or newer but Qt $$[QT_VERSION] was detected.)
+        error(Emergence requires Qt 5.7 or newer but Qt $$[QT_VERSION] was detected.)
     }
 
 QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = PixelGates
+TARGET = Emergence
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -37,42 +37,42 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES +=\
 	src/main.cpp \
 	src/mainwindow.cpp \
-	src/gates/CompGate.cpp \
-	src/gates/IfGate.cpp \
-	src/gates/LogicGate.cpp \
-	src/gates/PaletteGate.cpp \
+    src/nodes/CompNode.cpp \
+    src/nodes/IfNode.cpp \
+    src/nodes/LogicNode.cpp \
+    src/nodes/PaletteNode.cpp \
 	src/Palette.cpp \
 	src/RenderArea.cpp \
-    src/gates/PixelGate.cpp \
-    src/gates/Gate.cpp \
-	src/gates/ConstGate.cpp \
+    src/nodes/PixelNode.cpp \
+    src/nodes/Node.cpp \
+    src/nodes/ConstNode.cpp \
 	src/Socket.cpp \
-	src/gates/RenderGate.cpp \
+    src/nodes/RenderNode.cpp \
     src/Workspace.cpp \
-    src/gates/MathGate.cpp \
-    src/gates/BitmapGate.cpp \
+    src/nodes/MathNode.cpp \
+    src/nodes/BitmapNode.cpp \
     src/ExportImageDialog.cpp \
-    src/gates/ColorGate.cpp
+    src/nodes/ColorNode.cpp
 
 HEADERS  +=\
     include/mainwindow.h \
-    include/gates/Gate.h \
-    include/gates/IfGate.h \
-    include/gates/LogicGate.h \
+    include/nodes/Node.h \
+    include/nodes/IfNode.h \
+    include/nodes/LogicNode.h \
     include/Palette.h \
-    include/gates/PaletteGate.h \
+    include/nodes/PaletteNode.h \
     include/RenderArea.h \
-    include/gates/CompGate.h \
-    include/gates/ConstGate.h \
-    include/gates/PixelGate.h \
+    include/nodes/CompNode.h \
+    include/nodes/ConstNode.h \
+    include/nodes/PixelNode.h \
     include/data_t.h \
     include/Socket.h \
-    include/gates/RenderGate.h \
+    include/nodes/RenderNode.h \
     include/Workspace.h \
-    include/gates/MathGate.h \
-    include/gates/BitmapGate.h \
+    include/nodes/MathNode.h \
+    include/nodes/BitmapNode.h \
     include/ExportImageDialog.h \
-    include/gates/ColorGate.h
+    include/nodes/ColorNode.h
 
 FORMS += forms/mainwindow.ui \
     forms/exportimagedialog.ui

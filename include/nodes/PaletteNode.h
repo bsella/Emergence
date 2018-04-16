@@ -1,12 +1,12 @@
-#ifndef PALETTEGATE_H
-#define PALETTEGATE_H
+#ifndef PALETTENODE_H
+#define PALETTENODE_H
 
 #include <include/Palette.h>
-#include "Gate.h"
+#include "Node.h"
 
-class LUTGate:public Gate{
+class LUTNode:public Node{
 public:
-	LUTGate(const Palette& p);
+	LUTNode(const Palette& p);
 private:
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem*option, QWidget*widget);
 	data_t eval();

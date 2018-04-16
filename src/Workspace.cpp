@@ -7,36 +7,36 @@ Workspace::Workspace(QWidget *parent):QGraphicsView(parent),scene(new QGraphicsS
 void Workspace::setRA(RenderArea* ra){
 	if (!ra) return ;
 	renderArea=ra;
-	addFuncGate(RENDER_G,false);
-	addFuncGate(X_G,false);
-	addFuncGate(Y_G,false);
+	addFuncNode(RENDER_G,false);
+	addFuncNode(X_G,false);
+	addFuncNode(Y_G,false);
 	renderArea->xg->setPos(0,0);
 	renderArea->yg->setPos(0,100);
 	renderArea->start->setPos(100,50);
 }
 
-void Workspace::addFuncGate(uint g, bool load){
-	Gate* gate;
+void Workspace::addFuncNode(uint g, bool load){
+	Node* Node;
 	switch(g){
 	case DOUBLE_G:{
 		if(load){
-			gate=new ConstGate(0.0);
+			Node=new ConstNode(0.0);
 			break;
 		}
 		bool ok;
 		double d =QInputDialog::getDouble(this,"Choose Number","",0,-2147483647,2147483647,3,&ok);
 		if(!ok) return;
-		gate=new ConstGate(d);
+		Node=new ConstNode(d);
 		break;
 	}
 	case COLOR_G:{
 		if(load){
-			gate=new ConstGate(0xffffffff);
+			Node=new ConstNode(0xffffffff);
 			break;
 		}
 		QColor c =QColorDialog::getColor(Qt::white,this);
 		if(!c.isValid()) return;
-		gate=new ConstGate(c.rgba());
+		Node=new ConstNode(c.rgba());
 		break;
 	}
 	case PALETTE_G:{
@@ -45,87 +45,87 @@ void Workspace::addFuncGate(uint g, bool load){
 		p.add(0xffff0000,0);
 		p.add(0xff0000ff,.5);
 		p.add(0xff00ff00,1);
-		gate= new LUTGate(p);
+		Node= new LUTNode(p);
 		break;
 	}
 	case BITMAP_G:{
 		if(load){
-			gate=new BitmapGate;
+			Node=new BitmapNode;
 			break;
 		}
 		QString f= QFileDialog::getOpenFileName(this,"Choose Image",".","Images (*.bmp)");
 		if(f.isNull())return;
-		gate = new BitmapGate(f);
+		Node = new BitmapNode(f);
 		break;
 	}
-	case IF_G:		gate=new IfGate;break;
-	case GT_G:		gate=new GTGate;break;
-	case LT_G:		gate=new LTGate;break;
-	case EQ_G:		gate=new EQGate;break;
-	case NE_G:		gate=new NEGate;break;
-	case OR_G:		gate=new ORGate;break;
-	case AND_G:		gate=new ANDGate;break;
-	case XOR_G:		gate=new XORGate;break;
-	case NOT_G:		gate=new NOTGate;break;
+	case IF_G:		Node=new IfNode;break;
+	case GT_G:		Node=new GTNode;break;
+	case LT_G:		Node=new LTNode;break;
+	case EQ_G:		Node=new EQNode;break;
+	case NE_G:		Node=new NENode;break;
+	case OR_G:		Node=new ORNode;break;
+	case AND_G:		Node=new ANDNode;break;
+	case XOR_G:		Node=new XORNode;break;
+	case NOT_G:		Node=new NOTNode;break;
 	case X_G:
 		if(!renderArea) return;
-		gate=renderArea->xg;
+		Node=renderArea->xg;
 		break;
 	case Y_G:
 		if(!renderArea) return;
-		gate= renderArea->yg;
+		Node= renderArea->yg;
 		break;
 	case RENDER_G:
 		if(!renderArea) return;
-		gate=renderArea->start;
+		Node=renderArea->start;
 		break;
 	case RATIO_G:
 		if(!renderArea) return;
-		gate=renderArea->ratio;
+		Node=renderArea->ratio;
 		break;
-	case ADD_G:		gate=new ADDGate;break;
-	case SUB_G:		gate=new SUBGate;break;
-	case MUL_G:		gate=new MULGate;break;
-	case DIV_G:		gate=new DIVGate;break;
-	case NEG_G:		gate=new NEGGate;break;
-	case SQRT_G:	gate=new SQRTGate;break;
-	case ABS_G:		gate=new ABSGate;break;
-	case LERP_G:	gate=new LERPGate;break;
-	case CLAMP_G:	gate=new CLAMPGate;break;
-	case SIN_G:		gate=new SINGate;break;
-	case COS_G:		gate=new COSGate;break;
-	case MIN_G:		gate=new MINGate;break;
-	case MAX_G:		gate=new MAXGate;break;
-	case RGB_G:		gate=new RGBGate;break;
-	case HSV_G:		gate=new HSVGate;break;
+	case ADD_G:		Node=new ADDNode;break;
+	case SUB_G:		Node=new SUBNode;break;
+	case MUL_G:		Node=new MULNode;break;
+	case DIV_G:		Node=new DIVNode;break;
+	case NEG_G:		Node=new NEGNode;break;
+	case SQRT_G:	Node=new SQRTNode;break;
+	case ABS_G:		Node=new ABSNode;break;
+	case LERP_G:	Node=new LERPNode;break;
+	case CLAMP_G:	Node=new CLAMPNode;break;
+	case SIN_G:		Node=new SINNode;break;
+	case COS_G:		Node=new COSNode;break;
+	case MIN_G:		Node=new MINNode;break;
+	case MAX_G:		Node=new MAXNode;break;
+	case RGB_G:		Node=new RGBNode;break;
+	case HSV_G:		Node=new HSVNode;break;
 	default:return;
 	}
-	connect(gate,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	connect(gate,SIGNAL(removeFromWS(Gate*)),this,SLOT(removeFromList(Gate*)));
-	gate->setPos(scene->sceneRect().center());
-	gates.push_back(gate);
-	scene->addItem(gate);
-	gate->setZValue(0);
-	for(const auto& i: gate->collidingItems())
-		if(gate->zValue()<= i->zValue())
-			gate->setZValue(i->zValue()+1);
+	connect(Node,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
+	connect(Node,SIGNAL(removeFromWS(Node*)),this,SLOT(removeFromList(Node*)));
+	Node->setPos(scene->sceneRect().center());
+	Nodes.push_back(Node);
+	scene->addItem(Node);
+	Node->setZValue(0);
+	for(const auto& i: Node->collidingItems())
+		if(Node->zValue()<= i->zValue())
+			Node->setZValue(i->zValue()+1);
 }
 
 #include <iostream>
-void Workspace::removeFromList(Gate *g){
-	gates.remove(g);
+void Workspace::removeFromList(Node *g){
+	Nodes.remove(g);
 }
 
 void Workspace::clear(){
-	while(!gates.empty())
-		gates.back()->removeGate();
+	while(!Nodes.empty())
+		Nodes.back()->removeNode();
 }
 
 void Workspace::createFile()const{
-	QString f= QFileDialog::getSaveFileName(parentWidget(),"Save as...",".","Gate Files (*.gate)");
+	QString f= QFileDialog::getSaveFileName(parentWidget(),"Save as...",".","Node Files (*.emrg)");
 	if(f.isNull()) return;
-	if(!f.endsWith(".gate"))
-		f.append(".gate");
+	if(!f.endsWith(".emrg"))
+		f.append(".emrg");
 	QFile file(f);
 	file.open(QIODevice::WriteOnly);
 	file.resize(0);
@@ -134,37 +134,37 @@ void Workspace::createFile()const{
 	out << MAGIC_NUMBER;
 	out << SAVE_VERSION;
 
-	QByteArray gateType, gatePos;
-	std::map<Gate*,int> gateID;
+	QByteArray NodeType, NodePos;
+	std::map<Node*,int> NodeID;
 	int id=0;
-	for(const auto& g : gates)
-		gateID[g]=id++;
-	for(const auto& g : gates){
-		//saving gate type
-		gateType.append(g->id);
-		if(g->id==DOUBLE_G){		//Special case for double gate
-			double d=((ConstGate*)g)->val;
-			gateType.append(reinterpret_cast<const char*>(&d), sizeof(d));
-		}else if(g->id==COLOR_G){		//Special case for color gate
-			uint color=((ConstGate*)g)->val;
-			gateType.append(reinterpret_cast<const char*>(&color), sizeof(color));
+	for(const auto& g : Nodes)
+		NodeID[g]=id++;
+	for(const auto& g : Nodes){
+		//saving Node type
+		NodeType.append(g->id);
+		if(g->id==DOUBLE_G){		//Special case for double Node
+			double d=((ConstNode*)g)->val;
+			NodeType.append(reinterpret_cast<const char*>(&d), sizeof(d));
+		}else if(g->id==COLOR_G){		//Special case for color Node
+			uint color=((ConstNode*)g)->val;
+			NodeType.append(reinterpret_cast<const char*>(&color), sizeof(color));
 		}
-		//saving gate position
+		//saving Node position
 		float fx= g->x(), fy= g->y();
-		gatePos.append(reinterpret_cast<const char*>(&fx), sizeof(fx));
-		gatePos.append(reinterpret_cast<const char*>(&fy), sizeof(fy));
+		NodePos.append(reinterpret_cast<const char*>(&fx), sizeof(fx));
+		NodePos.append(reinterpret_cast<const char*>(&fy), sizeof(fy));
 	}
 
-	out<<int(gates.size());
-	out.writeRawData(gateType.data(),gateType.size());
-	out<<gatePos;
-	for(const auto& g : gates)
+	out<<int(Nodes.size());
+	out.writeRawData(NodeType.data(),NodeType.size());
+	out<<NodePos;
+	for(const auto& g : Nodes)
 		for(unsigned i=0; i<g->nbArgs;i++)
-			out << (g->iGates[i]? gateID.at(g->iGates[i]): -1);
+			out << (g->iNodes[i]? NodeID.at(g->iNodes[i]): -1);
 }
 
-void Workspace::loadGatesFromFile(){
-	QString f= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Gate Files (*.gate)");
+void Workspace::loadNodesFromFile(){
+	QString f= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
 	if(f.isNull()) return;
 	QFile file(f);
 	file.open(QIODevice::ReadOnly);
@@ -181,30 +181,30 @@ void Workspace::loadGatesFromFile(){
 	}
 	clear();
 	int n; in>>n;
-	std::map<int,Gate*> gateID;
+	std::map<int,Node*> NodeID;
 	for(int i=0;i<n;i++){
 		uchar id; in>>id;
-		addFuncGate(id,true);
+		addFuncNode(id,true);
 		if(id==DOUBLE_G){
 			char c[sizeof(double)];
 			in.readRawData(c,sizeof(double));
 			QByteArray dArray(c,sizeof(double));
-			((ConstGate*)gates.back())->val=*reinterpret_cast<const double*>(dArray.data());
+			((ConstNode*)Nodes.back())->val=*reinterpret_cast<const double*>(dArray.data());
 		}else if(id==COLOR_G){
 			char c[sizeof(unsigned)];
 			in.readRawData(c,sizeof(unsigned));
 			QByteArray cArray(c,sizeof(unsigned));
 			unsigned color =*reinterpret_cast<const unsigned*>(cArray.data());
-			((ConstGate*)gates.back())->val= color;
-			((ConstGate*)gates.back())->color=color;
+			((ConstNode*)Nodes.back())->val= color;
+			((ConstNode*)Nodes.back())->color=color;
 		}
-		gateID[i]=gates.back();
+		NodeID[i]=Nodes.back();
 	}
 	in>>n;
 	char c[n];
 	in.readRawData(c,n);
 	QByteArray floats(c,n);
-	for(auto& g : gates){
+	for(auto& g : Nodes){
 		float fx,fy;
 		fx = *reinterpret_cast<const float*>(floats.data());
 		floats=floats.mid(4);
@@ -213,11 +213,11 @@ void Workspace::loadGatesFromFile(){
 		g->setPos(fx,fy);
 	}
 	scene->setSceneRect(scene->itemsBoundingRect());
-	for(auto& g: gates)
+	for(auto& g: Nodes)
 		for(unsigned i=0; i<g->nbArgs; i++){
 			in>>n;
 			if(n>=0)
-				g->connectGate(gateID[n],i);
+				g->connectNode(NodeID[n],i);
 		}
 }
 

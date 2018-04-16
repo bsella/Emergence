@@ -1,41 +1,41 @@
-#ifndef LOGICGATE_H
-#define LOGICGATE_H
+#ifndef LOGICNODE_H
+#define LOGICNODE_H
 
-#include "Gate.h"
+#include "Node.h"
 
-class LogicGate:public Gate{
+class LogicNode:public Node{
 protected:
-	LogicGate(unsigned i,unsigned n);
+	LogicNode(unsigned i,unsigned n);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;
 };
 
-class ORGate:public LogicGate{
+class ORNode:public LogicNode{
 public:
-	ORGate();
+	ORNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class ANDGate:public LogicGate{
+class ANDNode:public LogicNode{
 public:
-	ANDGate();
+	ANDNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class XORGate:public LogicGate{
+class XORNode:public LogicNode{
 public:
-	XORGate();
+	XORNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class NOTGate:public LogicGate{
+class NOTNode:public LogicNode{
 public:
-	NOTGate();
+	NOTNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

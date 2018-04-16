@@ -1,40 +1,40 @@
-#ifndef COMPGATE_H
-#define COMPGATE_H
+#ifndef COMPNODE_H
+#define COMPNODE_H
 
-#include "Gate.h"
+#include "Node.h"
 
-class CompGate:public Gate{
+class CompNode:public Node{
 protected:
-	CompGate(unsigned i);
+	CompNode(unsigned i);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget)=0;
 };
 
-class GTGate:public CompGate{
+class GTNode:public CompNode{
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
-	GTGate();
+	GTNode();
 };
 
-class LTGate:public CompGate{
+class LTNode:public CompNode{
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
-	LTGate();
+	LTNode();
 };
 
-class EQGate:public CompGate{
+class EQNode:public CompNode{
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
-	EQGate();
+	EQNode();
 };
 
-class NEGate:public CompGate{
+class NENode:public CompNode{
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
-	NEGate();
+	NENode();
 };
 
 #endif

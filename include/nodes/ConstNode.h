@@ -1,16 +1,16 @@
-#ifndef CONSTGATE_H
-#define CONSTGATE_H
+#ifndef CONSTNODE_H
+#define CONSTNODE_H
 
-#include "Gate.h"
+#include "Node.h"
 #include <QColorDialog>
 #include <QInputDialog>
 
-class ConstGate:public Gate{
+class ConstNode:public Node{
 public:
-	ConstGate(double v);
-	ConstGate(uint v);
+	ConstNode(double v);
+	ConstNode(uint v);
 private:
-	ConstGate()=delete;
+	ConstNode()=delete;
 	data_t eval();
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);

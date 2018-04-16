@@ -1,15 +1,15 @@
-#ifndef BITMAPGATE_H
-#define BITMAPGATE_H
+#ifndef BITMAPNODE_H
+#define BITMAPNODE_H
 
 #include <QPixmap>
 #include <QFileDialog>
-#include "Gate.h"
+#include "Node.h"
 
-class BitmapGate : public Gate{
+class BitmapNode : public Node{
 public:
-	BitmapGate();
-	~BitmapGate();
-	BitmapGate(const QString& filename);
+	BitmapNode();
+	~BitmapNode();
+	BitmapNode(const QString& filename);
 	void setBMP(const QString& filename);
 private:
 	QPixmap *bmp;
@@ -24,4 +24,4 @@ private slots:
 	void changeBMP();
 };
 
-#endif // BITMAPGATE_H
+#endif // BITMAPNODE_H

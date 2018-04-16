@@ -1,20 +1,20 @@
-#ifndef COLORGATE_H
-#define COLORGATE_H
+#ifndef COLORNODE_H
+#define COLORNODE_H
 
-#include <include/gates/Gate.h>
+#include <include/nodes/Node.h>
 #include <include/data_t.h>
 
-class ColorGate : public Gate{
+class ColorNode : public Node{
 protected:
-	ColorGate(unsigned i);
+	ColorNode(unsigned i);
 	virtual void paint(QPainter* painter,
 					const QStyleOptionGraphicsItem*option,
 					QWidget *widget)=0;
 };
 
-class RGBGate : public ColorGate{
+class RGBNode : public ColorNode{
 public:
-	RGBGate();
+	RGBNode();
 private:
 	data_t eval();
 	void paint(QPainter* painter,
@@ -22,13 +22,13 @@ private:
 					QWidget *widget);
 };
 
-class HSVGate : public ColorGate{
+class HSVNode : public ColorNode{
 public:
-	HSVGate();
+	HSVNode();
 private:
 	data_t eval();
 	void paint(QPainter* painter,
 					const QStyleOptionGraphicsItem*option,
 					QWidget *widget);
 };
-#endif // COLORGATE_H
+#endif // COLORNODE_H

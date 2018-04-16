@@ -1,111 +1,111 @@
-#ifndef MATHGATE_H
-#define MATHGATE_H
+#ifndef MATHNODE_H
+#define MATHNODE_H
 
-#include <include/gates/Gate.h>
+#include <include/nodes/Node.h>
 #include <QtMath>
 
-class MathGate:public Gate{
+class MathNode:public Node{
 protected:
-	MathGate(unsigned i, unsigned n, unsigned w=50, unsigned h=50);
+	MathNode(unsigned i, unsigned n, unsigned w=50, unsigned h=50);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;
 };
 
-class ADDGate:public MathGate{
+class ADDNode:public MathNode{
 public:
-	ADDGate();
+	ADDNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class SUBGate:public MathGate{
+class SUBNode:public MathNode{
 public:
-	SUBGate();
+	SUBNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class MULGate:public MathGate{
+class MULNode:public MathNode{
 public:
-	MULGate();
+	MULNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class DIVGate:public MathGate{
+class DIVNode:public MathNode{
 public:
-	DIVGate();
+	DIVNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class NEGGate:public MathGate{
+class NEGNode:public MathNode{
 public:
-	NEGGate();
+	NEGNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class SQRTGate:public MathGate{
+class SQRTNode:public MathNode{
 public:
-	SQRTGate();
+	SQRTNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class ABSGate:public MathGate{
+class ABSNode:public MathNode{
 public:
-	ABSGate();
+	ABSNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
-class LERPGate:public MathGate{
+class LERPNode:public MathNode{
 public:
-	LERPGate();
+	LERPNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
-class CLAMPGate:public MathGate{
+class CLAMPNode:public MathNode{
 public:
-	CLAMPGate();
+	CLAMPNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
-class SINGate:public MathGate{
+class SINNode:public MathNode{
 public:
-	SINGate();
+	SINNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
-class COSGate:public MathGate{
+class COSNode:public MathNode{
 public:
-	COSGate();
+	COSNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class MINGate:public MathGate{
+class MINNode:public MathNode{
 public:
-	MINGate();
+	MINNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
-class MAXGate:public MathGate{
+class MAXNode:public MathNode{
 public:
-	MAXGate();
+	MAXNode();
 private:
 	data_t eval();
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
-#endif // MATHGATE_H
+#endif // MATHNODE_H

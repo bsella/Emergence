@@ -1,5 +1,5 @@
-#ifndef GATE_H
-#define GATE_H
+#ifndef NODE_H
+#define NODE_H
 #include <vector>
 
 #include <QGraphicsObject>
@@ -46,7 +46,7 @@
 #define HSV_G		31
 #define RATIO_G		32
 
-class Gate: public QGraphicsObject{
+class Node: public QGraphicsObject{
 	Q_OBJECT
 public:
 	unsigned id, width, height;
@@ -54,21 +54,21 @@ public:
 	operator bool();
 signals:
 	void notifyRA();
-	void removeFromWS(Gate* g);
-	void addToWS(Gate* g);
+	void removeFromWS(Node* g);
+	void addToWS(Node* g);
 	void deleted();
 private slots:
-	void disconnectGate(unsigned rank);
+	void disconnectNode(unsigned rank);
 protected slots:
-	virtual void removeGate();
+	virtual void removeNode();
 protected:
-	~Gate();
-	data_t val;			//value returned by gate
+	~Node();
+	data_t val;			//value returned by node
 	bool validVal;		//value is valid
 	QColor color;
 	QMenu *menu=nullptr;
 	void updateOutputVal();
-	Gate(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
+	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
 	virtual void paint(QPainter* painter,
 			const QStyleOptionGraphicsItem* option,
 			QWidget* widget);
@@ -79,14 +79,14 @@ protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-	std::vector<Gate*> iGates;		//INPUT GATES
+	std::vector<Node*> iNodes;		//INPUT NODES
 	std::vector<QGraphicsLineItem*> iLines;
-	std::list<std::pair<Gate*,uint>> oConnections;
+	std::list<std::pair<Node*,uint>> oConnections;
 	std::vector<Socket*> sockets;
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void dropEvent(QGraphicsSceneDragDropEvent *event);
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
-	void connectGate(Gate *g, unsigned i);
+	void connectNode(Node *g, unsigned i);
 	void drawIcon(QPainter *painter, QString filename);
 private:
 	bool special;

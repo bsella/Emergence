@@ -1,8 +1,8 @@
 #ifndef RENDERPANEL_H
 #define RENDERPANEL_H
 
-#include "gates/RenderGate.h"
-#include "gates/PixelGate.h"
+#include "nodes/RenderNode.h"
+#include "nodes/PixelNode.h"
 
 #include <QWidget>
 #include <QPainter>
@@ -18,10 +18,10 @@ public:
 	void resizeEvent(QResizeEvent*);
 	QImage renderImage(int w, int h);
 	bool isValid();
-	PixelXGate * xg;
-	PixelYGate * yg;
-	RenderGate* start;
-	RatioGate* ratio;
+	PixelXNode * xg;
+	PixelYNode * yg;
+	RenderNode* start;
+	RatioNode* ratio;
 };
 
 #endif

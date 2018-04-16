@@ -1,11 +1,11 @@
-#include "include/gates/IfGate.h"
+#include "include/nodes/IfNode.h"
 
-IfGate::IfGate():Gate(IF_G,50,100,QColor(180,180,255),3){}
+IfNode::IfNode():Node(IF_G,50,100,QColor(180,180,255),3){}
 
-void IfGate::paint(QPainter* painter,
+void IfNode::paint(QPainter* painter,
 				const QStyleOptionGraphicsItem*option,
 				QWidget*widget){
-	Gate::paint(painter,option,widget);
+	Node::paint(painter,option,widget);
 	QRectF rect=boundingRect();
 	rect.setLeft(rect.left()+socketSize); rect.setRight(rect.right()-socketSize);
 	painter->drawLine(rect.center()+QPointF(rect.width()/2,0),rect.center()+QPointF(rect.width()/2+socketSize,0));
@@ -15,9 +15,9 @@ void IfGate::paint(QPainter* painter,
 	painter->drawText(rect.topLeft()+QPointF(8,3*rect.height()/4.0+4),"ELSE");
 }
 
-data_t IfGate::eval(){
+data_t IfNode::eval(){
 	if(validVal) return val;
-	val=iGates[1]->eval()? iGates[0]->eval() : iGates[2]->eval();
+	val=iNodes[1]->eval()? iNodes[0]->eval() : iNodes[2]->eval();
 	validVal=true;
 	return val;
 }

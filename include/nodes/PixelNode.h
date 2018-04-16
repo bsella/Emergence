@@ -1,41 +1,41 @@
-#ifndef PXYGATE_H
-#define PXYGATE_H
+#ifndef PXYNODE_H
+#define PXYNODE_H
 
-#include "Gate.h"
+#include "Node.h"
 
-class PixelGate:public Gate{
+class PixelNode:public Node{
 public:
 		void update(double i);
 protected:
-		PixelGate(unsigned i);
+		PixelNode(unsigned i);
 		virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 private:
 		inline data_t eval(){return val;}
-		void removeGate();
+		void removeNode();
 };
 
-class PixelXGate:public PixelGate{
+class PixelXNode:public PixelNode{
 		void paint(QPainter* painter,
 				   const QStyleOptionGraphicsItem* option,
 				   QWidget* widget);
 public:
-		PixelXGate();
+		PixelXNode();
 };
 
-class PixelYGate:public PixelGate{
+class PixelYNode:public PixelNode{
 	void paint(QPainter* painter,
 				const QStyleOptionGraphicsItem* option,
 				QWidget* widget);
 public:
-	PixelYGate();
+	PixelYNode();
 };
 
-class RatioGate:public PixelGate{
+class RatioNode:public PixelNode{
 	void paint(QPainter* painter,
 				const QStyleOptionGraphicsItem* option,
 				QWidget* widget);
 public:
-	RatioGate();
+	RatioNode();
 	void update(unsigned x, unsigned y);
 };
 

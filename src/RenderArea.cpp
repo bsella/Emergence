@@ -1,10 +1,10 @@
 #include "include/RenderArea.h"
 
 RenderArea::RenderArea(QWidget *parent):QWidget(parent){
-	xg=new PixelXGate;
-	yg=new PixelYGate;
-	start=new RenderGate;
-	ratio=new RatioGate;
+	xg=new PixelXNode;
+	yg=new PixelYNode;
+	start=new RenderNode;
+	ratio=new RatioNode;
 }
 
 QImage RenderArea::renderImage(int w, int h){

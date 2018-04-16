@@ -1,11 +1,11 @@
-#ifndef IFGATE_H
-#define IFGATE_H
+#ifndef IFNODE_H
+#define IFNODE_H
 
-#include "Gate.h"
+#include "Node.h"
 
-class IfGate:public Gate{
+class IfNode:public Node{
 public:
-	IfGate();
+	IfNode();
 private:
 	data_t eval();
 	void paint(QPainter* painter,

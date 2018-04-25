@@ -75,7 +75,6 @@ protected:
 	QPen pen;
 	QRectF boundingRect()const;
 	uint nbArgs;
-	static const int socketSize=5;
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

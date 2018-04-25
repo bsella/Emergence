@@ -7,9 +7,9 @@ HSVNode::HSVNode():ColorNode(HSV_G){}
 
 void RGBNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter, option, widget);
-	painter->fillRect(QRect(socketSize+2,height/4-5,width-4,10),Qt::red);
-	painter->fillRect(QRect(socketSize+2,2*height/4-5,width-4,10),Qt::green);
-	painter->fillRect(QRect(socketSize+2,3*height/4-5,width-4,10),Qt::blue);
+	painter->fillRect(QRect(Socket::socketSize+2,height/4-5,width-4,10),Qt::red);
+	painter->fillRect(QRect(Socket::socketSize+2,2*height/4-5,width-4,10),Qt::green);
+	painter->fillRect(QRect(Socket::socketSize+2,3*height/4-5,width-4,10),Qt::blue);
 }
 
 void HSVNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){

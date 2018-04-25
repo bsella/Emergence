@@ -11,7 +11,7 @@ data_t RenderNode::eval(){
 void RenderNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget){
 	pen.setColor(Qt::darkGreen);
 	Node::paint(painter, option, widget);
-	painter->drawText(boundingRect().center()-QPoint(22,-2),"Output");
+	painter->drawText(boundingRect().center()-QPoint(18,-2),"Output");
 }
 
 void RenderNode::removeNode(){

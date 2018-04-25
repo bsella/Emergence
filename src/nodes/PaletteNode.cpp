@@ -11,7 +11,7 @@ data_t LUTNode::eval(){
 
 void LUTNode::paint(QPainter *painter, const QStyleOptionGraphicsItem* option, QWidget* widget){
 	Node::paint(painter, option, widget);
-	for(uint i=socketSize*2; i<width; i++){
+	for(uint i=Socket::socketSize*2; i<width; i++){
 		painter->setPen(plt[i/(double)width]);
 		painter->drawLine(QPoint(i,10),QPoint(i,height-10));
 	}

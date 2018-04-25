@@ -5,6 +5,7 @@ Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):id(i
 	color(c),pen(QPen(Qt::black,1)), nbArgs(n),special(spec){
 	setCursor(Qt::OpenHandCursor);
 	setAcceptDrops(!spec);
+	if(!spec)setData(0,"node");
 	for(uint i=0; i<nbArgs;i++){
 		sockets.push_back(new Socket(i,height*((i+1.0)/(nbArgs+1.0)),this));
 		iNodes.push_back(nullptr);
@@ -13,24 +14,24 @@ Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):id(i
 }
 
 QRectF Node::boundingRect()const{
-	return QRectF(0,0,width+2*socketSize,height);
+	if(special) return QRectF(0,0,width+Socket::socketSize,height);
+	return QRectF(0,0,width+2*Socket::socketSize,height);
 }
 
 void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*,QWidget*){
 	QRectF rect=boundingRect();
-	rect.setLeft(rect.left()+socketSize); rect.setRight(rect.right()-socketSize);
+	if(!special)rect.setRight(rect.right()-Socket::socketSize);
+	rect.setLeft(rect.left()+Socket::socketSize);
 	painter->setRenderHint(QPainter::Antialiasing);
 	QPainterPath path;
 	path.addRoundedRect(rect, 10, 10);
 	painter->setPen(pen);
 	painter->fillPath(path, color);
 	painter->drawPath(path);
-	rect = boundingRect();
-	rect.setLeft(rect.left()+socketSize); rect.setRight(rect.right()-socketSize);
 	for(uint i=1; i<=nbArgs; i++)//draw input sockets
-		painter->drawLine(rect.topLeft()+QPointF(0,i*height/(nbArgs+1.0)),rect.topLeft()+QPointF(-socketSize,i*rect.height()/(nbArgs+1.0)));
+		painter->drawLine(rect.topLeft()+QPointF(0,i*height/(nbArgs+1.0)),rect.topLeft()+QPointF(-Socket::socketSize,i*rect.height()/(nbArgs+1.0)));
 	if(!special)//draw output socket
-		painter->drawLine(rect.center()+QPointF(rect.width()/2,0),rect.center()+QPointF(rect.width()/2+socketSize,0));
+		painter->drawLine(rect.center()+QPointF(rect.width()/2,0),rect.center()+QPointF(rect.width()/2+Socket::socketSize,0));
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent* event){
@@ -63,16 +64,10 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
 	}
 }
 
-void Node::dragEnterEvent(QGraphicsSceneDragDropEvent *event){
-	if(event->mimeData()->parent()==this)
-		setAcceptDrops(false);
-	else
-		setAcceptDrops(!special);
+void Node::dragEnterEvent(QGraphicsSceneDragDropEvent *){
 }
 
-void Node::dropEvent(QGraphicsSceneDragDropEvent* event){
-	if(event->mimeData()->data("socket")=="1")
-		((Node*)(event->mimeData()->parent()))->connectNode(this,(event->mimeData()->data("rank")).toInt());
+void Node::dropEvent(QGraphicsSceneDragDropEvent* ){
 }
 
 void Node::removeNode(){
@@ -159,7 +154,7 @@ void Node::updateOutputVal(){
 
 void Node::drawIcon(QPainter *painter, QString filename){
 	QImage icon=QImage(filename);
-	painter->drawImage(width/2-icon.width()/2+socketSize,height/2-icon.height()/2,icon);
+	painter->drawImage(width/2-icon.width()/2+Socket::socketSize,height/2-icon.height()/2,icon);
 }
 
 Node::~Node(){

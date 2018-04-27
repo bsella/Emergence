@@ -46,7 +46,6 @@ SOURCES +=\
     src/nodes/PixelNode.cpp \
     src/nodes/Node.cpp \
     src/nodes/ConstNode.cpp \
-	src/Socket.cpp \
     src/nodes/RenderNode.cpp \
     src/Workspace.cpp \
     src/nodes/MathNode.cpp \
@@ -66,7 +65,6 @@ HEADERS  +=\
     include/nodes/ConstNode.h \
     include/nodes/PixelNode.h \
     include/data_t.h \
-    include/Socket.h \
     include/nodes/RenderNode.h \
     include/Workspace.h \
     include/nodes/MathNode.h \

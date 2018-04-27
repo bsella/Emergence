@@ -11,7 +11,6 @@
 #include <QMenu>
 
 #include "include/data_t.h"
-#include <include/Socket.h>
 
 #define DOUBLE_G	1
 #define COLOR_G		2
@@ -48,6 +47,30 @@
 
 class Node: public QGraphicsObject{
 	Q_OBJECT
+private:
+	struct Socket : public QGraphicsItem{
+		Socket(unsigned i, double y, Node *parent);
+		unsigned rank;
+		double iy;
+		static const int headSize=8;
+		bool connected=false;
+		QPen pen=QPen(Qt::black);
+		QGraphicsLineItem *line=nullptr;
+		Node* hover;
+		void connectToNode(Node*n);
+		Node* collidesWithNode()const;
+		QRectF boundingRect() const;
+		void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
+		void hoverEnterEvent(QGraphicsSceneHoverEvent*);
+		void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
+		void mouseMoveEvent(QGraphicsSceneMouseEvent*);
+		void mousePressEvent(QGraphicsSceneMouseEvent*);
+		void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
+		void reset();
+	};
+	bool special;
+	void updateVal();	//value is update (not valid)
+	friend class Workspace;
 public:
 	unsigned id, width, height;
 	virtual data_t eval()=0;
@@ -62,35 +85,30 @@ private slots:
 protected slots:
 	virtual void removeNode();
 protected:
+	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
 	~Node();
+
+	static const int socketSize=5;
 	data_t val;			//value returned by node
 	bool validVal;		//value is valid
 	QColor color;
 	QMenu *menu=nullptr;
+	QPen pen;
+	uint nbArgs;
+	std::vector<Node*> iNodes;		//INPUT NODES
+	std::list<std::pair<Node*,uint>> oConnections;
+	std::vector<Socket*> sockets;
+
 	void updateOutputVal();
-	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
+	QRectF boundingRect()const;
 	virtual void paint(QPainter* painter,
 			const QStyleOptionGraphicsItem* option,
 			QWidget* widget);
-	QPen pen;
-	QRectF boundingRect()const;
-	uint nbArgs;
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-	std::vector<Node*> iNodes;		//INPUT NODES
-	std::vector<QGraphicsLineItem*> iLines;
-	std::list<std::pair<Node*,uint>> oConnections;
-	std::vector<Socket*> sockets;
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
-	void dropEvent(QGraphicsSceneDragDropEvent *event);
-	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
-	void connectNode(Node *g, unsigned i);
 	void drawIcon(QPainter *painter, QString filename);
-private:
-	bool special;
-	void updateVal();	//value is update (not valid)
-	friend class Workspace;
 };
 
 #endif

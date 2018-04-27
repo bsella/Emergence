@@ -213,11 +213,11 @@ void Workspace::loadNodesFromFile(){
 		g->setPos(fx,fy);
 	}
 	scene->setSceneRect(scene->itemsBoundingRect());
-	for(auto& g: Nodes)
-		for(unsigned i=0; i<g->nbArgs; i++){
+	for(auto& node: Nodes)
+		for(unsigned i=0; i<node->nbArgs; i++){
 			in>>n;
 			if(n>=0)
-				g->connectNode(NodeID[n],i);
+				node->sockets[i]->connectToNode(NodeID[n]);
 		}
 }
 

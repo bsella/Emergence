@@ -16,27 +16,27 @@ void Workspace::setRA(RenderArea* ra){
 }
 
 void Workspace::addFuncNode(uint g, bool load){
-	Node* Node;
+	Node* node;
 	switch(g){
 	case DOUBLE_G:{
 		if(load){
-			Node=new ConstNode(0.0);
+			node=new ConstNode(0.0);
 			break;
 		}
 		bool ok;
 		double d =QInputDialog::getDouble(this,"Choose Number","",0,-2147483647,2147483647,3,&ok);
 		if(!ok) return;
-		Node=new ConstNode(d);
+		node=new ConstNode(d);
 		break;
 	}
 	case COLOR_G:{
 		if(load){
-			Node=new ConstNode(0xffffffff);
+			node=new ConstNode(0xffffffff);
 			break;
 		}
 		QColor c =QColorDialog::getColor(Qt::white,this);
 		if(!c.isValid()) return;
-		Node=new ConstNode(c.rgba());
+		node=new ConstNode(c.rgba());
 		break;
 	}
 	case PALETTE_G:{
@@ -45,70 +45,70 @@ void Workspace::addFuncNode(uint g, bool load){
 		p.add(0xffff0000,0);
 		p.add(0xff0000ff,.5);
 		p.add(0xff00ff00,1);
-		Node= new LUTNode(p);
+		node= new LUTNode(p);
 		break;
 	}
 	case BITMAP_G:{
 		if(load){
-			Node=new BitmapNode;
+			node=new BitmapNode;
 			break;
 		}
 		QString f= QFileDialog::getOpenFileName(this,"Choose Image",".","Images (*.bmp)");
 		if(f.isNull())return;
-		Node = new BitmapNode(f);
+		node = new BitmapNode(f);
 		break;
 	}
-	case IF_G:		Node=new IfNode;break;
-	case GT_G:		Node=new GTNode;break;
-	case LT_G:		Node=new LTNode;break;
-	case EQ_G:		Node=new EQNode;break;
-	case NE_G:		Node=new NENode;break;
-	case OR_G:		Node=new ORNode;break;
-	case AND_G:		Node=new ANDNode;break;
-	case XOR_G:		Node=new XORNode;break;
-	case NOT_G:		Node=new NOTNode;break;
+	case IF_G:		node=new IfNode;break;
+	case GT_G:		node=new GTNode;break;
+	case LT_G:		node=new LTNode;break;
+	case EQ_G:		node=new EQNode;break;
+	case NE_G:		node=new NENode;break;
+	case OR_G:		node=new ORNode;break;
+	case AND_G:		node=new ANDNode;break;
+	case XOR_G:		node=new XORNode;break;
+	case NOT_G:		node=new NOTNode;break;
 	case X_G:
 		if(!renderArea) return;
-		Node=renderArea->xg;
+		node=renderArea->xg;
 		break;
 	case Y_G:
 		if(!renderArea) return;
-		Node= renderArea->yg;
+		node= renderArea->yg;
 		break;
 	case RENDER_G:
 		if(!renderArea) return;
-		Node=renderArea->start;
+		node=renderArea->start;
 		break;
 	case RATIO_G:
 		if(!renderArea) return;
-		Node=renderArea->ratio;
+		node=renderArea->ratio;
 		break;
-	case ADD_G:		Node=new ADDNode;break;
-	case SUB_G:		Node=new SUBNode;break;
-	case MUL_G:		Node=new MULNode;break;
-	case DIV_G:		Node=new DIVNode;break;
-	case NEG_G:		Node=new NEGNode;break;
-	case SQRT_G:	Node=new SQRTNode;break;
-	case ABS_G:		Node=new ABSNode;break;
-	case LERP_G:	Node=new LERPNode;break;
-	case CLAMP_G:	Node=new CLAMPNode;break;
-	case SIN_G:		Node=new SINNode;break;
-	case COS_G:		Node=new COSNode;break;
-	case MIN_G:		Node=new MINNode;break;
-	case MAX_G:		Node=new MAXNode;break;
-	case RGB_G:		Node=new RGBNode;break;
-	case HSV_G:		Node=new HSVNode;break;
+	case ADD_G:		node=new ADDNode;break;
+	case SUB_G:		node=new SUBNode;break;
+	case MUL_G:		node=new MULNode;break;
+	case DIV_G:		node=new DIVNode;break;
+	case NEG_G:		node=new NEGNode;break;
+	case SQRT_G:	node=new SQRTNode;break;
+	case ABS_G:		node=new ABSNode;break;
+	case LERP_G:	node=new LERPNode;break;
+	case CLAMP_G:	node=new CLAMPNode;break;
+	case SIN_G:		node=new SINNode;break;
+	case COS_G:		node=new COSNode;break;
+	case MIN_G:		node=new MINNode;break;
+	case MAX_G:		node=new MAXNode;break;
+	case RGB_G:		node=new RGBNode;break;
+	case HSV_G:		node=new HSVNode;break;
 	default:return;
 	}
-	connect(Node,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
-	connect(Node,SIGNAL(removeFromWS(Node*)),this,SLOT(removeFromList(Node*)));
-	Node->setPos(scene->sceneRect().center());
-	Nodes.push_back(Node);
-	scene->addItem(Node);
-	Node->setZValue(0);
-	for(const auto& i: Node->collidingItems())
-		if(Node->zValue()<= i->zValue())
-			Node->setZValue(i->zValue()+1);
+	connect(node,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
+	connect(node,SIGNAL(removeFromWS(Node*)),this,SLOT(removeFromList(Node*)));
+	node->setPos(scene->sceneRect().center());
+	Nodes.push_back(node);
+	scene->addItem(node);
+	node->setZValue(0);
+	for(const auto& i: node->collidingItems())
+		if(node->zValue()<= i->zValue())
+			node->setZValue(i->zValue()+1);
 }
 
 #include <iostream>

@@ -162,7 +162,7 @@
          <rect>
           <x>0</x>
           <y>-110</y>
-          <width>165</width>
+          <width>175</width>
           <height>331</height>
          </rect>
         </property>
@@ -444,7 +444,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>179</width>
+          <width>189</width>
           <height>221</height>
          </rect>
         </property>
@@ -572,7 +572,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>179</width>
+          <width>189</width>
           <height>221</height>
          </rect>
         </property>
@@ -660,8 +660,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>183</width>
-          <height>207</height>
+          <width>189</width>
+          <height>221</height>
          </rect>
         </property>
         <attribute name="label">
@@ -875,7 +875,7 @@
   <widget class="QDockWidget" name="outputDock">
    <property name="minimumSize">
     <size>
-     <width>124</width>
+     <width>200</width>
      <height>140</height>
     </size>
    </property>
@@ -942,19 +942,9 @@
     <string>Greater</string>
    </property>
   </action>
-  <action name="actionGreaterOrEqual">
-   <property name="text">
-    <string>Greater or Equal</string>
-   </property>
-  </action>
   <action name="actionLessThan">
    <property name="text">
     <string>Less</string>
-   </property>
-  </action>
-  <action name="actionLess_Or_Equal">
-   <property name="text">
-    <string>Less or Equal</string>
    </property>
   </action>
   <action name="actionEqual">

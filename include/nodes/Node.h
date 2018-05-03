@@ -48,18 +48,20 @@
 class Node: public QGraphicsObject{
 	Q_OBJECT
 private:
-	struct Socket : public QGraphicsItem{
+	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
 		unsigned rank;
 		double iy;
+		bool visible=true;
 		static const int headSize=8;
 		bool connected=false;
 		QPen pen=QPen(Qt::black);
-		QGraphicsLineItem *line=nullptr;
 		Node* hover;
+		QGraphicsLineItem line;
 		void connectToNode(Node*n);
-		Node* collidesWithNode()const;
 		QRectF boundingRect() const;
+		void updateLine();
+		Node* collidesWithNode()const;
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 		void hoverEnterEvent(QGraphicsSceneHoverEvent*);
 		void hoverLeaveEvent(QGraphicsSceneHoverEvent*);

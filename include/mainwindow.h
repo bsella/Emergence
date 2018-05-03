@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include "include/ExportImageDialog.h"
-#include <memory>
 
 namespace Ui {
 class MainWindow;
@@ -20,7 +19,10 @@ private:
 	Ui::MainWindow *ui;
 
 private slots:
-	void exportImage();
+	void on_actionExit_triggered();
+	void on_actionExport_triggered();
+	void on_actionSave_as_triggered();
+	void on_actionOpen_triggered();
 };
 
 #endif // MAINWINDOW_H

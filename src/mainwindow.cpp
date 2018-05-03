@@ -57,10 +57,6 @@ MainWindow::MainWindow(QWidget *parent) :
 		ui->renderButton->setEnabled(false);
 	});
 
-	connect(ui->actionExport,	SIGNAL(triggered(bool)),this,SLOT(exportImage()));
-	connect(ui->actionExit,		SIGNAL(triggered(bool)),this,SLOT(close()));
-	connect(ui->actionSave_as,	SIGNAL(triggered(bool)),ui->workspace,SLOT(createFile()));
-	connect(ui->actionOpen,		SIGNAL(triggered(bool)),ui->workspace,SLOT(loadNodesFromFile()));
 	connect(ui->renderArea,		SIGNAL(valid(bool)),ui->actionExport,SLOT(setEnabled(bool)));
 
 	connect(ui->sqrtButton,		&QToolButton::clicked,ui->workspace,[this]{ui->workspace->addFuncNode(SQRT_G,false);});
@@ -124,6 +120,19 @@ MainWindow::~MainWindow(){
 	delete ui;
 }
 
-void MainWindow::exportImage(){
+void MainWindow::on_actionExit_triggered(){
+	close();
+}
+
+void MainWindow::on_actionExport_triggered(){
 	ExportImageDialog::exportBMP(ui->renderArea);
 }
+
+void MainWindow::on_actionSave_as_triggered(){
+	ui->workspace->createFile();
+}
+
+void MainWindow::on_actionOpen_triggered(){
+	ui->workspace->loadNodesFromFile();
+}
+

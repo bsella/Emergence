@@ -1,21 +1,31 @@
 #include "include/nodes/Node.h"
 #include <iostream>
 
-Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsItem(parent),rank(i),iy(y){
+Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsObject(parent)
+	,rank(i),iy(y),line(headSize,0,headSize,0){
 	setZValue(parent->zValue()+1);
 	setPos(-headSize-1,y);
 	setAcceptedMouseButtons(Qt::LeftButton);
 	setAcceptHoverEvents(true);
+	line.setParentItem(this);
+	connect(this,&Node::Socket::xChanged,this,&Node::Socket::updateLine);
+	connect(this,&Node::Socket::yChanged,this,&Node::Socket::updateLine);
 }
 
 QRectF Node::Socket::boundingRect()const{
 	return QRectF(-headSize,-headSize,headSize*2+1,headSize*2+1);
 }
 
+void Node::Socket::updateLine(){
+	line.setLine(QLine({headSize,0},(parentItem()->pos()-scenePos()-QPointF(0,-iy)).toPoint()));
+}
+
 void Node::Socket::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-	painter->setPen(pen);
-	painter->setRenderHint(QPainter::Antialiasing);
-	painter->drawEllipse(boundingRect().center(),headSize,headSize);
+	if(visible){
+		painter->setPen(pen);
+		painter->setRenderHint(QPainter::Antialiasing);
+		painter->drawEllipse(boundingRect().center(),headSize,headSize);
+	}
 }
 
 void Node::Socket::hoverEnterEvent(QGraphicsSceneHoverEvent *){
@@ -44,31 +54,32 @@ void Node::Socket::mouseMoveEvent(QGraphicsSceneMouseEvent*event){
 				i->setZValue(ii->zValue()+1);
 		QRectF r=i->boundingRect();
 		parentItem()->setZValue(i->zValue());
-		line->setZValue(i->zValue());
+		setZValue(i->zValue());
 		setPos(i->pos()+QPoint(r.width()+Socket::headSize-1,r.height()/2)-parentItem()->pos());
 	}else{
 		hover=nullptr;
 		setPos(event->scenePos()- boundingRect().center()-parentObject()->pos());
 	}
-	line->setLine(QLine(scenePos().toPoint()+QPoint(headSize,0),parentObject()->scenePos().toPoint()-QPoint(0,-iy)));
 }
 
 void Node::Socket::connectToNode(Node* n){
 	Node* parent= (Node*)parentItem();
 	if(n==parent) return;
 	if(parent->nbArgs>=rank+1){
+		QRectF r= n->boundingRect();
+		setPos(n->pos()+QPoint(r.width()-Socket::headSize,r.height()/2)-parent->pos());
 		parent->iNodes[rank]=n;
 		n->oConnections.push_back({parent,rank});
-		setVisible(false);
-		line->setLine(QLine(scenePos().toPoint()+QPoint(-headSize,0),parentObject()->scenePos().toPoint()-QPoint(0,-iy)));
+		connect(n,&Node::xChanged,this,&Node::Socket::updateLine);
+		connect(n,&Node::yChanged,this,&Node::Socket::updateLine);
+		setEnabled(false);
+		visible=false;
 		parent->updateVal();
 		emit parent->notifyRA();
 	}
 }
 
-void Node::Socket::mousePressEvent(QGraphicsSceneMouseEvent*){
-	if(!line) line=scene()->addLine(headSize,0,headSize,0);
-}
+void Node::Socket::mousePressEvent(QGraphicsSceneMouseEvent*){}
 
 void Node::Socket::mouseReleaseEvent(QGraphicsSceneMouseEvent*){
 	if(hover) connectToNode(hover);
@@ -77,10 +88,10 @@ void Node::Socket::mouseReleaseEvent(QGraphicsSceneMouseEvent*){
 
 void Node::Socket::reset(){
 	pen.setWidth(1);
-	setVisible(true);
+	visible=true;
+	setEnabled(true);
 	setPos(-headSize-1,iy);
-	scene()->removeItem(line);
-	line=nullptr;
+	line.setLine(headSize,0,headSize,0);
 }
 
 Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):
@@ -135,13 +146,15 @@ void Node::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
 	if(event->buttons()==Qt::LeftButton){
 		setZValue(INT32_MAX);
 		this->setPos(event->scenePos()- boundingRect().center());
-		QRectF r= boundingRect();
-		for(uint i = 0; i<iNodes.size();i++){
-			if(iNodes[i]==nullptr)continue;
-			sockets[i]->line->setLine(QLine(sockets[i]->line->line().p1().toPoint(),QPoint(x(),y()+r.height()*((i+1.0)/(iNodes.size()+1.0)))));
+		for(uint i = 0; i<iNodes.size();i++)
+			if(iNodes[i]){
+				QRectF r= iNodes[i]->boundingRect();
+				sockets[i]->setPos(iNodes[i]->pos()-pos()+QPointF(r.width()-Socket::headSize,r.height()/2));
+			}
+		for(auto l=oConnections.begin(); l!=oConnections.end();++l){
+			QRectF r=boundingRect();
+			l->first->sockets[l->second]->setPos(pos()-l->first->pos()+QPointF(r.width()-Socket::headSize,r.height()/2));
 		}
-		for(auto l=oConnections.begin(); l!=oConnections.end();++l)
-			l->first->sockets[l->second]->line->setLine(QLine(QPoint(x()+r.width(),y()+r.height()/2),l->first->sockets[l->second]->line->line().p2().toPoint()));
 	}
 }
 
@@ -159,8 +172,7 @@ void Node::removeNode(){
 }
 
 void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
-	if(menu==nullptr)
-		menu= new QMenu;
+	if(!menu) menu= new QMenu;
 	for(unsigned i = 0; i<nbArgs; i++){
 		QAction *a= menu->addAction(QString("Diconnect ")+QString::number(i+1));
 		a->setEnabled(iNodes[i]!=nullptr);
@@ -188,6 +200,8 @@ void Node::disconnectNode(unsigned rank){
 				iNodes[rank]->oConnections.erase(l);
 				break;
 			}
+		disconnect(iNodes[rank],&Node::xChanged,sockets[rank],&Node::Socket::updateLine);
+		disconnect(iNodes[rank],&Node::yChanged,sockets[rank],&Node::Socket::updateLine);
 		iNodes[rank]=nullptr;
 		sockets[rank]->reset();
 		updateVal();

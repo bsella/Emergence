@@ -174,7 +174,7 @@ void Node::removeNode(){
 void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 	if(!menu) menu= new QMenu;
 	for(unsigned i = 0; i<nbArgs; i++){
-		QAction *a= menu->addAction(QString("Diconnect ")+QString::number(i+1));
+		QAction *a= menu->addAction(QString("Disconnect ")+QString::number(i+1));
 		a->setEnabled(iNodes[i]!=nullptr);
 		connect(a,&QAction::triggered,this,[=](){disconnectNode(i);});
 	}

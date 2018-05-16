@@ -24,14 +24,12 @@ data_t::operator double()const{
 	}
 }
 
-#include<iostream>
-
 data_t::operator color()const{
 	if(t==TypeEnum::BOOL) return b? 0xffffffff:0xff000000;
 	if(t==TypeEnum::DOUBLE){
 		if(d>=1)return 0xffffffff;
 		if(d<=0)return 0xff000000;
-		unsigned char c= d*256;
+		uint8_t c= d*256;
 		return 0xff000000+c+(c<<8)+(c<<16);
 	}
 	if(t==TypeEnum::COMPLEX){

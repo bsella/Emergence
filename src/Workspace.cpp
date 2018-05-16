@@ -2,6 +2,7 @@
 
 Workspace::Workspace(QWidget *parent):QGraphicsView(parent),scene(new QGraphicsScene){
 	setScene(scene);
+	setDragMode(DragMode::RubberBandDrag);
 }
 
 void Workspace::setRA(RenderArea* ra){
@@ -103,6 +104,7 @@ void Workspace::addFuncNode(uint g, bool load){
 	}
 	connect(node,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 	connect(node,SIGNAL(removeFromWS(Node*)),this,SLOT(removeFromList(Node*)));
+	connect(scene,SIGNAL(selectionChanged()),node,SLOT(updateSelection()));
 	node->setPos(scene->sceneRect().center());
 	Nodes.push_back(node);
 	scene->addItem(node);
@@ -214,17 +216,15 @@ void Workspace::loadNodesFromFile(){
 		g->setPos(fx,fy);
 	}
 	scene->setSceneRect(scene->itemsBoundingRect());
-	for(auto& node: Nodes){
+	for(auto& node: Nodes)
 		for(unsigned i=0; i<node->nbArgs; i++){
 			in>>n;
 			if(n>=0)
 				node->sockets[i]->connectToNode(NodeID[n]);
 		}
-	}
 }
 
 Workspace::~Workspace(){
-	clear();
-	delete scene;
 	delete renderArea;
+	delete scene;
 }

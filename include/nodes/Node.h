@@ -87,6 +87,8 @@ private slots:
 	void disconnectNode(unsigned rank);
 protected slots:
 	virtual void removeNode();
+	void updateLines()const;
+	void updateSelection();
 protected:
 	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
 	~Node();
@@ -109,9 +111,9 @@ protected:
 			QWidget* widget);
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void drawIcon(QPainter *painter, QString filename);
+
 };
 
 #endif

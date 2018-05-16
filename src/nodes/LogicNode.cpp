@@ -40,7 +40,7 @@ data_t ANDNode::eval(){
 
 data_t XORNode::eval(){
 	if(validVal) return val;
-	val= iNodes[0]->eval() ^ iNodes[1]->eval();
+	val= bool(bool(iNodes[0]->eval()) ^ bool(iNodes[1]->eval()));
 	validVal=true;
 	return val;
 }

@@ -51,7 +51,9 @@ SOURCES +=\
     src/nodes/MathNode.cpp \
     src/nodes/BitmapNode.cpp \
     src/ExportImageDialog.cpp \
-    src/nodes/ColorNode.cpp
+    src/nodes/ColorNode.cpp \
+    src/data_t.cpp \
+    src/nodes/ComplexNode.cpp
 
 HEADERS  +=\
     include/mainwindow.h \
@@ -70,7 +72,8 @@ HEADERS  +=\
     include/nodes/MathNode.h \
     include/nodes/BitmapNode.h \
     include/ExportImageDialog.h \
-    include/nodes/ColorNode.h
+    include/nodes/ColorNode.h \
+    include/nodes/ComplexNode.h
 
 FORMS += forms/mainwindow.ui \
     forms/exportimagedialog.ui

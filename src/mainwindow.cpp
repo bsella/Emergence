@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QWidget::setWindowIcon(QIcon(":/icons/emgc.ico"));
 
 	ui->workspace->setRA(ui->renderArea);
+	connect(ui->actionComplex,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(CPLX_G,false);});
 	connect(ui->actionSQRT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(SQRT_G,false);});
 	connect(ui->actionADD,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(ADD_G,false);});
 	connect(ui->actionSUB,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(SUB_G,false);});

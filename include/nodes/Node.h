@@ -44,6 +44,7 @@
 #define RGB_G		30
 #define HSV_G		31
 #define RATIO_G		32
+#define CPLX_G		33
 
 class Node: public QGraphicsObject{
 	Q_OBJECT

@@ -98,6 +98,7 @@ void Workspace::addFuncNode(uint g, bool load){
 	case MAX_G:		node=new MAXNode;break;
 	case RGB_G:		node=new RGBNode;break;
 	case HSV_G:		node=new HSVNode;break;
+	case CPLX_G:	node=new ComplexNode;break;
 	default:return;
 	}
 	connect(node,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));

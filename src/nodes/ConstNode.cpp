@@ -57,7 +57,7 @@ void ConstNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*){
 void ConstNode::changeColor(){
 	QColor c =QColorDialog::getColor(Qt::white,(QWidget*)parentWidget());
 	if(c.isValid()){
-		val.u=c.rgba();
+		val=c.rgba();
 		color=c;
 		updateOutputVal();
 		update();
@@ -69,7 +69,7 @@ void ConstNode::changeNumber(){
 	bool ok;
 	double d =QInputDialog::getDouble((QWidget*)parentWidget(),"Choose Number","",0,-2147483647,2147483647,3,&ok);
 	if(ok){
-		val.d=d;
+		val=d;
 		updateOutputVal();
 		update();
 		emit notifyRA();

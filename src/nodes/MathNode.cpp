@@ -113,7 +113,7 @@ data_t NEGNode::eval(){
 }
 data_t SQRTNode::eval(){
 	if(validVal) return val;
-	val= qSqrt(iNodes[0]->eval());
+	val= iNodes[0]->eval().sqrt();
 	validVal=true;
 	return val;
 }
@@ -140,13 +140,13 @@ data_t CLAMPNode::eval(){
 }
 data_t SINNode::eval(){
 	if(validVal) return val;
-	val= qSin(iNodes[0]->eval());
+	val= iNodes[0]->eval().sin();
 	validVal=true;
 	return val;
 }
 data_t COSNode::eval(){
 	if(validVal) return val;
-	val= qCos(iNodes[0]->eval());
+	val= iNodes[0]->eval().cos();
 	validVal=true;
 	return val;
 }

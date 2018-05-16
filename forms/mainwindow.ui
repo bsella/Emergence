@@ -88,6 +88,8 @@
      <addaction name="separator"/>
      <addaction name="actionMin"/>
      <addaction name="actionMax"/>
+     <addaction name="separator"/>
+     <addaction name="actionComplex"/>
     </widget>
     <addaction name="menuCalc"/>
     <addaction name="menuComparison"/>
@@ -161,7 +163,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-110</y>
+          <y>0</y>
           <width>175</width>
           <height>331</height>
          </rect>
@@ -1105,6 +1107,11 @@
   <action name="actionRatio">
    <property name="text">
     <string>X/Y Ratio</string>
+   </property>
+  </action>
+  <action name="actionComplex">
+   <property name="text">
+    <string>Complex</string>
    </property>
   </action>
  </widget>

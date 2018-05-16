@@ -17,6 +17,7 @@
 #include <include/nodes/PaletteNode.h>
 #include <include/nodes/BitmapNode.h>
 #include <include/nodes/ColorNode.h>
+#include <include/nodes/ComplexNode.h>
 
 #define MAGIC_NUMBER 0xa1b2affd
 #define SAVE_VERSION 0x00000002

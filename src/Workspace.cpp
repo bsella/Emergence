@@ -120,6 +120,8 @@ void Workspace::removeFromList(Node *g){
 }
 
 void Workspace::clear(){
+	for(auto n:scene->selectedItems())
+		n->setSelected(false);
 	while(!Nodes.empty())
 		Nodes.back()->removeNode();
 }
@@ -225,6 +227,7 @@ void Workspace::loadNodesFromFile(){
 }
 
 Workspace::~Workspace(){
-	delete renderArea;
+	clear();
 	delete scene;
+	delete renderArea;
 }

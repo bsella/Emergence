@@ -35,7 +35,7 @@ data_t::operator color()const{
 	if(t==TypeEnum::COMPLEX){
 		return QColor::fromHsv(359*(std::arg(c)+M_PI)/(M_PI*2),
 							   255,
-							   qMin(uint(255*std::abs(c)),(uint)255)).rgb();
+							   std::abs(c)>1?255:std::abs(c)*255).rgb();
 	}
 	return clr;
 }

@@ -7,8 +7,8 @@
 
 class ConstNode:public Node{
 public:
-	ConstNode(double v);
-	ConstNode(uint v);
+	ConstNode(double v=0);
+	ConstNode(data_t::color v);
 private:
 	ConstNode()=delete;
 	data_t eval();

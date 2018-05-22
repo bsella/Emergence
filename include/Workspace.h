@@ -7,6 +7,8 @@
 #include <QColorDialog>
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include<QDropEvent>
+#include<QMimeData>
 #include <include/nodes/Node.h>
 #include <include/nodes/IfNode.h>
 #include <include/nodes/LogicNode.h>
@@ -28,16 +30,20 @@ public:
 	Workspace(QWidget *parent=0);
 	~Workspace();
 	void setRA(RenderArea* ra);
+	QGraphicsScene* scene;
 public slots:
-	void addFuncNode(uint g, bool load);
+	void addFuncNode(uint g, const QPointF& pos, bool load=false);
+	void addFuncNode(uint g, bool load=false);
 	void removeFromList(Node *g);
 	void createFile()const;
 	void loadNodesFromFile();
 private:
 	std::list<Node*> Nodes;
-	QGraphicsScene* scene;
 	RenderArea* renderArea=nullptr;
 	void clear();
+	void dropEvent(QDropEvent *event);
+	void dragMoveEvent(QDragMoveEvent *event);
+	void dragEnterEvent(QDragEnterEvent *event);
 };
 
 #endif // WORKSPACE_H

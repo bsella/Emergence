@@ -14,9 +14,9 @@ enum class TypeEnum{
 };
 
 typedef std::complex<double> cplx;
-typedef uint32_t color;
 
 struct data_t{
+	typedef uint32_t color;
 	TypeEnum t;
 	union{
 		bool b;

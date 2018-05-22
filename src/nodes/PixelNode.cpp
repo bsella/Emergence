@@ -37,5 +37,5 @@ void PixelYNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 void RatioNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	PixelNode::paint(painter,option,widget);
 	QRectF rect=boundingRect();
-	painter->drawText(rect.x()+rect.width()/3,rect.y()+rect.height()/2+3,"X/Y");
+	painter->drawText(rect.x()+rect.width()/3,rect.y()+rect.height()/2+3,"W/H");
 }

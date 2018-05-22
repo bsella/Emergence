@@ -2,21 +2,23 @@
 
 Workspace::Workspace(QWidget *parent):QGraphicsView(parent),scene(new QGraphicsScene){
 	setScene(scene);
+	setAcceptDrops(true);
 	setDragMode(DragMode::RubberBandDrag);
 }
 
 void Workspace::setRA(RenderArea* ra){
-	if (!ra) return ;
+	if (!ra) return;
 	renderArea=ra;
-	addFuncNode(RENDER_G,false);
-	addFuncNode(X_G,false);
-	addFuncNode(Y_G,false);
-	renderArea->xg->setPos(0,0);
-	renderArea->yg->setPos(0,100);
-	renderArea->start->setPos(100,50);
+	addFuncNode(X_G,{0,0});
+	addFuncNode(Y_G,{0,100});
+	addFuncNode(RENDER_G,{100,50});
 }
 
 void Workspace::addFuncNode(uint g, bool load){
+	addFuncNode(g, scene->sceneRect().center(), load);
+}
+
+void Workspace::addFuncNode(uint g, const QPointF& pos, bool load){
 	Node* node;
 	switch(g){
 	case DOUBLE_G:{
@@ -105,7 +107,7 @@ void Workspace::addFuncNode(uint g, bool load){
 	connect(node,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 	connect(node,SIGNAL(removeFromWS(Node*)),this,SLOT(removeFromList(Node*)));
 	connect(scene,SIGNAL(selectionChanged()),node,SLOT(updateSelection()));
-	node->setPos(scene->sceneRect().center());
+	node->setPos(pos-node->boundingRect().center());
 	Nodes.push_back(node);
 	scene->addItem(node);
 	node->setZValue(0);
@@ -114,14 +116,11 @@ void Workspace::addFuncNode(uint g, bool load){
 			node->setZValue(i->zValue()+1);
 }
 
-#include <iostream>
 void Workspace::removeFromList(Node *g){
 	Nodes.remove(g);
 }
 
 void Workspace::clear(){
-	for(auto n:scene->selectedItems())
-		n->setSelected(false);
 	while(!Nodes.empty())
 		Nodes.back()->removeNode();
 }
@@ -231,3 +230,15 @@ Workspace::~Workspace(){
 	delete scene;
 	delete renderArea;
 }
+
+void Workspace::dragEnterEvent(QDragEnterEvent *event){
+	event->setAccepted(event->mimeData()->text()=="nodeTool");
+	QGraphicsView::dragEnterEvent(event);
+}
+
+void Workspace::dropEvent(QDropEvent *event){
+	addFuncNode(event->mimeData()->data("type").toInt(),
+				mapToScene(event->pos()));
+}
+
+void Workspace::dragMoveEvent(QDragMoveEvent *){}

@@ -156,7 +156,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event){
 	QGraphicsItem::mousePressEvent(event);
 }
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent*event){
-	this->scene()->setSceneRect(this->scene()->itemsBoundingRect());
+	scene()->setSceneRect(scene()->itemsBoundingRect());
 	setCursor(Qt::OpenHandCursor);
 	setZValue(0);
 	for(const auto& i: collidingItems())
@@ -166,6 +166,7 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent*event){
 }
 
 void Node::removeNode(){
+	setSelected(false);
 	for(auto l=oConnections.begin(); l!=oConnections.end();){
 		l->first->sockets[l->second]->reset();
 		l->first->iNodes[l->second]=nullptr;
@@ -173,9 +174,11 @@ void Node::removeNode(){
 	}
 	for(uint i=0; i<nbArgs;i++)
 		disconnectNode(i);
+	disconnect(scene(),SIGNAL(selectionChanged()),this,SLOT(updateSelection()));
+
+	emit removeFromWS(this);
 	scene()->removeItem(this);
 	emit notifyRA();
-	emit removeFromWS(this);
 }
 
 void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){

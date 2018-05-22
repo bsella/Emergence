@@ -3,7 +3,7 @@
 ConstNode::ConstNode(double v):Node(DOUBLE_G,50,50,QColor(255,255,180)){
 	val=v;
 }
-ConstNode::ConstNode(uint v):Node(COLOR_G,50,50,QColor(v)){
+ConstNode::ConstNode(data_t::color v):Node(COLOR_G,50,50,QColor(v)){
 	val=v;
 }
 

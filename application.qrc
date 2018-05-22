@@ -10,5 +10,6 @@
         <file>icons/subtract.png</file>
         <file>icons/greater_than.png</file>
         <file>icons/emgc.ico</file>
+        <file>icons/no_icon.png</file>
     </qresource>
 </RCC>

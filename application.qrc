@@ -11,5 +11,12 @@
         <file>icons/greater_than.png</file>
         <file>icons/emgc.ico</file>
         <file>icons/no_icon.png</file>
+        <file>icons/real.png</file>
+        <file>icons/complex.png</file>
+        <file>icons/color.png</file>
+        <file>icons/and.png</file>
+        <file>icons/or.png</file>
+        <file>icons/xor.png</file>
+        <file>icons/not.png</file>
     </qresource>
 </RCC>

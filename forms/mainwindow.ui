@@ -57,7 +57,6 @@
      </property>
      <addaction name="actionColor"/>
      <addaction name="actionDouble"/>
-     <addaction name="actionBool"/>
     </widget>
     <widget class="QMenu" name="menuPixel">
      <property name="title">
@@ -154,7 +153,7 @@
      <item row="0" column="0">
       <widget class="NodeBox" name="toolBox">
        <property name="currentIndex">
-        <number>0</number>
+        <number>-1</number>
        </property>
       </widget>
      </item>

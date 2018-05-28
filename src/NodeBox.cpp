@@ -44,8 +44,8 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 	l_math->addWidget(new NodeTool(SUB_G,"Subtract",":/icons/subtract.png"));
 	l_math->addWidget(new NodeTool(MUL_G,"Multiply",":/icons/multiply.png"));
 	l_math->addWidget(new NodeTool(DIV_G,"Divide",":/icons/divide.png"));
-	l_math->addWidget(new NodeTool(DOUBLE_G,"Real"));
-	l_math->addWidget(new NodeTool(CPLX_G,"Complex"));
+	l_math->addWidget(new NodeTool(DOUBLE_G,"Real",":/icons/real.png"));
+	l_math->addWidget(new NodeTool(CPLX_G,"Complex",":/icons/complex.png"));
 	l_math->addWidget(new NodeTool(SQRT_G,"Square Root",":/icons/sqrt.png"));
 	l_math->addWidget(new NodeTool(ABS_G,"Absolute Value"));
 	l_math->addWidget(new NodeTool(NEG_G,"Negative"));
@@ -67,10 +67,10 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 
 	l_logic->setSpacing(1);
 	l_logic->setMargin(0);
-	l_logic->addWidget(new NodeTool(AND_G,"AND"));
-	l_logic->addWidget(new NodeTool(OR_G,"OR"));
-	l_logic->addWidget(new NodeTool(XOR_G,"XOR"));
-	l_logic->addWidget(new NodeTool(NOT_G,"NOT"));
+	l_logic->addWidget(new NodeTool(AND_G,"AND",":/icons/and.png"));
+	l_logic->addWidget(new NodeTool(OR_G,"OR",":/icons/or.png"));
+	l_logic->addWidget(new NodeTool(XOR_G,"XOR",":/icons/xor.png"));
+	l_logic->addWidget(new NodeTool(NOT_G,"NOT",":icons/not.png"));
 	l_logic->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));
 
 	l_misc->setSpacing(1);
@@ -82,7 +82,7 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 	l_misc->addWidget(new NodeTool(IF_G,"Condition"));
 	l_misc->addWidget(new NodeTool(RGB_G,"RGB"));
 	l_misc->addWidget(new NodeTool(HSV_G,"HSV"));
-	l_misc->addWidget(new NodeTool(COLOR_G,"Color"));
+	l_misc->addWidget(new NodeTool(COLOR_G,"Color",":/icons/color.png"));
 	l_misc->addWidget(new NodeTool(PALETTE_G,"LUT"));
 	l_misc->addWidget(new NodeTool(BITMAP_G,"Image"));
 	l_misc->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));

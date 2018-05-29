@@ -9,16 +9,16 @@ Workspace::Workspace(QWidget *parent):QGraphicsView(parent),scene(new QGraphicsS
 void Workspace::setRA(RenderArea* ra){
 	if (!ra) return;
 	renderArea=ra;
-	addFuncNode(X_G,{0,0});
-	addFuncNode(Y_G,{0,100});
-	addFuncNode(RENDER_G,{100,50});
+	addNode(X_G,{0,0});
+	addNode(Y_G,{0,100});
+	addNode(RENDER_G,{100,50});
 }
 
-void Workspace::addFuncNode(uint g, bool load){
-	addFuncNode(g, scene->sceneRect().center(), load);
+Node* Workspace::addNode(uint g, bool load){
+	return addNode(g, scene->sceneRect().center(), load);
 }
 
-void Workspace::addFuncNode(uint g, const QPointF& pos, bool load){
+Node* Workspace::addNode(uint g, const QPointF& pos, bool load){
 	Node* node;
 	switch(g){
 	case DOUBLE_G:{
@@ -28,7 +28,7 @@ void Workspace::addFuncNode(uint g, const QPointF& pos, bool load){
 		}
 		bool ok;
 		double d =QInputDialog::getDouble(this,"Choose Number","",0,-2147483647,2147483647,3,&ok);
-		if(!ok) return;
+		if(!ok) return nullptr;
 		node=new ConstNode(d);
 		break;
 	}
@@ -38,7 +38,7 @@ void Workspace::addFuncNode(uint g, const QPointF& pos, bool load){
 			break;
 		}
 		QColor c =QColorDialog::getColor(Qt::white,this);
-		if(!c.isValid()) return;
+		if(!c.isValid()) return nullptr;
 		node=new ConstNode(c.rgba());
 		break;
 	}
@@ -57,7 +57,7 @@ void Workspace::addFuncNode(uint g, const QPointF& pos, bool load){
 			break;
 		}
 		QString f= QFileDialog::getOpenFileName(this,"Choose Image",".","Images (*.bmp)");
-		if(f.isNull())return;
+		if(f.isNull())return nullptr;
 		node = new BitmapNode(f);
 		break;
 	}
@@ -71,19 +71,19 @@ void Workspace::addFuncNode(uint g, const QPointF& pos, bool load){
 	case XOR_G:		node=new XORNode;break;
 	case NOT_G:		node=new NOTNode;break;
 	case X_G:
-		if(!renderArea) return;
+		if(!renderArea) return nullptr;
 		node=renderArea->xg;
 		break;
 	case Y_G:
-		if(!renderArea) return;
+		if(!renderArea) return nullptr;
 		node= renderArea->yg;
 		break;
 	case RENDER_G:
-		if(!renderArea) return;
+		if(!renderArea) return nullptr;
 		node=renderArea->start;
 		break;
 	case RATIO_G:
-		if(!renderArea) return;
+		if(!renderArea) return nullptr;
 		node=renderArea->ratio;
 		break;
 	case ADD_G:		node=new ADDNode;break;
@@ -102,18 +102,20 @@ void Workspace::addFuncNode(uint g, const QPointF& pos, bool load){
 	case RGB_G:		node=new RGBNode;break;
 	case HSV_G:		node=new HSVNode;break;
 	case CPLX_G:	node=new ComplexNode;break;
-	default:return;
+	default:return nullptr;
 	}
 	connect(node,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 	connect(node,SIGNAL(removeFromWS(Node*)),this,SLOT(removeFromList(Node*)));
 	connect(scene,SIGNAL(selectionChanged()),node,SLOT(updateSelection()));
 	node->setPos(pos-node->boundingRect().center());
 	Nodes.push_back(node);
-	scene->addItem(node);
+	if(!scene->items().contains(node))
+		scene->addItem(node);
 	node->setZValue(0);
 	for(const auto& i: node->collidingItems())
 		if(node->zValue()<= i->zValue())
 			node->setZValue(i->zValue()+1);
+	return node;
 }
 
 void Workspace::removeFromList(Node *g){
@@ -185,24 +187,24 @@ void Workspace::loadNodesFromFile(){
 	}
 	clear();
 	int n; in>>n;
-	std::map<int,Node*> NodeID;
+	QList<Node*> NodeID;
 	for(int i=0;i<n;i++){
 		uchar id; in>>id;
-		addFuncNode(id,true);
+		Node* newNode =addNode(id,true);
 		if(id==DOUBLE_G){
 			char c[sizeof(double)];
 			in.readRawData(c,sizeof(double));
 			QByteArray dArray(c,sizeof(double));
-			((ConstNode*)Nodes.back())->val=*reinterpret_cast<const double*>(dArray.data());
+			newNode->val=*reinterpret_cast<const double*>(dArray.data());
 		}else if(id==COLOR_G){
 			char c[sizeof(unsigned)];
 			in.readRawData(c,sizeof(unsigned));
 			QByteArray cArray(c,sizeof(unsigned));
 			unsigned color =*reinterpret_cast<const unsigned*>(cArray.data());
-			((ConstNode*)Nodes.back())->val= color;
-			((ConstNode*)Nodes.back())->color=color;
+			newNode->val= color;
+			newNode->color=color;
 		}
-		NodeID[i]=Nodes.back();
+		NodeID.append(newNode);
 	}
 	in>>n;
 	char c[n];
@@ -237,8 +239,28 @@ void Workspace::dragEnterEvent(QDragEnterEvent *event){
 }
 
 void Workspace::dropEvent(QDropEvent *event){
-	addFuncNode(event->mimeData()->data("type").toInt(),
+	addNode(event->mimeData()->data("type").toInt(),
 				mapToScene(event->pos()));
 }
 
 void Workspace::dragMoveEvent(QDragMoveEvent *){}
+
+void Workspace::copy(){
+	if(!scene->selectedItems().empty())
+		clipBoard=scene->selectedItems();
+}
+
+void Workspace::paste(){
+	std::map<Node*,Node*> newNodes;
+	for(const auto& item: clipBoard){
+		Node* n= (Node*)item;
+		Node* tmp= addNode(n->id,n->pos(),true);
+		if(tmp) newNodes[n] =tmp;
+	}
+	for(const auto& item:clipBoard){
+		Node*n= (Node*)item;
+		for(uint i=0; i<n->nbArgs;i++)
+			if(n->iNodes[i] && clipBoard.contains(n->iNodes[i]))
+				newNodes[n]->sockets[i]->connectToNode(newNodes[n->iNodes[i]]);
+	}
+}

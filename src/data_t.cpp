@@ -109,6 +109,6 @@ data_t data_t::cos()const{
 	return std::cos(c);
 }
 data_t data_t::sqrt()const{
-	if(t==TypeEnum::COMPLEX)return qSqrt(d);
+	if(t==TypeEnum::DOUBLE)return qSqrt(d);
 	return std::sqrt(c);
 }

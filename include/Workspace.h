@@ -30,14 +30,17 @@ public:
 	Workspace(QWidget *parent=0);
 	~Workspace();
 	void setRA(RenderArea* ra);
-	QGraphicsScene* scene;
 public slots:
-	void addFuncNode(uint g, const QPointF& pos, bool load=false);
-	void addFuncNode(uint g, bool load=false);
+	Node* addNode(uint g, const QPointF& pos, bool load=false);
+	Node* addNode(uint g, bool load=false);
 	void removeFromList(Node *g);
 	void createFile()const;
 	void loadNodesFromFile();
+	void copy();
+	void paste();
 private:
+	QGraphicsScene* scene;
+	QList<QGraphicsItem*> clipBoard;
 	std::list<Node*> Nodes;
 	RenderArea* renderArea=nullptr;
 	void clear();

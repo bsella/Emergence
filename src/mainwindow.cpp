@@ -10,50 +10,50 @@ MainWindow::MainWindow(QWidget *parent) :
 	QWidget::setWindowIcon(QIcon(":/icons/emgc.ico"));
 
 	ui->workspace->setRA(ui->renderArea);
-	connect(ui->actionComplex,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(CPLX_G);});
-	connect(ui->actionSQRT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(SQRT_G);});
-	connect(ui->actionADD,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(ADD_G);});
-	connect(ui->actionSUB,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(SUB_G);});
-	connect(ui->actionMUL,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(MUL_G);});
-	connect(ui->actionDIV,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(DIV_G);});
-	connect(ui->actionNEG,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(NEG_G);});
-	connect(ui->actionIf,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(IF_G);});
-	connect(ui->actionDouble,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(DOUBLE_G);});
-	connect(ui->actionColor,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(COLOR_G);});
-	connect(ui->actionLUT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(PALETTE_G);});
-	connect(ui->actionGreaterThan,	&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(GT_G);});
-	connect(ui->actionLessThan,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(LT_G);});
-	connect(ui->actionEqual,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(EQ_G);});
-	connect(ui->actionNot_Equal,	&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(NE_G);});
-	connect(ui->actionOR,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(OR_G);});
-	connect(ui->actionAND,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(AND_G);});
-	connect(ui->actionXOR,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(XOR_G);});
-	connect(ui->actionNOT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(NOT_G);});
-	connect(ui->actionABS,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(ABS_G);});
-	connect(ui->actionLerp,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(LERP_G);});
-	connect(ui->actionClamp,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(CLAMP_G);});
-	connect(ui->actionBitmap,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(BITMAP_G);});
-	connect(ui->actionSin,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(SIN_G);});
-	connect(ui->actionCos,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(COS_G);});
-	connect(ui->actionMin,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addFuncNode(MIN_G);});
-	connect(ui->actionMax,			&QAction::triggered,ui->workspace,[&]{ui->workspace->addFuncNode(MAX_G);});
+	connect(ui->actionComplex,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(CPLX_G);});
+	connect(ui->actionSQRT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(SQRT_G);});
+	connect(ui->actionADD,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(ADD_G);});
+	connect(ui->actionSUB,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(SUB_G);});
+	connect(ui->actionMUL,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(MUL_G);});
+	connect(ui->actionDIV,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(DIV_G);});
+	connect(ui->actionNEG,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(NEG_G);});
+	connect(ui->actionIf,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(IF_G);});
+	connect(ui->actionDouble,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(DOUBLE_G);});
+	connect(ui->actionColor,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(COLOR_G);});
+	connect(ui->actionLUT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(PALETTE_G);});
+	connect(ui->actionGreaterThan,	&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(GT_G);});
+	connect(ui->actionLessThan,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(LT_G);});
+	connect(ui->actionEqual,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(EQ_G);});
+	connect(ui->actionNot_Equal,	&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(NE_G);});
+	connect(ui->actionOR,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(OR_G);});
+	connect(ui->actionAND,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(AND_G);});
+	connect(ui->actionXOR,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(XOR_G);});
+	connect(ui->actionNOT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(NOT_G);});
+	connect(ui->actionABS,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(ABS_G);});
+	connect(ui->actionLerp,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(LERP_G);});
+	connect(ui->actionClamp,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(CLAMP_G);});
+	connect(ui->actionBitmap,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(BITMAP_G);});
+	connect(ui->actionSin,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(SIN_G);});
+	connect(ui->actionCos,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(COS_G);});
+	connect(ui->actionMin,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(MIN_G);});
+	connect(ui->actionMax,			&QAction::triggered,ui->workspace,[&]{ui->workspace->addNode(MAX_G);});
 	connect(ui->actionX,			&QAction::triggered,ui->workspace,[this]{
-		ui->workspace->addFuncNode(X_G);
+		ui->workspace->addNode(X_G);
 		ui->actionX->setEnabled(false);
 		ui->toolBox->x->setEnabled(false);
 	});
 	connect(ui->actionY,			&QAction::triggered,ui->workspace,[this]{
-		ui->workspace->addFuncNode(Y_G);
+		ui->workspace->addNode(Y_G);
 		ui->actionY->setEnabled(false);
 		ui->toolBox->y->setEnabled(false);
 	});
 	connect(ui->actionRatio,			&QAction::triggered,ui->workspace,[this]{
-		ui->workspace->addFuncNode(RATIO_G);
+		ui->workspace->addNode(RATIO_G);
 		ui->actionRatio->setEnabled(false);
 		ui->toolBox->ratio->setEnabled(false);
 	});
 	connect(ui->actionRender,		&QAction::triggered,ui->workspace,[this]{
-		ui->workspace->addFuncNode(RENDER_G);
+		ui->workspace->addNode(RENDER_G);
 		ui->actionRender->setEnabled(false);
 		ui->toolBox->output->setEnabled(false);
 	});
@@ -83,6 +83,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->toolBox->x->setEnabled(false);
 	ui->toolBox->y->setEnabled(false);
 	ui->toolBox->output->setEnabled(false);
+
+	copy=new QShortcut(QKeySequence("Ctrl+C"),this);
+	connect(copy,SIGNAL(activated()),ui->workspace,SLOT(copy()));
+	paste=new QShortcut(QKeySequence("Ctrl+V"),this);
+	connect(paste,SIGNAL(activated()),ui->workspace,SLOT(paste()));
 }
 
 MainWindow::~MainWindow(){

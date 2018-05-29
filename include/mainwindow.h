@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QShortcut>
 #include "include/ExportImageDialog.h"
 
 namespace Ui {
@@ -17,6 +18,8 @@ public:
 
 private:
 	Ui::MainWindow *ui;
+	QShortcut* copy;
+	QShortcut* paste;
 
 private slots:
 	void on_actionExit_triggered();

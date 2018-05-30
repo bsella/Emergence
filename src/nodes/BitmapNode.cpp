@@ -14,16 +14,13 @@ void BitmapNode::setBMP(const QString &filename){
 	updateOutputVal();
 }
 
-data_t BitmapNode::eval(){
-	if(validVal) return val;
+data_t BitmapNode::kernel()const{
 	if(!bmp) return 0xff000000;
 	int g0 = double(iNodes[0]->eval())*bmpWidth;
 	int g1 = double(iNodes[1]->eval())*bmpHeight;
 	if(g0<0 || g0>=bmpWidth || g1<0 || g1>=bmpHeight)
 		return 0xff000000;
-	val= bmp->toImage().pixel(g0,g1);
-	validVal=true;
-	return val;
+	return bmp->toImage().pixel(g0,g1);
 }
 
 void BitmapNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){

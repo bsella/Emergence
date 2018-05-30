@@ -9,7 +9,7 @@ public:
 	LUTNode(const Palette& p);
 private:
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem*option, QWidget*widget);
-	data_t eval();
+	data_t kernel()const;
 	Palette plt;
 };
 

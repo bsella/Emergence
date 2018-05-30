@@ -11,7 +11,7 @@ public:
 	ConstNode(data_t::color v);
 private:
 	ConstNode()=delete;
-	data_t eval();
+	inline data_t kernel()const{return val;}
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);

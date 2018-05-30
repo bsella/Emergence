@@ -236,6 +236,13 @@ void Node::drawIcon(QPainter *painter, QString filename){
 	painter->drawImage(width/2-icon.width()/2+socketSize,height/2-icon.height()/2,icon);
 }
 
+data_t Node::eval(){
+	if(validVal)return val;
+	val = kernel();
+	validVal=true;
+	return val;
+}
+
 Node::~Node(){
 	delete menu;
 	for(auto& s : sockets)

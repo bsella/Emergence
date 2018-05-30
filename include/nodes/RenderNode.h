@@ -6,8 +6,8 @@
 class RenderNode : public Node{
 public:
 	RenderNode();
-	data_t eval();
 private:
+	data_t kernel()const;
 	void removeNode();
 	void paint(QPainter* painter,
 			   const QStyleOptionGraphicsItem* option,

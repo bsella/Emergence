@@ -23,30 +23,18 @@ void LTNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 	Node::paint(painter,option,widget);
 	drawIcon(painter,":/icons/less_than.png");
 }
-data_t GTNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval() > iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t GTNode::kernel()const{
+	return iNodes[0]->eval() > iNodes[1]->eval();
 }
 
-data_t LTNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval() < iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t LTNode::kernel()const{
+	return iNodes[0]->eval() < iNodes[1]->eval();
 }
 
-data_t EQNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval() == iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t EQNode::kernel()const{
+	return iNodes[0]->eval() == iNodes[1]->eval();
 }
 
-data_t NENode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval() != iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t NENode::kernel()const{
+	return iNodes[0]->eval() != iNodes[1]->eval();
 }

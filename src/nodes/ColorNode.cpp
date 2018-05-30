@@ -19,28 +19,22 @@ void HSVNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	painter->drawText(width/4,3*height/4+4,"V");
 }
 
-data_t RGBNode::eval(){
-	if(validVal) return val;
+data_t RGBNode::kernel()const{
 	int r=double(iNodes[0]->eval())*255,
 		g=double(iNodes[1]->eval())*255,
 		b=double(iNodes[2]->eval())*255;
 	r=qMax(r,0); r= qMin(r,255);
 	g=qMax(g,0); g= qMin(g,255);
 	b=qMax(b,0); b= qMin(b,255);
-	val = QColor(r,g,b);
-	validVal=true;
-	return val;
+	return qRgb(r,g,b);
 }
 
-data_t HSVNode::eval(){
-	if(validVal) return val;
+data_t HSVNode::kernel()const{
 	int h=double(iNodes[0]->eval())*360,
 		s=double(iNodes[1]->eval())*255,
 		v=double(iNodes[2]->eval())*255;
 	h=qMax(h,0); h= qMin(h,359);
 	s=qMax(s,0); s= qMin(s,255);
 	v=qMax(v,0); v= qMin(v,255);
-	val = QColor::fromHsv(h,s,v);
-	validVal=true;
-	return val;
+	return QColor::fromHsv(h,s,v).rgb();
 }

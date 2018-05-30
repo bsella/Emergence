@@ -16,7 +16,7 @@ class RGBNode : public ColorNode{
 public:
 	RGBNode();
 private:
-	data_t eval();
+	data_t kernel()const;
 	void paint(QPainter* painter,
 					const QStyleOptionGraphicsItem*option,
 					QWidget *widget);
@@ -26,7 +26,7 @@ class HSVNode : public ColorNode{
 public:
 	HSVNode();
 private:
-	data_t eval();
+	data_t kernel()const;
 	void paint(QPainter* painter,
 					const QStyleOptionGraphicsItem*option,
 					QWidget *widget);

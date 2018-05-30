@@ -36,11 +36,6 @@ void ConstNode::contextMenuEvent(QGraphicsSceneContextMenuEvent* event){
 	Node::contextMenuEvent(event);
 }
 
-data_t ConstNode::eval(){
-	if(!validVal) validVal=true;
-	return val;
-}
-
 void ConstNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent*){
 	switch(val.t){
 	case TypeEnum::DOUBLE:

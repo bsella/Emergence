@@ -76,7 +76,8 @@ private:
 	friend class Workspace;
 public:
 	unsigned id, width, height;
-	virtual data_t eval()=0;
+	data_t eval();
+	virtual data_t kernel()const=0;
 	operator bool();
 signals:
 	void notifyRA();

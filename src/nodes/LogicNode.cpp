@@ -24,30 +24,18 @@ void NOTNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	painter->drawText(boundingRect().center()-QPoint(12,-2),"NOT");
 }
 
-data_t ORNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval() || iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t ORNode::kernel()const{
+	return iNodes[0]->eval() || iNodes[1]->eval();
 }
 
-data_t ANDNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval() && iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t ANDNode::kernel()const{
+	return iNodes[0]->eval() && iNodes[1]->eval();
 }
 
-data_t XORNode::eval(){
-	if(validVal) return val;
-	val= bool(bool(iNodes[0]->eval()) ^ bool(iNodes[1]->eval()));
-	validVal=true;
-	return val;
+data_t XORNode::kernel()const{
+	return bool(bool(iNodes[0]->eval()) ^ bool(iNodes[1]->eval()));
 }
 
-data_t NOTNode::eval(){
-	if(validVal) return val;
-	val= !iNodes[0]->eval();
-	validVal=true;
-	return val;
+data_t NOTNode::kernel()const{
+	return !iNodes[0]->eval();
 }

@@ -13,7 +13,7 @@ class ORNode:public LogicNode{
 public:
 	ORNode();
 private:
-	data_t eval();
+	data_t kernel()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
@@ -21,7 +21,7 @@ class ANDNode:public LogicNode{
 public:
 	ANDNode();
 private:
-	data_t eval();
+	data_t kernel()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
@@ -29,7 +29,7 @@ class XORNode:public LogicNode{
 public:
 	XORNode();
 private:
-	data_t eval();
+	data_t kernel()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
@@ -37,7 +37,7 @@ class NOTNode:public LogicNode{
 public:
 	NOTNode();
 private:
-	data_t eval();
+	data_t kernel()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 #endif

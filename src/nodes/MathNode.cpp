@@ -81,84 +81,45 @@ void MAXNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	painter->drawText(boundingRect().center()-QPointF(12,0),"max");
 }
 
-data_t ADDNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval()+iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t ADDNode::kernel()const{
+	return iNodes[0]->eval()+iNodes[1]->eval();
 }
-data_t SUBNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval()-iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t SUBNode::kernel()const{
+	return iNodes[0]->eval()-iNodes[1]->eval();
 }
-data_t MULNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval()*iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t MULNode::kernel()const{
+	return iNodes[0]->eval()*iNodes[1]->eval();
 }
-data_t DIVNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval()/iNodes[1]->eval();
-	validVal=true;
-	return val;
+data_t DIVNode::kernel()const{
+	return iNodes[0]->eval()/iNodes[1]->eval();
 }
-data_t NEGNode::eval(){
-	if(validVal) return val;
-	val= -iNodes[0]->eval();
-	validVal=true;
-	return val;
+data_t NEGNode::kernel()const{
+	return -iNodes[0]->eval();
 }
-data_t SQRTNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval().sqrt();
-	validVal=true;
-	return val;
+data_t SQRTNode::kernel()const{
+	return iNodes[0]->eval().sqrt();
 }
-data_t ABSNode::eval(){
-	if(validVal) return val;
-	val= qAbs((double)iNodes[0]->eval());
-	validVal=true;
-	return val;
+data_t ABSNode::kernel()const{
+	return qAbs((double)iNodes[0]->eval());
 }
-data_t LERPNode::eval(){
-	if(validVal) return val;
+data_t LERPNode::kernel()const{
 	double alpha=iNodes[1]->eval();
-	val=(1.0-alpha)*double(iNodes[2]->eval())+alpha*double(iNodes[0]->eval());
-	validVal=true;
-	return val;
+	return (1.0-alpha)*double(iNodes[2]->eval())+alpha*double(iNodes[0]->eval());
 }
-data_t CLAMPNode::eval(){
-	if(validVal) return val;
+data_t CLAMPNode::kernel()const{
 	double min=iNodes[2]->eval(), max=iNodes[0]->eval();
 	if(!(max-min)) return 0.0;
-	val= (double(iNodes[1]->eval())-min)/(max-min);
-	validVal=true;
-	return val;
+	return (double(iNodes[1]->eval())-min)/(max-min);
 }
-data_t SINNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval().sin();
-	validVal=true;
-	return val;
+data_t SINNode::kernel()const{
+	return iNodes[0]->eval().sin();
 }
-data_t COSNode::eval(){
-	if(validVal) return val;
-	val= iNodes[0]->eval().cos();
-	validVal=true;
-	return val;
+data_t COSNode::kernel()const{
+	return iNodes[0]->eval().cos();
 }
-data_t MINNode::eval(){
-	if(validVal) return val;
-	val= qMin(iNodes[0]->eval(),iNodes[1]->eval());
-	validVal=true;
-	return val;
+data_t MINNode::kernel()const{
+	return qMin(iNodes[0]->eval(),iNodes[1]->eval());
 }
-data_t MAXNode::eval(){
-	if(validVal) return val;
-	val= qMax(iNodes[0]->eval(),iNodes[1]->eval());
-	validVal=true;
-	return val;
+data_t MAXNode::kernel()const{
+	return qMax(iNodes[0]->eval(),iNodes[1]->eval());
 }

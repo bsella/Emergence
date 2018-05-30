@@ -13,9 +13,6 @@ void IfNode::paint(QPainter* painter,
 	painter->drawText(rect.topLeft()+QPointF(8,3*rect.height()/4.0+4),"ELSE");
 }
 
-data_t IfNode::eval(){
-	if(validVal) return val;
-	val=iNodes[1]->eval()? iNodes[0]->eval() : iNodes[2]->eval();
-	validVal=true;
-	return val;
+data_t IfNode::kernel()const{
+	return iNodes[1]->eval()? iNodes[0]->eval() : iNodes[2]->eval();
 }

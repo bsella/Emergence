@@ -10,7 +10,7 @@ protected:
 		PixelNode(unsigned i);
 		virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 private:
-		inline data_t eval(){return val;}
+		inline data_t kernel()const{return val;}
 		void removeNode();
 };
 

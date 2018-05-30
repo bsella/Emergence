@@ -8,9 +8,6 @@ void ComplexNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	drawIcon(painter,":/icons/complex.png");
 }
 
-data_t ComplexNode::eval(){
-	if(validVal) return val;
-	val=cplx(iNodes[0]->eval(),iNodes[1]->eval());
-	validVal=true;
-	return val;
+data_t ComplexNode::kernel()const{
+	return cplx(iNodes[0]->eval(),iNodes[1]->eval());
 }

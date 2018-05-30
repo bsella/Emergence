@@ -88,6 +88,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(copy,SIGNAL(activated()),ui->workspace,SLOT(copy()));
 	paste=new QShortcut(QKeySequence("Ctrl+V"),this);
 	connect(paste,SIGNAL(activated()),ui->workspace,SLOT(paste()));
+	open=new QShortcut(QKeySequence("Ctrl+O"),this);
+	connect(open,SIGNAL(activated()),ui->workspace,SLOT(load()));
+	save=new QShortcut(QKeySequence("Ctrl+S"),this);
+	connect(save,SIGNAL(activated()),ui->workspace,SLOT(save()));
 }
 
 MainWindow::~MainWindow(){
@@ -97,16 +101,111 @@ MainWindow::~MainWindow(){
 void MainWindow::on_actionExit_triggered(){
 	close();
 }
-
 void MainWindow::on_actionExport_triggered(){
 	ExportImageDialog::exportBMP(ui->renderArea);
 }
-
 void MainWindow::on_actionSave_as_triggered(){
-	ui->workspace->createFile();
+	ui->workspace->save();
 }
-
 void MainWindow::on_actionOpen_triggered(){
-	ui->workspace->loadNodesFromFile();
+	ui->workspace->load();
 }
-
+void MainWindow::on_actionIf_triggered(){
+	ui->workspace->addNode(IF_G);
+}
+void MainWindow::on_actionGreaterThan_triggered(){
+	ui->workspace->addNode(GT_G);
+}
+void MainWindow::on_actionLessThan_triggered(){
+	ui->workspace->addNode(LT_G);
+}
+void MainWindow::on_actionEqual_triggered(){
+	ui->workspace->addNode(EQ_G);
+}
+void MainWindow::on_actionNot_Equal_triggered(){
+	ui->workspace->addNode(NE_G);
+}
+void MainWindow::on_actionAND_triggered(){
+	ui->workspace->addNode(AND_G);
+}
+void MainWindow::on_actionOR_triggered(){
+	ui->workspace->addNode(OR_G);
+}
+void MainWindow::on_actionXOR_triggered(){
+	ui->workspace->addNode(XOR_G);
+}
+void MainWindow::on_actionNOT_triggered(){
+	ui->workspace->addNode(NOT_G);
+}
+void MainWindow::on_actionDouble_triggered(){
+	ui->workspace->addNode(DOUBLE_G);
+}
+void MainWindow::on_actionColor_triggered(){
+	ui->workspace->addNode(COLOR_G);
+}
+void MainWindow::on_actionLUT_triggered(){
+	ui->workspace->addNode(PALETTE_G);
+}
+void MainWindow::on_actionX_triggered(){
+	ui->workspace->addNode(X_G);
+}
+void MainWindow::on_actionY_triggered(){
+	ui->workspace->addNode(Y_G);
+}
+void MainWindow::on_actionRender_triggered(){
+	ui->workspace->addNode(RENDER_G);
+}
+void MainWindow::on_actionADD_triggered(){
+	ui->workspace->addNode(ADD_G);
+}
+void MainWindow::on_actionSUB_triggered(){
+	ui->workspace->addNode(SUB_G);
+}
+void MainWindow::on_actionMUL_triggered(){
+	ui->workspace->addNode(MUL_G);
+}
+void MainWindow::on_actionDIV_triggered(){
+	ui->workspace->addNode(DIV_G);
+}
+void MainWindow::on_actionNEG_triggered(){
+	ui->workspace->addNode(NEG_G);
+}
+void MainWindow::on_actionSQRT_triggered(){
+	ui->workspace->addNode(SQRT_G);
+}
+void MainWindow::on_actionABS_triggered(){
+	ui->workspace->addNode(ABS_G);
+}
+void MainWindow::on_actionLerp_triggered(){
+	ui->workspace->addNode(LERP_G);
+}
+void MainWindow::on_actionClamp_triggered(){
+	ui->workspace->addNode(CLAMP_G);
+}
+void MainWindow::on_actionBitmap_triggered(){
+	ui->workspace->addNode(BITMAP_G);
+}
+void MainWindow::on_actionSin_triggered(){
+	ui->workspace->addNode(SIN_G);
+}
+void MainWindow::on_actionCos_triggered(){
+	ui->workspace->addNode(COS_G);
+}
+void MainWindow::on_actionMin_triggered(){
+	ui->workspace->addNode(MIN_G);
+}
+void MainWindow::on_actionMax_triggered(){
+	ui->workspace->addNode(MAX_G);
+}
+void MainWindow::on_actionRatio_triggered(){
+	ui->workspace->addNode(RATIO_G);
+}
+void MainWindow::on_actionComplex_triggered(){
+	ui->workspace->addNode(CPLX_G);
+}
+void MainWindow::on_actionHSV_triggered(){
+	ui->workspace->addNode(HSV_G);
+}
+void MainWindow::on_actionRGB_triggered(){
+	ui->workspace->addNode(RGB_G);
+}

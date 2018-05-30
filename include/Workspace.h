@@ -34,8 +34,8 @@ public slots:
 	Node* addNode(uint g, const QPointF& pos, bool load=false);
 	Node* addNode(uint g, bool load=false);
 	void removeFromList(Node *g);
-	void createFile()const;
-	void loadNodesFromFile();
+	void save()const;
+	void load();
 	void copy();
 	void paste();
 private:

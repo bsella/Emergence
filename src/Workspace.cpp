@@ -127,7 +127,7 @@ void Workspace::clear(){
 		Nodes.back()->removeNode();
 }
 
-void Workspace::createFile()const{
+void Workspace::save()const{
 	QString f= QFileDialog::getSaveFileName(parentWidget(),"Save as...",".","Node Files (*.emrg)");
 	if(f.isNull()) return;
 	if(!f.endsWith(".emrg"))
@@ -169,7 +169,7 @@ void Workspace::createFile()const{
 			out << (g->iNodes[i]? NodeID.at(g->iNodes[i]): -1);
 }
 
-void Workspace::loadNodesFromFile(){
+void Workspace::load(){
 	QString f= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
 	if(f.isNull()) return;
 	QFile file(f);

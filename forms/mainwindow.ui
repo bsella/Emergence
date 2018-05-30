@@ -53,10 +53,12 @@
     </widget>
     <widget class="QMenu" name="menuConstant">
      <property name="title">
-      <string>Constant</string>
+      <string>Color</string>
      </property>
+     <addaction name="actionLUT"/>
      <addaction name="actionColor"/>
-     <addaction name="actionDouble"/>
+     <addaction name="actionHSV"/>
+     <addaction name="actionRGB"/>
     </widget>
     <widget class="QMenu" name="menuPixel">
      <property name="title">
@@ -88,13 +90,13 @@
      <addaction name="actionMin"/>
      <addaction name="actionMax"/>
      <addaction name="separator"/>
+     <addaction name="actionDouble"/>
      <addaction name="actionComplex"/>
     </widget>
     <addaction name="menuCalc"/>
     <addaction name="menuComparison"/>
     <addaction name="menuLogic"/>
     <addaction name="menuConstant"/>
-    <addaction name="actionLUT"/>
     <addaction name="actionIf"/>
     <addaction name="actionBitmap"/>
     <addaction name="separator"/>
@@ -226,56 +228,91 @@
    </property>
   </action>
   <action name="actionGreaterThan">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/greater_than.png</normaloff>:/icons/greater_than.png</iconset>
+   </property>
    <property name="text">
     <string>Greater</string>
    </property>
   </action>
   <action name="actionLessThan">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/less_than.png</normaloff>:/icons/less_than.png</iconset>
+   </property>
    <property name="text">
     <string>Less</string>
    </property>
   </action>
   <action name="actionEqual">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/equal.png</normaloff>:/icons/equal.png</iconset>
+   </property>
    <property name="text">
     <string>Equal</string>
    </property>
   </action>
   <action name="actionNot_Equal">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/not_equal.png</normaloff>:/icons/not_equal.png</iconset>
+   </property>
    <property name="text">
     <string>Not Equal</string>
    </property>
   </action>
   <action name="actionAND">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/and.png</normaloff>:/icons/and.png</iconset>
+   </property>
    <property name="text">
     <string>AND</string>
    </property>
   </action>
   <action name="actionOR">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/or.png</normaloff>:/icons/or.png</iconset>
+   </property>
    <property name="text">
     <string>OR</string>
    </property>
   </action>
   <action name="actionXOR">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/xor.png</normaloff>:/icons/xor.png</iconset>
+   </property>
    <property name="text">
     <string>XOR</string>
    </property>
   </action>
   <action name="actionNOT">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/not.png</normaloff>:/icons/not.png</iconset>
+   </property>
    <property name="text">
     <string>NOT</string>
    </property>
   </action>
-  <action name="actionBool">
-   <property name="text">
-    <string>Boolean</string>
-   </property>
-  </action>
   <action name="actionDouble">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/real.png</normaloff>:/icons/real.png</iconset>
+   </property>
    <property name="text">
     <string>Real Number</string>
    </property>
   </action>
   <action name="actionColor">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/color.png</normaloff>:/icons/color.png</iconset>
+   </property>
    <property name="text">
     <string>Color</string>
    </property>
@@ -301,21 +338,37 @@
    </property>
   </action>
   <action name="actionADD">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+   </property>
    <property name="text">
     <string>Add</string>
    </property>
   </action>
   <action name="actionSUB">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/subtract.png</normaloff>:/icons/subtract.png</iconset>
+   </property>
    <property name="text">
     <string>Subtract</string>
    </property>
   </action>
   <action name="actionMUL">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/multiply.png</normaloff>:/icons/multiply.png</iconset>
+   </property>
    <property name="text">
     <string>Multiply</string>
    </property>
   </action>
   <action name="actionDIV">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/divide.png</normaloff>:/icons/divide.png</iconset>
+   </property>
    <property name="text">
     <string>Divide</string>
    </property>
@@ -326,6 +379,10 @@
    </property>
   </action>
   <action name="actionSQRT">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/sqrt.png</normaloff>:/icons/sqrt.png</iconset>
+   </property>
    <property name="text">
     <string>Square Root</string>
    </property>
@@ -396,19 +453,27 @@
    </property>
   </action>
   <action name="actionComplex">
+   <property name="icon">
+    <iconset resource="../application.qrc">
+     <normaloff>:/icons/complex.png</normaloff>:/icons/complex.png</iconset>
+   </property>
    <property name="text">
     <string>Complex</string>
+   </property>
+  </action>
+  <action name="actionHSV">
+   <property name="text">
+    <string>HSV</string>
+   </property>
+  </action>
+  <action name="actionRGB">
+   <property name="text">
+    <string>RGB</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-  <customwidget>
-   <class>RenderArea</class>
-   <extends>QWidget</extends>
-   <header location="global">include/RenderArea.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>Workspace</class>
    <extends>QGraphicsView</extends>
@@ -420,10 +485,18 @@
    <header>include/NodeBox.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>RenderArea</class>
+   <extends>QWidget</extends>
+   <header>include/RenderArea.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>workspace</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../application.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -263,4 +263,8 @@ void Workspace::paste(){
 			if(n->iNodes[i] && clipBoard.contains(n->iNodes[i]))
 				newNodes[n]->sockets[i]->connectToNode(newNodes[n->iNodes[i]]);
 	}
+	for(auto& n:scene->selectedItems())
+		n->setSelected(false);
+	for(const auto& item:clipBoard)
+		newNodes[(Node*)item]->setSelected(true);
 }

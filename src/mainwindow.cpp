@@ -10,53 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	QWidget::setWindowIcon(QIcon(":/icons/emgc.ico"));
 
 	ui->workspace->setRA(ui->renderArea);
-	connect(ui->actionComplex,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(CPLX_G);});
-	connect(ui->actionSQRT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(SQRT_G);});
-	connect(ui->actionADD,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(ADD_G);});
-	connect(ui->actionSUB,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(SUB_G);});
-	connect(ui->actionMUL,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(MUL_G);});
-	connect(ui->actionDIV,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(DIV_G);});
-	connect(ui->actionNEG,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(NEG_G);});
-	connect(ui->actionIf,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(IF_G);});
-	connect(ui->actionDouble,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(DOUBLE_G);});
-	connect(ui->actionColor,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(COLOR_G);});
-	connect(ui->actionLUT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(PALETTE_G);});
-	connect(ui->actionGreaterThan,	&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(GT_G);});
-	connect(ui->actionLessThan,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(LT_G);});
-	connect(ui->actionEqual,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(EQ_G);});
-	connect(ui->actionNot_Equal,	&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(NE_G);});
-	connect(ui->actionOR,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(OR_G);});
-	connect(ui->actionAND,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(AND_G);});
-	connect(ui->actionXOR,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(XOR_G);});
-	connect(ui->actionNOT,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(NOT_G);});
-	connect(ui->actionABS,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(ABS_G);});
-	connect(ui->actionLerp,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(LERP_G);});
-	connect(ui->actionClamp,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(CLAMP_G);});
-	connect(ui->actionBitmap,		&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(BITMAP_G);});
-	connect(ui->actionSin,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(SIN_G);});
-	connect(ui->actionCos,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(COS_G);});
-	connect(ui->actionMin,			&QAction::triggered,ui->workspace,[this]{ui->workspace->addNode(MIN_G);});
-	connect(ui->actionMax,			&QAction::triggered,ui->workspace,[&]{ui->workspace->addNode(MAX_G);});
-	connect(ui->actionX,			&QAction::triggered,ui->workspace,[this]{
-		ui->workspace->addNode(X_G);
-		ui->actionX->setEnabled(false);
-		ui->toolBox->x->setEnabled(false);
-	});
-	connect(ui->actionY,			&QAction::triggered,ui->workspace,[this]{
-		ui->workspace->addNode(Y_G);
-		ui->actionY->setEnabled(false);
-		ui->toolBox->y->setEnabled(false);
-	});
-	connect(ui->actionRatio,			&QAction::triggered,ui->workspace,[this]{
-		ui->workspace->addNode(RATIO_G);
-		ui->actionRatio->setEnabled(false);
-		ui->toolBox->ratio->setEnabled(false);
-	});
-	connect(ui->actionRender,		&QAction::triggered,ui->workspace,[this]{
-		ui->workspace->addNode(RENDER_G);
-		ui->actionRender->setEnabled(false);
-		ui->toolBox->output->setEnabled(false);
-	});
 
 	connect(ui->renderArea,		SIGNAL(valid(bool)),ui->actionExport,SLOT(setEnabled(bool)));
 
@@ -84,14 +37,30 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->toolBox->y->setEnabled(false);
 	ui->toolBox->output->setEnabled(false);
 
+	ui->actionUndo->setEnabled(false);
+	ui->actionRedo->setEnabled(false);
+
 	copy=new QShortcut(QKeySequence("Ctrl+C"),this);
 	connect(copy,SIGNAL(activated()),ui->workspace,SLOT(copy()));
+	cut=new QShortcut(QKeySequence("Ctrl+X"),this);
+	connect(cut,SIGNAL(activated()),ui->workspace,SLOT(cut()));
 	paste=new QShortcut(QKeySequence("Ctrl+V"),this);
 	connect(paste,SIGNAL(activated()),ui->workspace,SLOT(paste()));
 	open=new QShortcut(QKeySequence("Ctrl+O"),this);
 	connect(open,SIGNAL(activated()),ui->workspace,SLOT(load()));
 	save=new QShortcut(QKeySequence("Ctrl+S"),this);
 	connect(save,SIGNAL(activated()),ui->workspace,SLOT(save()));
+	remove=new QShortcut(QKeySequence("Delete"),this);
+	connect(remove,SIGNAL(activated()),ui->workspace,SLOT(delete_selected()));
+	select_all=new QShortcut(QKeySequence("Ctrl+A"),this);
+	connect(select_all,SIGNAL(activated()),ui->workspace,SLOT(select_all()));
+
+
+	connect(ui->actionCopy,&QAction::triggered,ui->workspace,&Workspace::copy);
+	connect(ui->actionPaste,&QAction::triggered,ui->workspace,&Workspace::paste);
+	connect(ui->actionCut,&QAction::triggered,ui->workspace,&Workspace::cut);
+	connect(ui->actionDelete,&QAction::triggered,ui->workspace,&Workspace::delete_selected);
+	connect(ui->actionSelect_all,&QAction::triggered,ui->workspace,&Workspace::select_all);
 }
 
 MainWindow::~MainWindow(){
@@ -148,12 +117,18 @@ void MainWindow::on_actionLUT_triggered(){
 }
 void MainWindow::on_actionX_triggered(){
 	ui->workspace->addNode(X_G);
+	ui->actionX->setEnabled(false);
+	ui->toolBox->x->setEnabled(false);
 }
 void MainWindow::on_actionY_triggered(){
 	ui->workspace->addNode(Y_G);
+	ui->actionY->setEnabled(false);
+	ui->toolBox->y->setEnabled(false);
 }
 void MainWindow::on_actionRender_triggered(){
 	ui->workspace->addNode(RENDER_G);
+	ui->actionRender->setEnabled(false);
+	ui->toolBox->output->setEnabled(false);
 }
 void MainWindow::on_actionADD_triggered(){
 	ui->workspace->addNode(ADD_G);
@@ -199,6 +174,8 @@ void MainWindow::on_actionMax_triggered(){
 }
 void MainWindow::on_actionRatio_triggered(){
 	ui->workspace->addNode(RATIO_G);
+	ui->actionRatio->setEnabled(false);
+	ui->toolBox->ratio->setEnabled(false);
 }
 void MainWindow::on_actionComplex_triggered(){
 	ui->workspace->addNode(CPLX_G);

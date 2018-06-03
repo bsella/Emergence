@@ -250,6 +250,11 @@ void Workspace::copy(){
 		clipBoard=scene->selectedItems();
 }
 
+void Workspace::cut(){
+	copy();
+	delete_selected();
+}
+
 void Workspace::paste(){
 	std::map<Node*,Node*> newNodes;
 	for(const auto& item: clipBoard){
@@ -267,4 +272,14 @@ void Workspace::paste(){
 		n->setSelected(false);
 	for(const auto& item:clipBoard)
 		newNodes[(Node*)item]->setSelected(true);
+}
+
+void Workspace::select_all(){
+	for(auto& n : Nodes)
+		n->setSelected(true);
+}
+
+void Workspace::delete_selected(){
+	for(auto& n : scene->selectedItems())
+		((Node*)n)->removeNode();
 }

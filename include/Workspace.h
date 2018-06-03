@@ -37,7 +37,10 @@ public slots:
 	void save()const;
 	void load();
 	void copy();
+	void cut();
 	void paste();
+	void select_all();
+	void delete_selected();
 private:
 	QGraphicsScene* scene;
 	QList<QGraphicsItem*> clipBoard;

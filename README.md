@@ -11,3 +11,19 @@ For more information check out the [wiki](https://github.com/elirovi/Emergence/w
 Compile using `qmake` then `make`.
 
 Feel free to send your feedback on `karim.salama@univ-tlse3.fr`
+
+---
+
+TODO:
+- [ ] Undo/Redo
+- [ ] Multiple outputs
+- [ ] Transparancy support
+- [ ] Nodes inside nodes
+- [ ] Node inside itself
+- [ ] New save format
+- [ ] Data structures and lists
+- [ ] Preventing cycles
+- [ ] More icons
+- [ ] Auto-arrange
+- [ ] Menus
+- [ ] Documentation

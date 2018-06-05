@@ -107,7 +107,8 @@ Node* Workspace::addNode(uint g, const QPointF& pos, bool load){
 	connect(node,SIGNAL(notifyRA()),renderArea,SLOT(repaint()));
 	connect(node,SIGNAL(removeFromWS(Node*)),this,SLOT(removeFromList(Node*)));
 	connect(scene,SIGNAL(selectionChanged()),node,SLOT(updateSelection()));
-	node->setPos(pos-node->boundingRect().center());
+	if(load) node->setPos(pos);
+	else node->setPos(pos-node->boundingRect().center());
 	Nodes.push_back(node);
 	if(!scene->items().contains(node))
 		scene->addItem(node);
@@ -119,12 +120,31 @@ Node* Workspace::addNode(uint g, const QPointF& pos, bool load){
 }
 
 void Workspace::removeFromList(Node *g){
-	Nodes.remove(g);
+	Nodes.removeOne(g);
 }
 
 void Workspace::clear(){
 	while(!Nodes.empty())
 		Nodes.back()->removeNode();
+}
+
+QByteArray Workspace::nodesToText(const QList<Node *> &nodes) const{
+	QByteArray ret;
+	QDataStream ds (&ret,QIODevice::Append);
+	ds<<nodes.size();
+	for(const auto& n:nodes){
+		ds<<n->id;
+		ds<<n->scenePos().x();
+		ds<<n->scenePos().y();
+		if(n->id==DOUBLE_G)
+			ds<<n->val.d;
+		else if(n->id==COLOR_G)
+			ds<<n->val.clr;
+	}
+	for(const auto& n : nodes)
+		for(const auto& nn: n->iNodes)
+			ds<<nodes.indexOf(nn);
+	return ret;
 }
 
 void Workspace::save()const{
@@ -140,33 +160,7 @@ void Workspace::save()const{
 	out << MAGIC_NUMBER;
 	out << SAVE_VERSION;
 
-	QByteArray NodeType, NodePos;
-	std::map<Node*,int> NodeID;
-	int id=0;
-	for(const auto& g : Nodes)
-		NodeID[g]=id++;
-	for(const auto& g : Nodes){
-		//saving Node type
-		NodeType.append(g->id);
-		if(g->id==DOUBLE_G){		//Special case for double Node
-			double d=((ConstNode*)g)->val;
-			NodeType.append(reinterpret_cast<const char*>(&d), sizeof(d));
-		}else if(g->id==COLOR_G){		//Special case for color Node
-			uint color=((ConstNode*)g)->val;
-			NodeType.append(reinterpret_cast<const char*>(&color), sizeof(color));
-		}
-		//saving Node position
-		float fx= g->x(), fy= g->y();
-		NodePos.append(reinterpret_cast<const char*>(&fx), sizeof(fx));
-		NodePos.append(reinterpret_cast<const char*>(&fy), sizeof(fy));
-	}
-
-	out<<int(Nodes.size());
-	out.writeRawData(NodeType.data(),NodeType.size());
-	out<<NodePos;
-	for(const auto& g : Nodes)
-		for(unsigned i=0; i<g->nbArgs;i++)
-			out << (g->iNodes[i]? NodeID.at(g->iNodes[i]): -1);
+	out << nodesToText(Nodes);
 }
 
 void Workspace::load(){
@@ -186,44 +180,26 @@ void Workspace::load(){
 		return;
 	}
 	clear();
+	in.skipRawData(4);
 	int n; in>>n;
-	QList<Node*> NodeID;
-	for(int i=0;i<n;i++){
-		uchar id; in>>id;
-		Node* newNode =addNode(id,true);
-		if(id==DOUBLE_G){
-			char c[sizeof(double)];
-			in.readRawData(c,sizeof(double));
-			QByteArray dArray(c,sizeof(double));
-			newNode->val=*reinterpret_cast<const double*>(dArray.data());
-		}else if(id==COLOR_G){
-			char c[sizeof(unsigned)];
-			in.readRawData(c,sizeof(unsigned));
-			QByteArray cArray(c,sizeof(unsigned));
-			unsigned color =*reinterpret_cast<const unsigned*>(cArray.data());
-			newNode->val= color;
-			newNode->color=color;
+	int id; float x,y;
+	for(int i=0; i<n; i++){
+		in>>id;
+		in>>x;
+		in>>y;
+		Node* newNode = addNode(id,QPointF(x,y),true);
+		if(id==DOUBLE_G)
+			in>>newNode->val.d;
+		else if(id==COLOR_G){
+			in>>newNode->val.clr;
+			newNode->color=newNode->val.clr;
 		}
-		NodeID.append(newNode);
 	}
-	in>>n;
-	char c[n];
-	in.readRawData(c,n);
-	QByteArray floats(c,n);
-	for(auto& g : Nodes){
-		float fx,fy;
-		fx = *reinterpret_cast<const float*>(floats.data());
-		floats=floats.mid(4);
-		fy = *reinterpret_cast<const float*>(floats.data());
-		floats=floats.mid(4);
-		g->setPos(fx,fy);
-	}
-	scene->setSceneRect(scene->itemsBoundingRect());
 	for(auto& node: Nodes)
 		for(unsigned i=0; i<node->nbArgs; i++){
 			in>>n;
 			if(n>=0)
-				node->sockets[i]->connectToNode(NodeID[n]);
+				node->sockets[i]->connectToNode(Nodes.at(n));
 		}
 }
 

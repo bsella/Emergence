@@ -20,7 +20,7 @@ TODO:
 - [ ] Transparancy support
 - [ ] Nodes inside nodes
 - [ ] Node inside itself
-- [ ] New save format
+- [x] New save format
 - [ ] Data structures and lists
 - [ ] Preventing cycles
 - [ ] More icons

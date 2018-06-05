@@ -7,8 +7,8 @@
 #include <QColorDialog>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include<QDropEvent>
-#include<QMimeData>
+#include <QDropEvent>
+#include <QMimeData>
 #include <include/nodes/Node.h>
 #include <include/nodes/IfNode.h>
 #include <include/nodes/LogicNode.h>
@@ -44,12 +44,13 @@ public slots:
 private:
 	QGraphicsScene* scene;
 	QList<QGraphicsItem*> clipBoard;
-	std::list<Node*> Nodes;
+	QList<Node*> Nodes;
 	RenderArea* renderArea=nullptr;
 	void clear();
 	void dropEvent(QDropEvent *event);
 	void dragMoveEvent(QDragMoveEvent *event);
 	void dragEnterEvent(QDragEnterEvent *event);
+	QByteArray nodesToText(const QList<Node*>&nodes)const;
 };
 
 #endif // WORKSPACE_H

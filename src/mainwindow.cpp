@@ -40,22 +40,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->actionUndo->setEnabled(false);
 	ui->actionRedo->setEnabled(false);
 
-	copy=new QShortcut(QKeySequence("Ctrl+C"),this);
-	connect(copy,SIGNAL(activated()),ui->workspace,SLOT(copy()));
-	cut=new QShortcut(QKeySequence("Ctrl+X"),this);
-	connect(cut,SIGNAL(activated()),ui->workspace,SLOT(cut()));
-	paste=new QShortcut(QKeySequence("Ctrl+V"),this);
-	connect(paste,SIGNAL(activated()),ui->workspace,SLOT(paste()));
-	open=new QShortcut(QKeySequence("Ctrl+O"),this);
-	connect(open,SIGNAL(activated()),ui->workspace,SLOT(load()));
-	save=new QShortcut(QKeySequence("Ctrl+S"),this);
-	connect(save,SIGNAL(activated()),ui->workspace,SLOT(save()));
-	remove=new QShortcut(QKeySequence("Delete"),this);
-	connect(remove,SIGNAL(activated()),ui->workspace,SLOT(delete_selected()));
-	select_all=new QShortcut(QKeySequence("Ctrl+A"),this);
-	connect(select_all,SIGNAL(activated()),ui->workspace,SLOT(select_all()));
-
-
 	connect(ui->actionCopy,&QAction::triggered,ui->workspace,&Workspace::copy);
 	connect(ui->actionPaste,&QAction::triggered,ui->workspace,&Workspace::paste);
 	connect(ui->actionCut,&QAction::triggered,ui->workspace,&Workspace::cut);

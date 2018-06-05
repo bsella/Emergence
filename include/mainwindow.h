@@ -18,13 +18,6 @@ public:
 
 private:
 	Ui::MainWindow *ui;
-	QShortcut* copy;
-	QShortcut* paste;
-	QShortcut* cut;
-	QShortcut* open;
-	QShortcut* save;
-	QShortcut* select_all;
-	QShortcut* remove;
 
 private slots:
 	void on_actionExit_triggered();

@@ -22,7 +22,7 @@
 #include <include/nodes/ComplexNode.h>
 
 #define MAGIC_NUMBER 0xa1b2affd
-#define SAVE_VERSION 0x00000002
+#define SAVE_VERSION 0x00000003
 
 class Workspace : public QGraphicsView{
 	Q_OBJECT

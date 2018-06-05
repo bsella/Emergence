@@ -147,6 +147,36 @@ QByteArray Workspace::nodesToText(const QList<Node *> &nodes) const{
 	return ret;
 }
 
+void Workspace::textToNodes(const QByteArray &ba){
+	QDataStream ds(ba);
+	int n; ds>>n;
+	int id; float x,y;
+	QList<Node*> newNodes;
+	for(int i=0; i<n; i++){
+		ds>>id;
+		ds>>x;
+		ds>>y;
+		Node* newNode = addNode(id,QPointF(x,y),true);
+		if(id==DOUBLE_G)
+			ds>>newNode->val.d;
+		else if(id==COLOR_G){
+			ds>>newNode->val.clr;
+			newNode->color=newNode->val.clr;
+		}
+		newNodes.append(newNode);
+	}
+	for(auto& node: newNodes)
+		for(unsigned i=0; i<node->nbArgs; i++){
+			ds>>n;
+			if(n>=0)
+				node->sockets[i]->connectToNode(newNodes.at(n));
+		}
+	for(auto& n:scene->selectedItems())
+		n->setSelected(false);
+	for(const auto& n:newNodes)
+		n->setSelected(true);
+}
+
 void Workspace::save()const{
 	QString f= QFileDialog::getSaveFileName(parentWidget(),"Save as...",".","Node Files (*.emrg)");
 	if(f.isNull()) return;
@@ -181,26 +211,9 @@ void Workspace::load(){
 	}
 	clear();
 	in.skipRawData(4);
-	int n; in>>n;
-	int id; float x,y;
-	for(int i=0; i<n; i++){
-		in>>id;
-		in>>x;
-		in>>y;
-		Node* newNode = addNode(id,QPointF(x,y),true);
-		if(id==DOUBLE_G)
-			in>>newNode->val.d;
-		else if(id==COLOR_G){
-			in>>newNode->val.clr;
-			newNode->color=newNode->val.clr;
-		}
-	}
-	for(auto& node: Nodes)
-		for(unsigned i=0; i<node->nbArgs; i++){
-			in>>n;
-			if(n>=0)
-				node->sockets[i]->connectToNode(Nodes.at(n));
-		}
+	textToNodes(file.readAll());
+	for(auto& n:scene->selectedItems())
+		n->setSelected(false);
 }
 
 Workspace::~Workspace(){
@@ -221,9 +234,18 @@ void Workspace::dropEvent(QDropEvent *event){
 
 void Workspace::dragMoveEvent(QDragMoveEvent *){}
 
-void Workspace::copy(){
-	if(!scene->selectedItems().empty())
-		clipBoard=scene->selectedItems();
+QList<Node*> Workspace::selectedNodes()const{
+	QList<Node*> ret;
+	for(const auto& n: scene->selectedItems())
+		ret.append((Node*)n);
+	return ret;
+}
+
+void Workspace::copy()const{
+	QMimeData * mime=new QMimeData;
+	mime->setText("Emergence_Nodes");
+	mime->setData("copy",nodesToText(selectedNodes()));
+	QApplication::clipboard()->setMimeData(mime);
 }
 
 void Workspace::cut(){
@@ -232,22 +254,9 @@ void Workspace::cut(){
 }
 
 void Workspace::paste(){
-	std::map<Node*,Node*> newNodes;
-	for(const auto& item: clipBoard){
-		Node* n= (Node*)item;
-		Node* tmp= addNode(n->id,n->pos(),true);
-		if(tmp) newNodes[n] =tmp;
-	}
-	for(const auto& item:clipBoard){
-		Node*n= (Node*)item;
-		for(uint i=0; i<n->nbArgs;i++)
-			if(n->iNodes[i] && clipBoard.contains(n->iNodes[i]))
-				newNodes[n]->sockets[i]->connectToNode(newNodes[n->iNodes[i]]);
-	}
-	for(auto& n:scene->selectedItems())
-		n->setSelected(false);
-	for(const auto& item:clipBoard)
-		newNodes[(Node*)item]->setSelected(true);
+	const QMimeData* mime= QApplication::clipboard()->mimeData();
+	if(mime->text()=="Emergence_Nodes")
+		textToNodes(mime->data("copy"));
 }
 
 void Workspace::select_all(){

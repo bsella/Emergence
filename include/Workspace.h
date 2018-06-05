@@ -9,6 +9,7 @@
 #include <QGraphicsScene>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QClipboard>
 #include <include/nodes/Node.h>
 #include <include/nodes/IfNode.h>
 #include <include/nodes/LogicNode.h>
@@ -36,21 +37,22 @@ public slots:
 	void removeFromList(Node *g);
 	void save()const;
 	void load();
-	void copy();
+	void copy()const;
 	void cut();
 	void paste();
 	void select_all();
 	void delete_selected();
 private:
 	QGraphicsScene* scene;
-	QList<QGraphicsItem*> clipBoard;
 	QList<Node*> Nodes;
 	RenderArea* renderArea=nullptr;
 	void clear();
 	void dropEvent(QDropEvent *event);
 	void dragMoveEvent(QDragMoveEvent *event);
 	void dragEnterEvent(QDragEnterEvent *event);
+	QList<Node*> selectedNodes()const;
 	QByteArray nodesToText(const QList<Node*>&nodes)const;
+	void textToNodes(const QByteArray& ba);
 };
 
 #endif // WORKSPACE_H

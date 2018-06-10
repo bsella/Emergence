@@ -1,6 +1,5 @@
 #ifndef NODE_H
 #define NODE_H
-#include <vector>
 
 #include <QGraphicsObject>
 #include <QPen>
@@ -49,6 +48,10 @@
 class Node: public QGraphicsObject{
 	Q_OBJECT
 private:
+	friend class MainWindow;
+	friend class DeleteNodeCommand;
+	friend class ConnectNodeCommand;
+	friend class DisconnectNodeCommand;
 	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
 		unsigned rank;
@@ -57,9 +60,10 @@ private:
 		static const int headSize=8;
 		bool connected=false;
 		QPen pen=QPen(Qt::black);
-		Node* hover;
 		QGraphicsLineItem line;
+		Node *hover, *parent;
 		void connectToNode(Node*n);
+		void disconnectNode();
 		QRectF boundingRect() const;
 		void updateLine();
 		Node* collidesWithNode()const;
@@ -72,40 +76,30 @@ private:
 		void reset();
 	};
 	bool special;
-	void updateVal();	//value is update (not valid)
-	friend class Workspace;
 public:
+	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
 	unsigned id, width, height;
 	data_t eval();
 	virtual data_t kernel()const=0;
 	operator bool();
 signals:
 	void notifyRA();
-	void removeFromWS(Node* g);
-	void addToWS(Node* g);
-	void deleted();
-private slots:
-	void disconnectNode(unsigned rank);
 protected slots:
-	virtual void removeNode();
 	void updateLines()const;
-	void updateSelection();
 protected:
-	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
-	~Node();
-
 	static const int socketSize=5;
+	virtual void updateVal();	//value is update (not valid)
 	data_t val;			//value returned by node
 	bool validVal;		//value is valid
 	QColor color;
 	QMenu *menu=nullptr;
 	QPen pen;
 	uint nbArgs;
-	std::vector<Node*> iNodes;		//INPUT NODES
-	std::list<std::pair<Node*,uint>> oConnections;
-	std::vector<Socket*> sockets;
+	QVector<Node*> iNodes;		//INPUT NODES
+	QList<QPair<Node*,uint>> oConnections;
+	QVector<Socket*> sockets;
 
-	void updateOutputVal();
+	virtual void updateTopology();
 	QRectF boundingRect()const;
 	virtual void paint(QPainter* painter,
 			const QStyleOptionGraphicsItem* option,
@@ -114,7 +108,6 @@ protected:
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void drawIcon(QPainter *painter, QString filename);
-
 };
 
 #endif

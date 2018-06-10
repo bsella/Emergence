@@ -2,15 +2,11 @@
 
 void PixelNode::update(double i){
 	val=i;
-	updateOutputVal();
+	updateVal();
 }
 void RatioNode::update(unsigned x, unsigned y){
 	val=double(x)/y;
-	updateOutputVal();
-}
-void PixelNode::removeNode(){
-	Node::removeNode();
-	emit deleted();
+	updateVal();
 }
 PixelNode::PixelNode(unsigned i):Node(i,70,50,Qt::lightGray){
 	validVal=true;

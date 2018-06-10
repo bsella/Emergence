@@ -1,8 +1,5 @@
 #include "include/nodes/BitmapNode.h"
 
-BitmapNode::BitmapNode():Node(BITMAP_G,70,70,Qt::lightGray,2){
-	bmp=nullptr;
-}
 BitmapNode::BitmapNode(const QString& filename):Node(BITMAP_G,70,70,Qt::lightGray,2){
 	setBMP(filename);
 }
@@ -11,7 +8,7 @@ void BitmapNode::setBMP(const QString &filename){
 	bmp= new QPixmap(filename);
 	bmpWidth=bmp->width();
 	bmpHeight=bmp->height();
-	updateOutputVal();
+	updateVal();
 }
 
 data_t BitmapNode::kernel()const{
@@ -51,9 +48,4 @@ void BitmapNode::changeBMP(){
 	if(f.isNull())return;
 	setBMP(f);
 	update();
-	emit notifyRA();
-}
-
-BitmapNode::~BitmapNode(){
-	delete bmp;
 }

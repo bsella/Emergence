@@ -2,7 +2,7 @@
 #include <iostream>
 
 Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsObject(parent)
-	,rank(i),iy(y),line(headSize,0,headSize,0){
+	,rank(i),iy(y),line(headSize,0,headSize,0),parent(parent){
 	setZValue(parent->zValue()+1);
 	setPos(-headSize-1,y);
 	setAcceptedMouseButtons(Qt::LeftButton);
@@ -47,25 +47,24 @@ Node* Node::Socket::collidesWithNode() const{
 
 void Node::Socket::mouseMoveEvent(QGraphicsSceneMouseEvent*event){
 	Node*i=collidesWithNode();
-	if(i&&i!=parentItem()&&i->contains(event->scenePos()-i->scenePos())){
+	if(i&&i!=parent&&i->contains(event->scenePos()-i->scenePos())){
 		hover=i;
 		for(const auto& ii: i->collidingItems())
 			if(i->zValue()<= ii->zValue())
 				i->setZValue(ii->zValue()+1);
 		QRectF r=i->boundingRect();
-		parentItem()->setZValue(i->zValue());
+		parent->setZValue(i->zValue());
 		setZValue(i->zValue());
-		setPos(i->pos()+QPoint(r.width()+Socket::headSize-1,r.height()/2)-parentItem()->pos());
+		setPos(i->pos()+QPoint(r.width()+Socket::headSize-1,r.height()/2)-parent->pos());
 	}else{
 		hover=nullptr;
-		setPos(event->scenePos()- boundingRect().center()-parentObject()->pos());
+		setPos(event->scenePos()- boundingRect().center()-parent->pos());
 	}
 }
 
 void Node::Socket::connectToNode(Node* n){
-	Node* parent= (Node*)parentItem();
 	if(n==parent) return;
-	if(parent->nbArgs>=rank+1){
+	if(parent->nbArgs>=rank+1 && !parent->iNodes[rank]){
 		QRectF r= n->boundingRect();
 		setPos(n->pos()+QPoint(r.width()-Socket::headSize,r.height()/2)-parent->pos());
 		parent->iNodes[rank]=n;
@@ -75,7 +74,24 @@ void Node::Socket::connectToNode(Node* n){
 		setEnabled(false);
 		visible=false;
 		parent->updateVal();
-		emit parent->notifyRA();
+		parent->updateTopology();
+	}
+}
+
+void Node::Socket::disconnectNode(){
+	if(parent->iNodes[rank]){
+		for(auto l=parent->iNodes[rank]->oConnections.begin();
+			l!=parent->iNodes[rank]->oConnections.end();++l)
+			if(l->first==parent && l->second==rank){
+				parent->iNodes[rank]->oConnections.erase(l);
+				break;
+			}
+		disconnect(parent->iNodes[rank],&Node::xChanged,this,&Node::Socket::updateLine);
+		disconnect(parent->iNodes[rank],&Node::yChanged,this,&Node::Socket::updateLine);
+		parent->iNodes[rank]=nullptr;
+		reset();
+		parent->updateVal();
+		parent->updateTopology();
 	}
 }
 
@@ -119,6 +135,7 @@ void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*,QWidget*){
 	painter->setRenderHint(QPainter::Antialiasing);
 	QPainterPath path;
 	path.addRoundedRect(rect, 10, 10);
+	pen.setWidth(isSelected()?2:1);
 	painter->setPen(pen);
 	painter->fillPath(path, color);
 	painter->drawPath(path);
@@ -129,7 +146,7 @@ void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*,QWidget*){
 }
 
 void Node::updateLines()const{
-	for(uint i = 0; i<iNodes.size();i++)
+	for(int i = 0; i<iNodes.size();i++)
 		if(iNodes[i]){
 			QRectF r= iNodes[i]->boundingRect();
 			sockets[i]->setPos(iNodes[i]->pos()-pos()+QPointF(r.width()-Socket::headSize,r.height()/2));
@@ -138,13 +155,6 @@ void Node::updateLines()const{
 		QRectF r=boundingRect();
 		l->first->sockets[l->second]->setPos(pos()-l->first->pos()+QPointF(r.width()-Socket::headSize,r.height()/2));
 	}
-}
-
-void Node::updateSelection(){
-	if(scene()->selectedItems().contains(this))
-		pen.setWidth(2);
-	else pen.setWidth(1);
-	update();
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent* event){
@@ -165,31 +175,15 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent*event){
 	QGraphicsItem::mouseReleaseEvent(event);
 }
 
-void Node::removeNode(){
-	setSelected(false);
-	for(auto l=oConnections.begin(); l!=oConnections.end();){
-		l->first->sockets[l->second]->reset();
-		l->first->iNodes[l->second]=nullptr;
-		l=oConnections.erase(l);
-	}
-	for(uint i=0; i<nbArgs;i++)
-		disconnectNode(i);
-	disconnect(scene(),SIGNAL(selectionChanged()),this,SLOT(updateSelection()));
-
-	emit removeFromWS(this);
-	scene()->removeItem(this);
-	emit notifyRA();
-}
-
 void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 	if(!menu) menu= new QMenu;
 	for(unsigned i = 0; i<nbArgs; i++){
 		QAction *a= menu->addAction(QString("Disconnect ")+QString::number(i+1));
 		a->setEnabled(iNodes[i]!=nullptr);
-		connect(a,&QAction::triggered,this,[=](){disconnectNode(i);});
+		connect(a,&QAction::triggered,this,[=](){sockets[i]->disconnectNode();});
 	}
 	menu->addSeparator();
-	connect(menu->addAction("Delete"),&QAction::triggered,this,&Node::removeNode);
+	connect(menu->addAction("Delete"),&QAction::triggered,scene(),[&]{scene()->removeItem(this);});
 	menu->exec(event->screenPos());
 	delete menu;
 	menu=nullptr;
@@ -202,33 +196,15 @@ Node::operator bool(){
 	return true;
 }
 
-void Node::disconnectNode(unsigned rank){
-	if(iNodes[rank]){
-		emit addToWS(iNodes[rank]);
-		for(auto l=iNodes[rank]->oConnections.begin(); l!=iNodes[rank]->oConnections.end();++l)
-			if(l->first==this && l->second==rank){
-				iNodes[rank]->oConnections.erase(l);
-				break;
-			}
-		disconnect(iNodes[rank],&Node::xChanged,sockets[rank],&Node::Socket::updateLine);
-		disconnect(iNodes[rank],&Node::yChanged,sockets[rank],&Node::Socket::updateLine);
-		iNodes[rank]=nullptr;
-		sockets[rank]->reset();
-		updateVal();
-		emit notifyRA();
-	}
-}
-
 void Node::updateVal(){
-	if(validVal){
-		validVal=false;
-		for(auto& i : oConnections)
-			i.first->updateVal();
-	}
-}
-void Node::updateOutputVal(){
+	validVal=false;
 	for(auto& i : oConnections)
 		i.first->updateVal();
+}
+
+void Node::updateTopology(){
+	for(auto& i : oConnections)
+		i.first->updateTopology();
 }
 
 void Node::drawIcon(QPainter *painter, QString filename){
@@ -241,10 +217,4 @@ data_t Node::eval(){
 	val = kernel();
 	validVal=true;
 	return val;
-}
-
-Node::~Node(){
-	delete menu;
-	for(auto& s : sockets)
-		delete s;
 }

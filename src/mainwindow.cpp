@@ -9,46 +9,245 @@ MainWindow::MainWindow(QWidget *parent) :
 	QWidget::setWindowTitle("Emergence");
 	QWidget::setWindowIcon(QIcon(":/icons/emgc.ico"));
 
-	ui->workspace->setRA(ui->renderArea);
+	ui->workspace->setScene(new QGraphicsScene);
+	scene=ui->workspace->scene();
 
-	connect(ui->renderArea,		SIGNAL(valid(bool)),ui->actionExport,SLOT(setEnabled(bool)));
+	connect(ui->actionCopy,SIGNAL(triggered(bool)),this,SLOT(copy()));
+	connect(ui->actionPaste,SIGNAL(triggered(bool)),this,SLOT(paste()));
+	connect(ui->actionCut,SIGNAL(triggered(bool)),this,SLOT(cut()));
+	connect(ui->actionDelete,SIGNAL(triggered(bool)),this,SLOT(delete_selected()));
+	connect(ui->actionSelect_all,SIGNAL(triggered(bool)),this,SLOT(select_all()));
 
-	connect(ui->renderArea->xg,	&PixelXNode::deleted,ui->actionX,[&]{
-		ui->actionX->setEnabled(true);
-		ui->toolBox->x->setEnabled(true);
-	});
-	connect(ui->renderArea->yg,	&PixelXNode::deleted,ui->actionY,[&]{
-		ui->actionY->setEnabled(true);
-		ui->toolBox->y->setEnabled(true);
-	});
-	connect(ui->renderArea->ratio,	&PixelXNode::deleted,ui->actionRatio,[&]{
-		ui->actionRatio->setEnabled(true);
-		ui->toolBox->ratio->setEnabled(true);
-	});
-	connect(ui->renderArea->start,&PixelXNode::deleted,ui->actionRender,[&]{
-		ui->actionRender->setEnabled(true);
-		ui->toolBox->output->setEnabled(true);
-	});
+	connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(save()));
+	connect(ui->actionOpen,SIGNAL(triggered(bool)),this,SLOT(load()));
 
-	ui->actionRender->setEnabled(false);
-	ui->actionX->setEnabled(false);
-	ui->actionY->setEnabled(false);
-	ui->toolBox->x->setEnabled(false);
-	ui->toolBox->y->setEnabled(false);
-	ui->toolBox->output->setEnabled(false);
+	undoStack=new QUndoStack(this);
 
-	ui->actionUndo->setEnabled(false);
-	ui->actionRedo->setEnabled(false);
+	connect(ui->actionUndo,SIGNAL(triggered(bool)),undoStack,SLOT(undo()));
+	connect(ui->actionRedo,SIGNAL(triggered(bool)),undoStack,SLOT(redo()));
+	ui->actionUndo->setEnabled(false); ui->actionRedo->setEnabled(false);
+	connect(undoStack,SIGNAL(canUndoChanged(bool)),ui->actionUndo,SLOT(setEnabled(bool)));
+	connect(undoStack,SIGNAL(canRedoChanged(bool)),ui->actionRedo,SLOT(setEnabled(bool)));
 
-	connect(ui->actionCopy,&QAction::triggered,ui->workspace,&Workspace::copy);
-	connect(ui->actionPaste,&QAction::triggered,ui->workspace,&Workspace::paste);
-	connect(ui->actionCut,&QAction::triggered,ui->workspace,&Workspace::cut);
-	connect(ui->actionDelete,&QAction::triggered,ui->workspace,&Workspace::delete_selected);
-	connect(ui->actionSelect_all,&QAction::triggered,ui->workspace,&Workspace::select_all);
+	connect(ui->workspace,SIGNAL(dropped(QDropEvent*)),this,SLOT(drop(QDropEvent*)));
+
+	Node* y= nodeMalloc(Y_G);
+	y->setPos(0,100);
+	Node* out= nodeMalloc(RENDER_G);
+	out->setPos(100,50);
+	scene->addItem(nodeMalloc(X_G));
+	scene->addItem(y);
+	scene->addItem(out);
 }
 
-MainWindow::~MainWindow(){
-	delete ui;
+Node* MainWindow::nodeMalloc(uint g, void* arg){
+	switch(g){
+	case DOUBLE_G:{
+		double d;
+		if(arg) d=*(double*)arg;
+		else{
+			bool ok;
+			d =QInputDialog::getDouble(this,"Choose Number","",0,-2147483647,2147483647,3,&ok);
+			if(!ok) return nullptr;
+		}
+		return new ConstNode(d);
+	}
+	case COLOR_G:{
+		QColor c;
+		if(arg) c=*(QColor*)arg;
+		else{
+			c =QColorDialog::getColor(Qt::white,this);
+			if(!c.isValid()) return nullptr;
+		}
+		return new ConstNode(c.rgba());
+	}
+	case PALETTE_G:{
+		///TODO : Implement dialog for palette
+		Palette p;
+		p.add(0xffff0000,0);
+		p.add(0xff0000ff,.5);
+		p.add(0xff00ff00,1);
+		return new LUTNode(p);
+	}
+	case BITMAP_G:{
+		QString f;
+		if(arg) f=*(QString*)arg;
+		else{
+			f= QFileDialog::getOpenFileName(this,"Choose Image",".","Images (*.bmp)");
+			if(f.isNull())return nullptr;
+		}
+		return new BitmapNode(f);
+	}
+	case IF_G:		return new IfNode;
+	case GT_G:		return new GTNode;
+	case LT_G:		return new LTNode;
+	case EQ_G:		return new EQNode;
+	case NE_G:		return new NENode;
+	case OR_G:		return new ORNode;
+	case AND_G:		return new ANDNode;
+	case XOR_G:		return new XORNode;
+	case NOT_G:		return new NOTNode;
+	case ADD_G:		return new ADDNode;
+	case SUB_G:		return new SUBNode;
+	case MUL_G:		return new MULNode;
+	case DIV_G:		return new DIVNode;
+	case NEG_G:		return new NEGNode;
+	case SQRT_G:	return new SQRTNode;
+	case ABS_G:		return new ABSNode;
+	case LERP_G:	return new LERPNode;
+	case CLAMP_G:	return new CLAMPNode;
+	case SIN_G:		return new SINNode;
+	case COS_G:		return new COSNode;
+	case MIN_G:		return new MINNode;
+	case MAX_G:		return new MAXNode;
+	case RGB_G:		return new RGBNode;
+	case HSV_G:		return new HSVNode;
+	case CPLX_G:	return new ComplexNode;
+	case X_G:
+		return ui->renderArea->xg;
+	case Y_G:
+		return ui->renderArea->yg;
+	case RENDER_G:
+		return ui->renderArea->start;
+	case RATIO_G:
+		return ui->renderArea->ratio;
+	default:return nullptr;
+	}
+}
+
+void MainWindow::drop(QDropEvent *event){
+	addNode(nodeMalloc(event->mimeData()->data("type").toInt()),
+				ui->workspace->mapToScene(event->pos()));
+}
+
+void MainWindow::copy()const{
+	QMimeData * mime=new QMimeData;
+	mime->setText("Emergence_Nodes");
+	mime->setData("copy",nodesToText(scene->selectedItems()));
+	QApplication::clipboard()->setMimeData(mime);
+}
+
+void MainWindow::cut(){
+	copy();
+	delete_selected();
+}
+
+void MainWindow::paste(){
+	const QMimeData* mime= QApplication::clipboard()->mimeData();
+	if(mime->text()=="Emergence_Nodes")
+		addNodes(textToNodes(mime->data("copy")));
+}
+
+void MainWindow::select_all(){
+	for(auto& n : scene->items())
+		n->setSelected(true);
+}
+
+void MainWindow::delete_selected(){
+	undoStack->push(new DeleteNodeCommand(scene));
+}
+
+QByteArray MainWindow::nodesToText(const QList<QGraphicsItem*> &nodes) const{
+	QByteArray ret;
+	QDataStream ds (&ret,QIODevice::Append);
+	ds<<nodes.size();
+	for(const auto& i:nodes){
+		Node* n=(Node*)i;
+		ds<<n->id;
+		ds<<n->scenePos().x();
+		ds<<n->scenePos().y();
+		if(n->id==DOUBLE_G)
+			ds<<n->val.d;
+		else if(n->id==COLOR_G)
+			ds<<n->val.clr;
+	}
+	for(const auto& n : nodes)
+		for(const auto& nn: ((Node*)n)->iNodes)
+			ds<<nodes.indexOf(nn);
+	return ret;
+}
+
+QList<Node*> MainWindow::textToNodes(const QByteArray &ba){
+	QDataStream ds(ba);
+	int n; ds>>n;
+	int id; float x,y;
+	QList<Node*> newNodes;
+	for(int i=0; i<n; i++){
+		ds>>id;
+		ds>>x;
+		ds>>y;
+		void* arg=nullptr;
+		if(id==DOUBLE_G){
+			double d;
+			ds>>d;
+			arg=&d;
+		}else if(id==COLOR_G){
+			data_t::color c;
+			ds>>c;
+			arg=&c;
+		}
+		newNodes.append(nodeMalloc(id,arg));
+		newNodes.back()->setPos(x,y);
+	}
+	for(auto& node: newNodes)
+		for(unsigned i=0; i<node->nbArgs; i++){
+			ds>>n;
+			if(n>=0)
+				node->sockets[i]->connectToNode(newNodes.at(n));
+		}
+	return newNodes;
+}
+
+void MainWindow::save()const{
+	QString f= QFileDialog::getSaveFileName(parentWidget(),"Save as...",".","Node Files (*.emrg)");
+	if(f.isNull()) return;
+	if(!f.endsWith(".emrg"))
+		f.append(".emrg");
+	QFile file(f);
+	file.open(QIODevice::WriteOnly);
+	file.resize(0);
+	QDataStream out(&file);
+
+	out << MAGIC_NUMBER;
+	out << SAVE_VERSION;
+
+	out << nodesToText(scene->items());
+}
+
+void MainWindow::load(){
+	QString f= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
+	if(f.isNull()) return;
+	QFile file(f);
+	file.open(QIODevice::ReadOnly);
+	QDataStream in(&file);
+	uint magic; in>>magic;
+	if(magic!=MAGIC_NUMBER){
+		QMessageBox::warning(0,"Wrong format","Bad File Format");
+		return;
+	}
+	uint version; in>>version;
+	if(version<SAVE_VERSION){
+		QMessageBox::warning(0,"Wrong version","Sorry, this save file is too old.");
+		return;
+	}
+	in.skipRawData(4);
+
+	addNodes(textToNodes(file.readAll()));
+	scene->clearSelection();
+}
+
+void MainWindow::addNode(Node *n){
+	addNode(n,scene->sceneRect().center());
+}
+
+void MainWindow::addNode(Node *n, const QPointF& pos){
+	if(!n) return;
+	n->setPos(pos);
+	undoStack->push(new AddNodeCommand(n,scene));
+}
+
+void MainWindow::addNodes(const QList<Node *> &n){
+	undoStack->push(new AddNodeCommand(n,scene));
 }
 
 void MainWindow::on_actionExit_triggered(){
@@ -57,116 +256,110 @@ void MainWindow::on_actionExit_triggered(){
 void MainWindow::on_actionExport_triggered(){
 	ExportImageDialog::exportBMP(ui->renderArea);
 }
-void MainWindow::on_actionSave_as_triggered(){
-	ui->workspace->save();
-}
-void MainWindow::on_actionOpen_triggered(){
-	ui->workspace->load();
-}
 void MainWindow::on_actionIf_triggered(){
-	ui->workspace->addNode(IF_G);
+//	ui->workspace->addNode(IF_G);
 }
 void MainWindow::on_actionGreaterThan_triggered(){
-	ui->workspace->addNode(GT_G);
+//	ui->workspace->addNode(GT_G);
 }
 void MainWindow::on_actionLessThan_triggered(){
-	ui->workspace->addNode(LT_G);
+//	ui->workspace->addNode(LT_G);
 }
 void MainWindow::on_actionEqual_triggered(){
-	ui->workspace->addNode(EQ_G);
+//	ui->workspace->addNode(EQ_G);
 }
 void MainWindow::on_actionNot_Equal_triggered(){
-	ui->workspace->addNode(NE_G);
+//	ui->workspace->addNode(NE_G);
 }
 void MainWindow::on_actionAND_triggered(){
-	ui->workspace->addNode(AND_G);
+//	ui->workspace->addNode(AND_G);
 }
 void MainWindow::on_actionOR_triggered(){
-	ui->workspace->addNode(OR_G);
+//	ui->workspace->addNode(OR_G);
 }
 void MainWindow::on_actionXOR_triggered(){
-	ui->workspace->addNode(XOR_G);
+//	ui->workspace->addNode(XOR_G);
 }
 void MainWindow::on_actionNOT_triggered(){
-	ui->workspace->addNode(NOT_G);
+//	ui->workspace->addNode(NOT_G);
 }
 void MainWindow::on_actionDouble_triggered(){
-	ui->workspace->addNode(DOUBLE_G);
+//	ui->workspace->addNode(DOUBLE_G);
 }
 void MainWindow::on_actionColor_triggered(){
-	ui->workspace->addNode(COLOR_G);
+//	ui->workspace->addNode(COLOR_G);
 }
 void MainWindow::on_actionLUT_triggered(){
-	ui->workspace->addNode(PALETTE_G);
+//	ui->workspace->addNode(PALETTE_G);
 }
 void MainWindow::on_actionX_triggered(){
-	ui->workspace->addNode(X_G);
+//	ui->workspace->addNode(X_G);
 	ui->actionX->setEnabled(false);
 	ui->toolBox->x->setEnabled(false);
 }
 void MainWindow::on_actionY_triggered(){
-	ui->workspace->addNode(Y_G);
+//	ui->workspace->addNode(Y_G);
 	ui->actionY->setEnabled(false);
 	ui->toolBox->y->setEnabled(false);
 }
 void MainWindow::on_actionRender_triggered(){
-	ui->workspace->addNode(RENDER_G);
+//	ui->workspace->addNode(RENDER_G);
 	ui->actionRender->setEnabled(false);
 	ui->toolBox->output->setEnabled(false);
 }
 void MainWindow::on_actionADD_triggered(){
-	ui->workspace->addNode(ADD_G);
+//	ui->workspace->addNode(ADD_G);
 }
 void MainWindow::on_actionSUB_triggered(){
-	ui->workspace->addNode(SUB_G);
+//	ui->workspace->addNode(SUB_G);
 }
 void MainWindow::on_actionMUL_triggered(){
-	ui->workspace->addNode(MUL_G);
+//	ui->workspace->addNode(MUL_G);
 }
 void MainWindow::on_actionDIV_triggered(){
-	ui->workspace->addNode(DIV_G);
+//	ui->workspace->addNode(DIV_G);
 }
 void MainWindow::on_actionNEG_triggered(){
-	ui->workspace->addNode(NEG_G);
+//	ui->workspace->addNode(NEG_G);
 }
 void MainWindow::on_actionSQRT_triggered(){
-	ui->workspace->addNode(SQRT_G);
+//	ui->workspace->addNode(SQRT_G);
 }
 void MainWindow::on_actionABS_triggered(){
-	ui->workspace->addNode(ABS_G);
+//	ui->workspace->addNode(ABS_G);
 }
 void MainWindow::on_actionLerp_triggered(){
-	ui->workspace->addNode(LERP_G);
+//	ui->workspace->addNode(LERP_G);
 }
 void MainWindow::on_actionClamp_triggered(){
-	ui->workspace->addNode(CLAMP_G);
+//	ui->workspace->addNode(CLAMP_G);
 }
 void MainWindow::on_actionBitmap_triggered(){
-	ui->workspace->addNode(BITMAP_G);
+//	ui->workspace->addNode(BITMAP_G);
 }
 void MainWindow::on_actionSin_triggered(){
-	ui->workspace->addNode(SIN_G);
+//	ui->workspace->addNode(SIN_G);
 }
 void MainWindow::on_actionCos_triggered(){
-	ui->workspace->addNode(COS_G);
+//	ui->workspace->addNode(COS_G);
 }
 void MainWindow::on_actionMin_triggered(){
-	ui->workspace->addNode(MIN_G);
+//	ui->workspace->addNode(MIN_G);
 }
 void MainWindow::on_actionMax_triggered(){
-	ui->workspace->addNode(MAX_G);
+//	ui->workspace->addNode(MAX_G);
 }
 void MainWindow::on_actionRatio_triggered(){
-	ui->workspace->addNode(RATIO_G);
+//	ui->workspace->addNode(RATIO_G);
 	ui->actionRatio->setEnabled(false);
 	ui->toolBox->ratio->setEnabled(false);
 }
 void MainWindow::on_actionComplex_triggered(){
-	ui->workspace->addNode(CPLX_G);
+//	ui->workspace->addNode(CPLX_G);
 }
 void MainWindow::on_actionHSV_triggered(){
-	ui->workspace->addNode(HSV_G);
+//	ui->workspace->addNode(HSV_G);
 }
 void MainWindow::on_actionRGB_triggered(){
-	ui->workspace->addNode(RGB_G);
+//	ui->workspace->addNode(RGB_G);
 }

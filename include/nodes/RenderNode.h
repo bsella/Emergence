@@ -8,10 +8,12 @@ public:
 	RenderNode();
 private:
 	data_t kernel()const;
-	void removeNode();
+	void updateTopology();
 	void paint(QPainter* painter,
 			   const QStyleOptionGraphicsItem* option,
 			   QWidget* widget);
+signals:
+	void updateRenderArea();
 };
 
 #endif // RENDERNODE_H

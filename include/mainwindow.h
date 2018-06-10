@@ -2,8 +2,23 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QShortcut>
+#include <QUndoStack>
+#include <QClipboard>
+#include <QMessageBox>
+
 #include "include/ExportImageDialog.h"
+#include <include/nodes/ConstNode.h>
+#include <include/nodes/MathNode.h>
+#include <include/nodes/PaletteNode.h>
+#include <include/nodes/BitmapNode.h>
+#include <include/nodes/ColorNode.h>
+#include <include/nodes/ComplexNode.h>
+#include <include/nodes/Node.h>
+#include <include/nodes/IfNode.h>
+#include <include/nodes/LogicNode.h>
+#include <include/nodes/CompNode.h>
+#include <include/nodes/RenderNode.h>
+#include <include/commands.h>
 
 namespace Ui {
 class MainWindow;
@@ -14,16 +29,30 @@ class MainWindow : public QMainWindow{
 
 public:
 	explicit MainWindow(QWidget *parent = 0);
-	~MainWindow();
 
 private:
 	Ui::MainWindow *ui;
+	QUndoStack* undoStack;
+	QList<Node*> textToNodes(const QByteArray& ba);
+	QByteArray nodesToText(const QList<QGraphicsItem *> &nodes)const;
+	Node* nodeMalloc(uint g, void *arg=nullptr);
+	QGraphicsScene* scene;
+	void addNode(Node *n);
+	void addNode(Node *n, const QPointF& pos);
+	void addNodes(const QList<Node *> &n);
 
 private slots:
+	void save()const;
+	void load();
+	void copy()const;
+	void cut();
+	void paste();
+	void select_all();
+	void delete_selected();
+	void drop(QDropEvent*event);
+
 	void on_actionExit_triggered();
 	void on_actionExport_triggered();
-	void on_actionSave_as_triggered();
-	void on_actionOpen_triggered();
 	void on_actionIf_triggered();
 	void on_actionGreaterThan_triggered();
 	void on_actionLessThan_triggered();

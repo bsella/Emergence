@@ -15,7 +15,13 @@ Feel free to send your feedback on `karim.salama@univ-tlse3.fr`
 ---
 
 TODO:
+- [x] Clipboard
 - [ ] Undo/Redo
+  - [x] Add
+  - [x] Remove
+  - [ ] Connect
+  - [ ] Disconnect
+  - [ ] Move
 - [ ] Multiple outputs
 - [ ] Transparancy support
 - [ ] Nodes inside nodes

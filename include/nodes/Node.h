@@ -78,6 +78,7 @@ private:
 	bool special;
 	QPointF initialPos;
 	static QPointF tmpPos;
+	QAction* actionDelete;
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 public:

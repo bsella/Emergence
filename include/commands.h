@@ -23,14 +23,14 @@ private:
 
 class DeleteNodeCommand: public QUndoCommand{
 public:
-	explicit DeleteNodeCommand(QGraphicsScene* scene,
+	DeleteNodeCommand(Node* node,QGraphicsScene* scene,
 								QUndoCommand* parent=0);
 	void undo()override;
 	void redo()override;
 private:
-	QList<QGraphicsItem*> _nodes;
-	QList<QVector<Node*>> iNodes;
-	QList<QList<QPair<Node*,uint>>> oConnections;
+	Node* _node;
+	QVector<Node*> iNodes;
+	QList<QPair<Node*,uint>> oConnections;
 	QGraphicsScene* _scene;
 };
 

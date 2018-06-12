@@ -121,6 +121,7 @@ Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):
 	setFlags(GraphicsItemFlag::ItemIsMovable| GraphicsItemFlag::ItemIsSelectable);
 	connect(this,SIGNAL(xChanged()),this,SLOT(updateLines()));
 	connect(this,SIGNAL(yChanged()),this,SLOT(updateLines()));
+	actionDelete=new QAction("Delete");
 }
 
 QRectF Node::boundingRect()const{
@@ -188,7 +189,7 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 		connect(a,&QAction::triggered,this,[=](){emit disconnected(sockets[i]);});
 	}
 	menu->addSeparator();
-	connect(menu->addAction("Delete"),&QAction::triggered,scene(),[&]{scene()->removeItem(this);});
+	menu->addAction(actionDelete);
 	menu->exec(event->screenPos());
 	delete menu;
 	menu=nullptr;

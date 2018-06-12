@@ -50,6 +50,9 @@ private slots:
 	void select_all();
 	void delete_selected();
 	void drop(QDropEvent*event);
+	void moveNodes();
+	void connectNode(Node::Socket* s, Node* n);
+	void disconnectNode(Node::Socket* s);
 
 	void on_actionExit_triggered();
 	void on_actionExport_triggered();

@@ -36,41 +36,35 @@ private:
 
 class ConnectNodeCommand: public QUndoCommand{
 public:
-	ConnectNodeCommand(Node* n, Node* in, uint rank,
+	ConnectNodeCommand(Node::Socket* s, Node* in,
 					   QUndoCommand* parent=0);
 	void undo()override;
 	void redo()override;
 private:
-	Node* _node;
+	Node::Socket* _socket;
 	Node* _iNode;
-	uint _rank;
 };
 
 class DisconnectNodeCommand: public QUndoCommand{
 public:
-	DisconnectNodeCommand(Node* n, Node* in, uint rank,
+	DisconnectNodeCommand(Node::Socket *s,
 						  QUndoCommand* parent=0);
 	void undo()override;
 	void redo()override;
 private:
+	Node::Socket* _socket;
 	Node* _node;
-	Node* _iNode;
-	uint _rank;
 };
 
 class MoveNodeCommand: public QUndoCommand{
 public:
-	MoveNodeCommand(const QList<Node*>& nodes,
-	                QGraphicsScene* scene,
-	                const QPointF& oldPos,
-	                QUndoCommand* parent=0);
+	MoveNodeCommand(Node *node, QUndoCommand* parent=0);
 	void undo()override;
 	void redo()override;
 private:
-	QList<Node*> nodes;
-	QGraphicsScene* _scene;
+	Node* _node;
+	QPointF _pos;
 	QPointF _oldPos;
-	QPointF newPos;
 };
 
 #endif // COMMAND_H

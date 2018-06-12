@@ -31,13 +31,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(ui->workspace,SIGNAL(dropped(QDropEvent*)),this,SLOT(drop(QDropEvent*)));
 
+	Node* x= nodeMalloc(X_G);
 	Node* y= nodeMalloc(Y_G);
 	y->setPos(0,100);
 	Node* out= nodeMalloc(RENDER_G);
 	out->setPos(100,50);
-	scene->addItem(nodeMalloc(X_G));
+	scene->addItem(x);
 	scene->addItem(y);
 	scene->addItem(out);
+	connect(x,SIGNAL(moved()),this,SLOT(moveNodes()));
+	connect(y,SIGNAL(moved()),this,SLOT(moveNodes()));
+	connect(out,SIGNAL(moved()),this,SLOT(moveNodes()));
+	connect(out,SIGNAL(connected(Node::Socket*,Node*)),this,SLOT(connectNode(Node::Socket*,Node*)));
+	connect(out,SIGNAL(disconnected(Node::Socket*)),this,SLOT(disconnectNode(Node::Socket*)));
 }
 
 Node* MainWindow::nodeMalloc(uint g, void* arg){
@@ -243,11 +249,33 @@ void MainWindow::addNode(Node *n){
 void MainWindow::addNode(Node *n, const QPointF& pos){
 	if(!n) return;
 	n->setPos(pos);
+	n->initialPos=pos;
+	connect(n,SIGNAL(moved()),this,SLOT(moveNodes()));
+	connect(n,SIGNAL(connected(Node::Socket*,Node*)),this,SLOT(connectNode(Node::Socket*,Node*)));
+	connect(n,SIGNAL(disconnected(Node::Socket*)),this,SLOT(disconnectNode(Node::Socket*)));
 	undoStack->push(new AddNodeCommand(n,scene));
 }
 
 void MainWindow::addNodes(const QList<Node *> &n){
+	for(auto& i: n){
+		i->initialPos=i->pos();
+		connect(i,SIGNAL(moved()),this,SLOT(moveNodes()));
+	}
 	undoStack->push(new AddNodeCommand(n,scene));
+}
+
+void MainWindow::moveNodes(){
+	undoStack->beginMacro("move");
+	for(auto& n: ui->workspace->scene()->selectedItems())
+		undoStack->push(new MoveNodeCommand((Node*)n));
+	undoStack->endMacro();
+}
+
+void MainWindow::connectNode(Node::Socket* s, Node* n){
+	undoStack->push(new ConnectNodeCommand(s,n));
+}
+void MainWindow::disconnectNode(Node::Socket* s){
+	undoStack->push(new DisconnectNodeCommand(s));
 }
 
 void MainWindow::on_actionExit_triggered(){

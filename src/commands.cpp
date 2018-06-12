@@ -63,28 +63,41 @@ void DeleteNodeCommand::redo(){
 	_scene->update();
 }
 
-ConnectNodeCommand::ConnectNodeCommand(Node *n, Node *in, uint rank,
-									   QUndoCommand *parent): QUndoCommand(parent){
-	_node=n;
+ConnectNodeCommand::ConnectNodeCommand(Node::Socket *s, Node *in,
+					QUndoCommand *parent): QUndoCommand(parent){
+	_socket=s;
 	_iNode=in;
-	_rank=rank;
 }
 void ConnectNodeCommand::undo(){
-	_node->sockets[_rank]->disconnectNode();
+	_socket->disconnectNode();
 }
 void ConnectNodeCommand::redo(){
-	_node->sockets[_rank]->connectToNode(_iNode);
+	_socket->connectToNode(_iNode);
 }
 
-DisconnectNodeCommand::DisconnectNodeCommand(Node *n, Node *in, uint rank,
-											 QUndoCommand *parent): QUndoCommand(parent){
-	_node=n;
-	_iNode=in;
-	_rank=rank;
+DisconnectNodeCommand::DisconnectNodeCommand(Node::Socket *s,
+						QUndoCommand *parent): QUndoCommand(parent){
+	_node=s->parent->iNodes[s->rank];
+	_socket=s;
 }
 void DisconnectNodeCommand::undo(){
-	_node->sockets[_rank]->connectToNode(_iNode);
+	_socket->connectToNode(_node);
 }
 void DisconnectNodeCommand::redo(){
-	_node->sockets[_rank]->disconnectNode();
+	_socket->disconnectNode();
+}
+
+MoveNodeCommand::MoveNodeCommand(Node* node,
+				QUndoCommand *parent): QUndoCommand(parent){
+	_node=node;
+	_pos=node->pos();
+	_oldPos=node->initialPos;
+}
+void MoveNodeCommand::undo(){
+	_node->setPos(_oldPos);
+	_node->initialPos=_oldPos;
+}
+void MoveNodeCommand::redo(){
+	_node->setPos(_pos);
+	_node->initialPos=_pos;
 }

@@ -52,13 +52,13 @@ private:
 	friend class DeleteNodeCommand;
 	friend class ConnectNodeCommand;
 	friend class DisconnectNodeCommand;
+	friend class MoveNodeCommand;
 	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
 		unsigned rank;
 		double iy;
 		bool visible=true;
 		static const int headSize=8;
-		bool connected=false;
 		QPen pen=QPen(Qt::black);
 		QGraphicsLineItem line;
 		Node *hover, *parent;
@@ -76,6 +76,10 @@ private:
 		void reset();
 	};
 	bool special;
+	QPointF initialPos;
+	static QPointF tmpPos;
+	void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 public:
 	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
 	unsigned id, width, height;
@@ -83,7 +87,10 @@ public:
 	virtual data_t kernel()const=0;
 	operator bool();
 signals:
+	void connected(Node::Socket* s,Node* n);
+	void disconnected(Node::Socket* s);
 	void notifyRA();
+	void moved();
 protected slots:
 	void updateLines()const;
 protected:
@@ -104,8 +111,6 @@ protected:
 	virtual void paint(QPainter* painter,
 			const QStyleOptionGraphicsItem* option,
 			QWidget* widget);
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void drawIcon(QPainter *painter, QString filename);
 };

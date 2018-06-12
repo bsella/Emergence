@@ -98,7 +98,7 @@ void Node::Socket::disconnectNode(){
 void Node::Socket::mousePressEvent(QGraphicsSceneMouseEvent*){}
 
 void Node::Socket::mouseReleaseEvent(QGraphicsSceneMouseEvent*){
-	if(hover) connectToNode(hover);
+	if(hover) emit parent->connected(this,hover);
 	else reset();
 }
 
@@ -157,12 +157,15 @@ void Node::updateLines()const{
 	}
 }
 
+QPointF Node::tmpPos;
+
 void Node::mousePressEvent(QGraphicsSceneMouseEvent* event){
 	if(event->button()==Qt::LeftButton){
 		setCursor(Qt::ClosedHandCursor);
 		setZValue(INT32_MAX);
 	}else
 		setCursor(Qt::ArrowCursor);
+	tmpPos=pos();
 	QGraphicsItem::mousePressEvent(event);
 }
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent*event){
@@ -172,6 +175,8 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent*event){
 	for(const auto& i: collidingItems())
 		if(zValue()<= i->zValue())
 			setZValue(i->zValue()+1);
+	if(pos()-tmpPos!=QPointF(0,0))
+		emit moved();
 	QGraphicsItem::mouseReleaseEvent(event);
 }
 
@@ -180,7 +185,7 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 	for(unsigned i = 0; i<nbArgs; i++){
 		QAction *a= menu->addAction(QString("Disconnect ")+QString::number(i+1));
 		a->setEnabled(iNodes[i]!=nullptr);
-		connect(a,&QAction::triggered,this,[=](){sockets[i]->disconnectNode();});
+		connect(a,&QAction::triggered,this,[=](){emit disconnected(sockets[i]);});
 	}
 	menu->addSeparator();
 	connect(menu->addAction("Delete"),&QAction::triggered,scene(),[&]{scene()->removeItem(this);});

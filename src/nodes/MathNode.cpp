@@ -38,7 +38,7 @@ void DIVNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
 void NEGNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option,widget);
-	drawIcon(painter,":/icons/subtract.png");
+	drawIcon(painter,":/icons/neg.png");
 }
 
 void SQRTNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){

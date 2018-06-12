@@ -15,6 +15,7 @@ Feel free to send your feedback on `karim.salama@univ-tlse3.fr`
 ---
 
 TODO:
+- [ ] Navigate/Zoom
 - [x] Clipboard
 - [x] Undo/Redo
   - [x] Add
@@ -29,7 +30,7 @@ TODO:
 - [x] New save format
 - [ ] Data structures and lists
 - [ ] Preventing cycles
-- [ ] More icons
+- [x] More icons
 - [ ] Auto-arrange
 - [ ] Menus
 - [ ] Documentation

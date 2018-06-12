@@ -24,10 +24,10 @@ void NodeTool::mouseMoveEvent(QMouseEvent *event){
 }
 
 NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
-	x=new NodeTool(X_G,"X");
-	y=new NodeTool(Y_G,"Y");
+	x=new NodeTool(X_G,"X",":/icons/x.png");
+	y=new NodeTool(Y_G,"Y",":/icons/y.png");
 	ratio=new NodeTool(RATIO_G,"Width/Height");
-	output=new NodeTool(RENDER_G,"Output");
+	output=new NodeTool(RENDER_G,"Output",":/icons/output.png");
 
 	QWidget * page_Math= new QWidget;
 	QWidget * page_Comp= new QWidget;
@@ -48,11 +48,11 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 	l_math->addWidget(new NodeTool(CPLX_G,"Complex",":/icons/complex.png"));
 	l_math->addWidget(new NodeTool(SQRT_G,"Square Root",":/icons/sqrt.png"));
 	l_math->addWidget(new NodeTool(ABS_G,"Absolute Value"));
-	l_math->addWidget(new NodeTool(NEG_G,"Negative"));
+	l_math->addWidget(new NodeTool(NEG_G,"Negative",":/icons/neg.png"));
 	l_math->addWidget(new NodeTool(MIN_G,"Min"));
 	l_math->addWidget(new NodeTool(MAX_G,"Max"));
-	l_math->addWidget(new NodeTool(SIN_G,"Sin"));
-	l_math->addWidget(new NodeTool(COS_G,"Cos"));
+	l_math->addWidget(new NodeTool(SIN_G,"Sin",":/icons/sin.png"));
+	l_math->addWidget(new NodeTool(COS_G,"Cos",":/icons/cos.png"));
 	l_math->addWidget(new NodeTool(LERP_G,"Linear Interpolation"));
 	l_math->addWidget(new NodeTool(CLAMP_G,"Clamp"));
 	l_math->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));
@@ -79,12 +79,12 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 	l_misc->addWidget(y);
 	l_misc->addWidget(ratio);
 	l_misc->addWidget(output);
-	l_misc->addWidget(new NodeTool(IF_G,"Condition"));
+	l_misc->addWidget(new NodeTool(IF_G,"Condition",":/icons/if.png"));
 	l_misc->addWidget(new NodeTool(RGB_G,"RGB"));
 	l_misc->addWidget(new NodeTool(HSV_G,"HSV"));
 	l_misc->addWidget(new NodeTool(COLOR_G,"Color",":/icons/color.png"));
 	l_misc->addWidget(new NodeTool(PALETTE_G,"LUT"));
-	l_misc->addWidget(new NodeTool(BITMAP_G,"Image"));
+	l_misc->addWidget(new NodeTool(BITMAP_G,"Image",":/icons/image.png"));
 	l_misc->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));
 
 	addItem(page_Math,"Math");

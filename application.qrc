@@ -18,5 +18,23 @@
         <file>icons/or.png</file>
         <file>icons/xor.png</file>
         <file>icons/not.png</file>
+        <file>icons/copy.png</file>
+        <file>icons/cut.png</file>
+        <file>icons/image.png</file>
+        <file>icons/paste.png</file>
+        <file>icons/redo.png</file>
+        <file>icons/undo.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/cos.png</file>
+        <file>icons/sin.png</file>
+        <file>icons/x.png</file>
+        <file>icons/y.png</file>
+        <file>icons/if.png</file>
+        <file>icons/exit.png</file>
+        <file>icons/export.png</file>
+        <file>icons/output.png</file>
+        <file>icons/open.png</file>
+        <file>icons/save.png</file>
+        <file>icons/neg.png</file>
     </qresource>
 </RCC>

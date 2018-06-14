@@ -100,6 +100,11 @@ data_t operator/ (data_t d1, data_t d2){
 	return double(d1)/double(d2);
 }
 
+data_t data_t::operator-()const{
+	if(t==TypeEnum::DOUBLE) return -d;
+	return -c;
+}
+
 data_t data_t::sin()const{
 	if(t==TypeEnum::DOUBLE)return qSin(d);
 	return std::sin(c);

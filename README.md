@@ -23,7 +23,7 @@ TODO:
   - [x] Connect
   - [x] Disconnect
   - [x] Move
-- [ ] Multiple outputs
+- [x] Multiple outputs
 - [ ] Transparancy support
 - [ ] Nodes inside nodes
 - [ ] Node inside itself

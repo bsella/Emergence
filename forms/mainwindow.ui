@@ -177,66 +177,6 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="outputDock">
-   <property name="minimumSize">
-    <size>
-     <width>200</width>
-     <height>140</height>
-    </size>
-   </property>
-   <property name="features">
-    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
-   </property>
-   <property name="windowTitle">
-    <string>Output</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3">
-    <layout class="QGridLayout" name="gridLayout_4">
-     <property name="leftMargin">
-      <number>2</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>2</number>
-     </property>
-     <property name="bottomMargin">
-      <number>2</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="RenderArea" name="renderArea" native="true">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>0</number>
-        </property>
-       </layout>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
   <action name="actionIf">
    <property name="icon">
     <iconset resource="../application.qrc">
@@ -635,12 +575,6 @@
    <class>NodeBox</class>
    <extends>QToolBox</extends>
    <header>include/NodeBox.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>RenderArea</class>
-   <extends>QWidget</extends>
-   <header>include/RenderArea.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

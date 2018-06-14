@@ -1,19 +1,14 @@
 #include "include/nodes/PixelNode.h"
 
-void PixelNode::update(double i){
-	val=i;
-	updateVal();
-}
-void RatioNode::update(unsigned x, unsigned y){
-	val=double(x)/y;
-	updateVal();
-}
 PixelNode::PixelNode(unsigned i):Node(i,70,50,Qt::lightGray){
 	validVal=true;
+	connect(&sm,SIGNAL(updateXY()),this,SLOT(updateVal()));
 }
 PixelXNode::PixelXNode():PixelNode(X_G){}
 PixelYNode::PixelYNode():PixelNode(Y_G){}
-RatioNode::RatioNode():PixelNode(RATIO_G){}
+RatioNode::RatioNode():Node(RATIO_G,70,50,Qt::lightGray){
+	connect(&sm,SIGNAL(updateRatio()),this,SLOT(updateVal()));
+}
 
 void PixelNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget){
 	Node::paint(painter,option,widget);
@@ -31,7 +26,7 @@ void PixelYNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 }
 
 void RatioNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
-	PixelNode::paint(painter,option,widget);
+	Node::paint(painter,option,widget);
 	QRectF rect=boundingRect();
 	painter->drawText(rect.x()+rect.width()/3,rect.y()+rect.height()/2+3,"W/H");
 }

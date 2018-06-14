@@ -73,7 +73,7 @@ void Node::Socket::connectToNode(Node* n){
 		connect(n,&Node::yChanged,this,&Node::Socket::updateLine);
 		setEnabled(false);
 		visible=false;
-		parent->updateVal();
+		n->updateVal();
 		parent->updateTopology();
 	}
 }
@@ -90,7 +90,6 @@ void Node::Socket::disconnectNode(){
 		disconnect(parent->iNodes[rank],&Node::yChanged,this,&Node::Socket::updateLine);
 		parent->iNodes[rank]=nullptr;
 		reset();
-		parent->updateVal();
 		parent->updateTopology();
 	}
 }
@@ -109,6 +108,13 @@ void Node::Socket::reset(){
 	setPos(-headSize-1,iy);
 	line.setLine(headSize,0,headSize,0);
 }
+
+Node* Node::Socket::hover;
+SignalManager Node::sm;
+
+double Node::x;
+double Node::y;
+double Node::ratio;
 
 Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):
 	special(spec),id(i), width(w),height(h),color(c),pen(QPen(Qt::black,1)),nbArgs(n){

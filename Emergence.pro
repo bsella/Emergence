@@ -42,7 +42,6 @@ SOURCES +=\
     src/nodes/LogicNode.cpp \
     src/nodes/PaletteNode.cpp \
 	src/Palette.cpp \
-	src/RenderArea.cpp \
     src/nodes/PixelNode.cpp \
     src/nodes/Node.cpp \
     src/nodes/ConstNode.cpp \
@@ -55,7 +54,8 @@ SOURCES +=\
     src/data_t.cpp \
     src/nodes/ComplexNode.cpp \
     src/NodeBox.cpp \
-    src/commands.cpp
+    src/commands.cpp \
+    src/signalManager.cpp
 
 HEADERS  +=\
     include/mainwindow.h \
@@ -64,7 +64,6 @@ HEADERS  +=\
     include/nodes/LogicNode.h \
     include/Palette.h \
     include/nodes/PaletteNode.h \
-    include/RenderArea.h \
     include/nodes/CompNode.h \
     include/nodes/ConstNode.h \
     include/nodes/PixelNode.h \
@@ -77,7 +76,8 @@ HEADERS  +=\
     include/nodes/ColorNode.h \
     include/nodes/ComplexNode.h \
     include/NodeBox.h \
-    include/commands.h
+    include/commands.h \
+    include/signalManager.h
 
 FORMS += forms/mainwindow.ui \
     forms/exportimagedialog.ui

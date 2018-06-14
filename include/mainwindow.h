@@ -18,6 +18,7 @@
 #include <include/nodes/LogicNode.h>
 #include <include/nodes/CompNode.h>
 #include <include/nodes/RenderNode.h>
+#include <include/nodes/PixelNode.h>
 #include <include/commands.h>
 
 namespace Ui {

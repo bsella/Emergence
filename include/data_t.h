@@ -33,12 +33,12 @@ struct data_t{
 	operator double()const;
 	operator color()const;
 	operator cplx()const;
-	inline data_t operator-()const{return -d;}
 	data_t& operator=(double dd);
 	data_t& operator=(bool bb);
 	data_t& operator=(color uu);
 	data_t& operator=(QColor uu);
 	data_t& operator=(cplx cc);
+	data_t operator-()const;
 	data_t sin()const;
 	data_t cos()const;
 	data_t sqrt()const;

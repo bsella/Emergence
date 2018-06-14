@@ -6,7 +6,7 @@
 #include <QImage>
 #include <QPixmap>
 #include <QPainter>
-#include "include/RenderArea.h"
+#include "include/nodes/RenderNode.h"
 
 namespace Ui {
 class ExportImageDialog;
@@ -18,7 +18,7 @@ class ExportImageDialog : public QDialog{
 public:
 	explicit ExportImageDialog(QWidget *parent = 0);
 	~ExportImageDialog();
-	static void exportBMP(RenderArea *renderer);
+	static void exportBMP(RenderNode::RenderArea *renderer);
 
 private:
 	Ui::ExportImageDialog *ui;

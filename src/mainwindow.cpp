@@ -1,6 +1,5 @@
 #include "include/mainwindow.h"
 #include "ui_mainwindow.h"
-#include "include/RenderArea.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -30,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(undoStack,SIGNAL(canRedoChanged(bool)),ui->actionRedo,SLOT(setEnabled(bool)));
 
 	connect(ui->workspace,SIGNAL(dropped(QDropEvent*)),this,SLOT(drop(QDropEvent*)));
+
+	ui->actionExport->setEnabled(false);
 
 	Node* x= nodeMalloc(X_G);
 	Node* y= nodeMalloc(Y_G);
@@ -111,14 +112,10 @@ Node* MainWindow::nodeMalloc(uint g, void* arg){
 	case RGB_G:		return new RGBNode;
 	case HSV_G:		return new HSVNode;
 	case CPLX_G:	return new ComplexNode;
-	case X_G:
-		return ui->renderArea->xg;
-	case Y_G:
-		return ui->renderArea->yg;
-	case RENDER_G:
-		return ui->renderArea->start;
-	case RATIO_G:
-		return ui->renderArea->ratio;
+	case X_G:		return new PixelXNode;
+	case Y_G:		return new PixelYNode;
+	case RENDER_G:	return new RenderNode;
+	case RATIO_G:	return new RatioNode;
 	default:return nullptr;
 	}
 }
@@ -295,7 +292,7 @@ void MainWindow::on_actionExit_triggered(){
 	close();
 }
 void MainWindow::on_actionExport_triggered(){
-	ExportImageDialog::exportBMP(ui->renderArea);
+//	ExportImageDialog::exportBMP();
 }
 void MainWindow::on_actionIf_triggered(){
 	addNode(nodeMalloc(IF_G));

@@ -10,6 +10,7 @@
 #include <QMenu>
 
 #include "include/data_t.h"
+#include "include/signalManager.h"
 
 #define DOUBLE_G	1
 #define COLOR_G		2
@@ -61,7 +62,8 @@ private:
 		static const int headSize=8;
 		QPen pen=QPen(Qt::black);
 		QGraphicsLineItem line;
-		Node *hover, *parent;
+		static Node *hover;
+		Node *parent;
 		void connectToNode(Node*n);
 		void disconnectNode();
 		QRectF boundingRect() const;
@@ -81,24 +83,23 @@ private:
 	QAction* actionDelete;
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+	virtual data_t kernel()const=0;
 public:
 	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
 	unsigned id, width, height;
 	data_t eval();
-	virtual data_t kernel()const=0;
-	operator bool();
 signals:
 	void connected(Node::Socket* s,Node* n);
 	void disconnected(Node::Socket* s);
-	void notifyRA();
 	void moved();
 protected slots:
 	void updateLines()const;
+	void updateVal();	//update value (not valid)
 protected:
+	static double x,y, ratio;
 	static const int socketSize=5;
-	virtual void updateVal();	//value is update (not valid)
 	data_t val;			//value returned by node
-	bool validVal;		//value is valid
+	bool validVal=false;		//value is valid
 	QColor color;
 	QMenu *menu=nullptr;
 	QPen pen;
@@ -106,6 +107,7 @@ protected:
 	QVector<Node*> iNodes;		//INPUT NODES
 	QList<QPair<Node*,uint>> oConnections;
 	QVector<Socket*> sockets;
+	static SignalManager sm;
 
 	virtual void updateTopology();
 	QRectF boundingRect()const;
@@ -114,6 +116,7 @@ protected:
 			QWidget* widget);
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void drawIcon(QPainter *painter, QString filename);
+	operator bool();
 };
 
 #endif

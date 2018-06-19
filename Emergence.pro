@@ -54,8 +54,7 @@ SOURCES +=\
     src/data_t.cpp \
     src/nodes/ComplexNode.cpp \
     src/NodeBox.cpp \
-    src/commands.cpp \
-    src/signalManager.cpp
+    src/commands.cpp
 
 HEADERS  +=\
     include/mainwindow.h \

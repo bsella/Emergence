@@ -18,7 +18,7 @@ class ExportImageDialog : public QDialog{
 public:
 	explicit ExportImageDialog(QWidget *parent = 0);
 	~ExportImageDialog();
-	static void exportBMP(RenderNode::RenderArea *renderer);
+	static void exportBMP(RenderNode *node);
 
 private:
 	Ui::ExportImageDialog *ui;

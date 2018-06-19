@@ -3,11 +3,11 @@
 
 #include "Node.h"
 #include <QDockWidget>
-#include <QGridLayout>
 
 class RenderNode : public Node{
 public:
 	RenderNode();
+	~RenderNode();
 	class RenderArea : public QDockWidget{
 	public:
 		RenderArea(RenderNode* node,QWidget* parent=0);
@@ -29,6 +29,7 @@ private:
 			   const QStyleOptionGraphicsItem* option,
 			   QWidget* widget);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
+	friend class ExportImageDialog;
 };
 
 #endif // RENDERNODE_H

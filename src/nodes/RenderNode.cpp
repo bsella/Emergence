@@ -10,8 +10,8 @@ QImage RenderNode::RenderArea::renderImage(int w, int h){
 	QImage image(w,h ,QImage::Format_ARGB32_Premultiplied);
 	for(int i=0;i<w;i++)
 		for(int j=0;j<h;j++){
-			RenderNode::x=(double)i/w;
-			RenderNode::y=(double)j/h;
+			Node::x=(double)i/w;
+			Node::y=(double)j/h;
 			emit sm.updateXY();
 			image.setPixel(i,j,start->eval());
 		}
@@ -26,11 +26,14 @@ void RenderNode::RenderArea::paintEvent(QPaintEvent *){
 uint RenderNode::outputs=0;
 
 void RenderNode::RenderArea::closeEvent(QCloseEvent*){
+	Node::ratio=1;
+	emit sm.updateRatio();
 	start->inside=true;
 	start->update();
 }
 void RenderNode::RenderArea::resizeEvent(QResizeEvent *){
-	emit sm.updateXY();
+	Node::ratio=double(width())/height();
+	emit sm.updateRatio();
 }
 
 RenderNode::RenderNode():Node(RENDER_G,50, 50, Qt::white,1,true){
@@ -38,18 +41,25 @@ RenderNode::RenderNode():Node(RENDER_G,50, 50, Qt::white,1,true){
 	output= new RenderArea(this);
 }
 
+RenderNode::~RenderNode(){
+	delete output;
+	outputs--;
+}
+
 data_t RenderNode::kernel()const{
 	return iNodes[0]->eval();
 }
 
 void RenderNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget){
+	pen.setColor(isSelected()?Qt::darkGreen:Qt::black);
 	if(inside){
+		pen.setWidth(isSelected()?2:1);
+		painter->setPen(pen);
 		painter->drawLine(QPointF(0,height/2.0),QPointF(socketSize,height/2.0));
 		painter->drawRect(QRectF(socketSize,0,width,height));
 		if(*this)
-			painter->drawImage(socketSize,0,output->renderImage(width+1,height+1));
+			painter->drawImage(socketSize+1,1,output->renderImage(width-1,height-1));
 	}else{
-		pen.setColor(Qt::darkGreen);
 		Node::paint(painter, option, widget);
 		painter->setFont(QFont("",8));
 		painter->drawText(boundingRect().center()-QPoint(18,-2),"Output "+QString::number(outputNumber));
@@ -62,7 +72,16 @@ void RenderNode::updateTopology(){
 }
 
 void RenderNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
-	inside=!inside;
-	output->show();
+	if(inside){
+		output->show();
+		Node::ratio=double(output->width())/output->height();
+		emit sm.updateRatio();
+		inside=false;
+	}else{
+		output->close();
+		inside=true;
+		Node::ratio=1;
+		emit sm.updateRatio();
+	}
 	update();
 }

@@ -11,17 +11,14 @@ ExportImageDialog::~ExportImageDialog(){
 	delete ui;
 }
 
-void ExportImageDialog::exportBMP(RenderNode::RenderArea *renderer){
+void ExportImageDialog::exportBMP(RenderNode *node){
 	QString f= QFileDialog::getSaveFileName(0,"Export Image",".","Images (*.bmp)");
 	if(f.isNull()) return;
 	if(!f.endsWith(".bmp"))
 		f.append(".bmp");
-	ExportImageDialog * dial= new ExportImageDialog;
-	dial->ui->widthBox->setValue(renderer->width());
-	dial->ui->heightBox->setValue(renderer->height());
-	if(!dial->exec()) return;
-	int w = dial->ui->widthBox->value();
-	int h = dial->ui->heightBox->value();
-	QPixmap::fromImage(renderer->renderImage(w,h)).save(f);
-	delete dial;
+	ExportImageDialog dial;
+	if(!dial.exec()) return;
+	int w = dial.ui->widthBox->value();
+	int h = dial.ui->heightBox->value();
+	QPixmap::fromImage(node->output->renderImage(w,h)).save(f);
 }

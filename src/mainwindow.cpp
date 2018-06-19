@@ -29,8 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(undoStack,SIGNAL(canRedoChanged(bool)),ui->actionRedo,SLOT(setEnabled(bool)));
 
 	connect(ui->workspace,SIGNAL(dropped(QDropEvent*)),this,SLOT(drop(QDropEvent*)));
-
-	ui->actionExport->setEnabled(false);
+	connect(scene,SIGNAL(selectionChanged()),this,SLOT(updateActions()));
 
 	Node* x= nodeMalloc(X_G);
 	Node* y= nodeMalloc(Y_G);
@@ -143,7 +142,7 @@ void MainWindow::paste(){
 		addNodes(textToNodes(mime->data("copy")));
 }
 
-void MainWindow::select_all(){
+void MainWindow::select_all() const{
 	for(auto& n : scene->items())
 		n->setSelected(true);
 }
@@ -207,19 +206,25 @@ QList<Node*> MainWindow::textToNodes(const QByteArray &ba){
 }
 
 void MainWindow::save()const{
-	QString f= QFileDialog::getSaveFileName(parentWidget(),"Save as...",".","Node Files (*.emrg)");
-	if(f.isNull()) return;
-	if(!f.endsWith(".emrg"))
-		f.append(".emrg");
-	QFile file(f);
-	file.open(QIODevice::WriteOnly);
+	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
+	if(fileName.isEmpty()) return;
+	if(!fileName.endsWith(".emrg"))
+		fileName.append(".emrg");
+	QFile file(fileName);
+	if(!file.open(QIODevice::WriteOnly)){
+		QMessageBox::information(ui->workspace,"Unable to open file",file.errorString());
+		return;
+	}
 	file.resize(0);
 	QDataStream out(&file);
 
 	out << MAGIC_NUMBER;
 	out << SAVE_VERSION;
 
-	out << nodesToText(scene->items());
+	select_all();
+	out << nodesToText(scene->selectedItems());
+	scene->clearSelection();
+	file.close();
 }
 
 void MainWindow::load(){
@@ -291,8 +296,18 @@ void MainWindow::disconnectNode(Node::Socket* s){
 void MainWindow::on_actionExit_triggered(){
 	close();
 }
+void MainWindow::updateActions(){
+	ui->actionExport->setEnabled(false);
+	for(auto& n: scene->selectedItems())
+		if(((Node*)n)->id==RENDER_G && *((RenderNode*)n)){
+			ui->actionExport->setEnabled(true);
+			break;
+		}
+}
 void MainWindow::on_actionExport_triggered(){
-//	ExportImageDialog::exportBMP();
+	for(const auto& n: scene->selectedItems())
+		if(((Node*)n)->id==RENDER_G && *((RenderNode*)n))
+			ExportImageDialog::exportBMP((RenderNode*)n);
 }
 void MainWindow::on_actionIf_triggered(){
 	addNode(nodeMalloc(IF_G));
@@ -332,18 +347,12 @@ void MainWindow::on_actionLUT_triggered(){
 }
 void MainWindow::on_actionX_triggered(){
 	addNode(nodeMalloc(X_G));
-	ui->actionX->setEnabled(false);
-	ui->toolBox->x->setEnabled(false);
 }
 void MainWindow::on_actionY_triggered(){
 	addNode(nodeMalloc(Y_G));
-	ui->actionY->setEnabled(false);
-	ui->toolBox->y->setEnabled(false);
 }
 void MainWindow::on_actionRender_triggered(){
 	addNode(nodeMalloc(RENDER_G));
-	ui->actionRender->setEnabled(false);
-	ui->toolBox->output->setEnabled(false);
 }
 void MainWindow::on_actionADD_triggered(){
 	addNode(nodeMalloc(ADD_G));
@@ -389,8 +398,6 @@ void MainWindow::on_actionMax_triggered(){
 }
 void MainWindow::on_actionRatio_triggered(){
 	addNode(nodeMalloc(RATIO_G));
-	ui->actionRatio->setEnabled(false);
-	ui->toolBox->ratio->setEnabled(false);
 }
 void MainWindow::on_actionComplex_triggered(){
 	addNode(nodeMalloc(CPLX_G));

@@ -18,6 +18,7 @@ private:
 			   QWidget* widget);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
+	QImage scaleImage(uint w, uint h)const;
 private slots:
 	void changeBMP();
 };

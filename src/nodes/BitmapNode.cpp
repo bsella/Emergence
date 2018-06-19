@@ -8,7 +8,7 @@ void BitmapNode::setBMP(const QString &filename){
 	bmp= new QPixmap(filename);
 	bmpWidth=bmp->width();
 	bmpHeight=bmp->height();
-	updateVal();
+	updateTopology();
 }
 
 data_t BitmapNode::kernel()const{
@@ -20,15 +20,25 @@ data_t BitmapNode::kernel()const{
 	return bmp->toImage().pixel(g0,g1);
 }
 
-void BitmapNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
-	Node::paint(painter,option,widget);
-	if(bmp)
-		for(uint x=10; x<width-10;x++)
-			for(uint y= 10; y<height-10; y++){
-				painter->setPen(bmp->toImage().pixel(double(x)/width*bmpWidth,double(y)/height*bmpHeight));
-				painter->drawPoint(x,y);
-			}
-	else
+QImage BitmapNode::scaleImage(uint w, uint h) const{
+	QImage image(w,h,QImage::Format_ARGB32_Premultiplied);
+	for(uint i=0; i<w; i++)
+		for(uint j=0; j<h; j++)
+			image.setPixel(i,j,bmp->toImage().pixel(double(i)/w*bmpWidth,double(j)/h*bmpHeight));
+	return image;
+}
+
+void BitmapNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*){
+	pen.setWidth(isSelected()?2:1);
+	painter->setPen(pen);
+	painter->drawLine(QPointF(0,height/(3.0)),QPointF(socketSize,height/(3.0)));
+	painter->drawLine(QPointF(0,2*height/(3.0)),QPointF(socketSize,2*height/(3.0)));
+	painter->drawRect(socketSize,0,width,height);
+	QRectF rect= boundingRect();
+	painter->drawLine(rect.center()+QPointF(rect.width()/2,0),rect.center()+QPointF(rect.width()/2-socketSize,0));
+	if(bmp){
+		painter->drawImage(socketSize+1,1,scaleImage(width-1,height-1));
+	}else
 		painter->drawText(boundingRect().center()-QPointF(12,-2),"BMP");
 }
 

@@ -10,7 +10,7 @@ For more information check out the [wiki](https://github.com/elirovi/Emergence/w
 
 Compile using `qmake` then `make`.
 
-Feel free to send your feedback on `karim.salama@univ-tlse3.fr`
+Feel free to send your feedback to `karim.salama@univ-tlse3.fr`
 
 ---
 
@@ -24,6 +24,7 @@ TODO:
   - [x] Disconnect
   - [x] Move
 - [x] Multiple outputs
+- [ ] Destructors
 - [ ] Transparancy support
 - [ ] Nodes inside nodes
 - [ ] Node inside itself

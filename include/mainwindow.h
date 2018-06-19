@@ -5,6 +5,7 @@
 #include <QUndoStack>
 #include <QClipboard>
 #include <QMessageBox>
+#include <QFile>
 
 #include "include/ExportImageDialog.h"
 #include <include/nodes/ConstNode.h>
@@ -48,12 +49,13 @@ private slots:
 	void copy()const;
 	void cut();
 	void paste();
-	void select_all();
+	void select_all()const;
 	void delete_selected();
 	void drop(QDropEvent*event);
 	void moveNodes();
 	void connectNode(Node::Socket* s, Node* n);
 	void disconnectNode(Node::Socket* s);
+	void updateActions();
 
 	void on_actionExit_triggered();
 	void on_actionExport_triggered();

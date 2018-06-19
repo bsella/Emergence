@@ -147,7 +147,7 @@ void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem*,QWidget*){
 	painter->fillPath(path, color);
 	painter->drawPath(path);
 	for(uint i=1; i<=nbArgs; i++)//draw input sockets
-		painter->drawLine(rect.topLeft()+QPointF(0,i*height/(nbArgs+1.0)),rect.topLeft()+QPointF(-socketSize,i*rect.height()/(nbArgs+1.0)));
+		painter->drawLine(rect.topLeft()+QPointF(0,i*height/(nbArgs+1.0)),rect.topLeft()+QPointF(-socketSize,i*height/(nbArgs+1.0)));
 	if(!special)//draw output socket
 		painter->drawLine(rect.center()+QPointF(rect.width()/2,0),rect.center()+QPointF(rect.width()/2+socketSize,0));
 }
@@ -160,7 +160,7 @@ void Node::updateLines()const{
 		}
 	for(auto l=oConnections.begin(); l!=oConnections.end();++l){
 		QRectF r=boundingRect();
-		l->first->sockets[l->second]->setPos(pos()-l->first->pos()+QPointF(r.width()-Socket::headSize,r.height()/2));
+		l->first->sockets[l->second]->setPos(pos()-l->first->pos()+QPointF(r.width()-Socket::headSize,height/2));
 	}
 }
 

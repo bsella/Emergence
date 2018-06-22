@@ -94,12 +94,12 @@ signals:
 	void moved();
 protected slots:
 	void updateLines()const;
-	void updateVal();	//update value (not valid)
+	void updateConstant();
 protected:
 	static double x,y, ratio;
 	static const int socketSize=5;
 	data_t val;			//value returned by node
-	bool validVal=false;		//value is valid
+	bool constant=false;		//value is constant
 	QColor color;
 	QMenu *menu=nullptr;
 	QPen pen;

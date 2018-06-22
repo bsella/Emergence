@@ -8,7 +8,6 @@ void BitmapNode::setBMP(const QString &filename){
 	bmp= new QPixmap(filename);
 	bmpWidth=bmp->width();
 	bmpHeight=bmp->height();
-	updateTopology();
 }
 
 data_t BitmapNode::kernel()const{
@@ -57,5 +56,7 @@ void BitmapNode::changeBMP(){
 	QString f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
 	if(f.isNull())return;
 	setBMP(f);
+	updateConstant();
+	updateTopology();
 	update();
 }

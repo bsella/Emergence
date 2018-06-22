@@ -9,7 +9,6 @@ public:
 	SignalManager(){}
 	~SignalManager(){}
 signals:
-	void updateXY();
 	void updateRatio();
 };
 

@@ -2,9 +2,11 @@
 
 ConstNode::ConstNode(double v):Node(DOUBLE_G,50,50,QColor(255,255,180)){
 	val=v;
+	constant=true;
 }
 ConstNode::ConstNode(data_t::color v):Node(COLOR_G,50,50,QColor(v)){
 	val=v;
+	constant=true;
 }
 
 void ConstNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget){
@@ -54,7 +56,7 @@ void ConstNode::changeColor(){
 	if(c.isValid()){
 		val=c.rgba();
 		color=c;
-		updateVal();
+		updateConstant();
 		updateTopology();
 		update();
 	}
@@ -65,7 +67,7 @@ void ConstNode::changeNumber(){
 	double d =QInputDialog::getDouble((QWidget*)parentWidget(),"Choose Number","",0,-2147483647,2147483647,3,&ok);
 	if(ok){
 		val=d;
-		updateVal();
+		updateConstant();
 		updateTopology();
 		update();
 	}

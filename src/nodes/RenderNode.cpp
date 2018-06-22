@@ -12,7 +12,6 @@ QImage RenderNode::RenderArea::renderImage(int w, int h){
 		for(int j=0;j<h;j++){
 			Node::x=(double)i/w;
 			Node::y=(double)j/h;
-			emit sm.updateXY();
 			image.setPixel(i,j,start->eval());
 		}
 	return image;

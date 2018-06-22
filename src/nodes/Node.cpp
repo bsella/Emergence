@@ -1,11 +1,9 @@
 #include "include/nodes/Node.h"
-#include <iostream>
 
 Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsObject(parent)
 	,rank(i),iy(y),line(headSize,0,headSize,0),parent(parent){
 	setZValue(parent->zValue()+1);
 	setPos(-headSize-1,y);
-	setAcceptedMouseButtons(Qt::LeftButton);
 	setAcceptHoverEvents(true);
 	line.setParentItem(this);
 	connect(this,&Node::Socket::xChanged,this,&Node::Socket::updateLine);
@@ -73,8 +71,13 @@ void Node::Socket::connectToNode(Node* n){
 		connect(n,&Node::yChanged,this,&Node::Socket::updateLine);
 		setEnabled(false);
 		visible=false;
-		n->updateVal();
 		parent->updateTopology();
+		parent->constant=true;
+		for(const auto& node: parent->iNodes)
+			if(!node || !node->constant)
+				parent->constant=false;
+		if(parent->constant)
+			parent->val=parent->kernel();
 	}
 }
 
@@ -91,6 +94,7 @@ void Node::Socket::disconnectNode(){
 		parent->iNodes[rank]=nullptr;
 		reset();
 		parent->updateTopology();
+		parent->constant=false;
 	}
 }
 
@@ -158,10 +162,8 @@ void Node::updateLines()const{
 			QRectF r= iNodes[i]->boundingRect();
 			sockets[i]->setPos(iNodes[i]->pos()-pos()+QPointF(r.width()-Socket::headSize,r.height()/2));
 		}
-	for(auto l=oConnections.begin(); l!=oConnections.end();++l){
-		QRectF r=boundingRect();
-		l->first->sockets[l->second]->setPos(pos()-l->first->pos()+QPointF(r.width()-Socket::headSize,height/2));
-	}
+	for(auto l=oConnections.begin(); l!=oConnections.end();++l)
+		l->first->sockets[l->second]->setPos(pos()-l->first->pos()+QPointF(boundingRect().width()-Socket::headSize,height/2));
 }
 
 QPointF Node::tmpPos;
@@ -208,15 +210,9 @@ Node::operator bool(){
 	return true;
 }
 
-void Node::updateVal(){
-	validVal=false;
-	for(auto& i : oConnections)
-		i.first->updateVal();
-}
-
 void Node::updateTopology(){
-	for(auto& i : oConnections)
-		i.first->updateTopology();
+	if(oConnections.size())
+		oConnections[0].first->updateTopology();
 }
 
 void Node::drawIcon(QPainter *painter, QString filename){
@@ -225,8 +221,14 @@ void Node::drawIcon(QPainter *painter, QString filename){
 }
 
 data_t Node::eval(){
-	if(validVal)return val;
-	val = kernel();
-	validVal=true;
+	if(!constant) return kernel();
 	return val;
+}
+
+void Node::updateConstant(){
+	if(constant){
+		val=kernel();
+		for(auto& i : oConnections)
+			i.first->updateConstant();
+	}
 }

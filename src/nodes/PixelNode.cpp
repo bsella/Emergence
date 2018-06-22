@@ -1,13 +1,11 @@
 #include "include/nodes/PixelNode.h"
 
-PixelNode::PixelNode(unsigned i):Node(i,70,50,Qt::lightGray){
-	validVal=true;
-	connect(&sm,SIGNAL(updateXY()),this,SLOT(updateVal()));
-}
+PixelNode::PixelNode(unsigned i):Node(i,70,50,Qt::lightGray){}
 PixelXNode::PixelXNode():PixelNode(X_G){}
 PixelYNode::PixelYNode():PixelNode(Y_G){}
 RatioNode::RatioNode():Node(RATIO_G,70,50,Qt::lightGray){
-	connect(&sm,SIGNAL(updateRatio()),this,SLOT(updateVal()));
+	constant=true;
+	connect(&sm,SIGNAL(updateRatio()),this,SLOT(updateConstant()));
 }
 
 void PixelNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget){

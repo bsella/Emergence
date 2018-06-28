@@ -48,6 +48,10 @@
 
 class Node: public QGraphicsObject{
 	Q_OBJECT
+public:
+	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
+	unsigned width, height;
+	data_t eval();
 private:
 	friend class MainWindow;
 	friend class DeleteNodeCommand;
@@ -77,6 +81,7 @@ private:
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 		void reset();
 	};
+	unsigned id;
 	bool special;
 	QPointF initialPos;
 	static QPointF tmpPos;
@@ -84,10 +89,7 @@ private:
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	virtual data_t kernel()const=0;
-public:
-	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
-	unsigned id, width, height;
-	data_t eval();
+	bool isLooping(Node *n)const;
 signals:
 	void connected(Node::Socket* s,Node* n);
 	void disconnected(Node::Socket* s);

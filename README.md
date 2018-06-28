@@ -30,7 +30,7 @@ TODO:
 - [ ] Node inside itself
 - [x] New save format
 - [ ] Data structures and lists
-- [ ] Preventing cycles
+- [x] Preventing cycles
 - [x] More icons
 - [ ] Auto-arrange
 - [ ] Menus

@@ -45,15 +45,14 @@ Node* Node::Socket::collidesWithNode() const{
 
 void Node::Socket::mouseMoveEvent(QGraphicsSceneMouseEvent*event){
 	Node*i=collidesWithNode();
-	if(i&&i!=parent&&i->contains(event->scenePos()-i->scenePos())){
+	if(i&&!i->isLooping(parent)&&i->contains(event->scenePos()-i->scenePos())){
 		hover=i;
 		for(const auto& ii: i->collidingItems())
 			if(i->zValue()<= ii->zValue())
 				i->setZValue(ii->zValue()+1);
-		QRectF r=i->boundingRect();
 		parent->setZValue(i->zValue());
 		setZValue(i->zValue());
-		setPos(i->pos()+QPoint(r.width()+Socket::headSize-1,r.height()/2)-parent->pos());
+		setPos(i->pos()+QPoint(i->boundingRect().width()+Socket::headSize-1,i->height/2)-parent->pos());
 	}else{
 		hover=nullptr;
 		setPos(event->scenePos()- boundingRect().center()-parent->pos());
@@ -121,7 +120,7 @@ double Node::y;
 double Node::ratio;
 
 Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):
-	special(spec),id(i), width(w),height(h),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
+	width(w),height(h),id(i),special(spec),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
 	setCursor(Qt::OpenHandCursor);
 	if(!spec)setData(0,"node");
 	for(uint i=0; i<nbArgs;i++){
@@ -231,4 +230,12 @@ void Node::updateConstant(){
 		for(auto& i : oConnections)
 			i.first->updateConstant();
 	}
+}
+
+bool Node::isLooping(Node* n)const{
+	if(this==n) return true;
+	for(const auto& node:iNodes)
+		if(node && node->isLooping(n))
+				return true;
+	return false;
 }

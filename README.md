@@ -16,6 +16,8 @@ Feel free to send your feedback to `karim.salama@univ-tlse3.fr`
 
 TODO:
 - [ ] Navigate/Zoom
+  - [x] Zoom
+  - [ ] Navigate
 - [x] Clipboard
 - [x] Undo/Redo
   - [x] Add
@@ -24,7 +26,7 @@ TODO:
   - [x] Disconnect
   - [x] Move
 - [x] Multiple outputs
-- [ ] Destructors
+- [x] Destructors
 - [ ] Transparancy support
 - [ ] Nodes inside nodes
 - [ ] Node inside itself
@@ -33,5 +35,6 @@ TODO:
 - [x] Preventing cycles
 - [x] More icons
 - [ ] Auto-arrange
-- [ ] Menus
+- [ ] Options
+- [ ] Command line
 - [ ] Documentation

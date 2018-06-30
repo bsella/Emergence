@@ -4,6 +4,10 @@ BitmapNode::BitmapNode(const QString& filename):Node(BITMAP_G,70,70,Qt::lightGra
 	setBMP(filename);
 }
 
+BitmapNode::~BitmapNode(){
+	delete bmp;
+}
+
 void BitmapNode::setBMP(const QString &filename){
 	bmp= new QPixmap(filename);
 	bmpWidth=bmp->width();

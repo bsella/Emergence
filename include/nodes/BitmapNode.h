@@ -8,6 +8,7 @@
 class BitmapNode : public Node{
 public:
 	BitmapNode(const QString& filename);
+	~BitmapNode();
 	void setBMP(const QString& filename);
 private:
 	QPixmap *bmp;

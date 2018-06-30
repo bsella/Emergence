@@ -31,21 +31,23 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->workspace,SIGNAL(dropped(QDropEvent*)),this,SLOT(drop(QDropEvent*)));
 	connect(scene,SIGNAL(selectionChanged()),this,SLOT(updateActions()));
 
-	Node* x= nodeMalloc(X_G);
 	Node* y= nodeMalloc(Y_G);
 	y->setPos(0,100);
 	y->initialPos={0,100};
 	Node* out= nodeMalloc(RENDER_G);
 	out->setPos(100,50);
 	out->initialPos={100,50};
-	scene->addItem(x);
-	scene->addItem(y);
-	scene->addItem(out);
-	connect(x,SIGNAL(moved()),this,SLOT(moveNodes()));
-	connect(y,SIGNAL(moved()),this,SLOT(moveNodes()));
-	connect(out,SIGNAL(moved()),this,SLOT(moveNodes()));
-	connect(out,SIGNAL(connected(Node::Socket*,Node*)),this,SLOT(connectNode(Node::Socket*,Node*)));
-	connect(out,SIGNAL(disconnected(Node::Socket*)),this,SLOT(disconnectNode(Node::Socket*)));
+	QList<Node*> initList;
+	initList.append(nodeMalloc(X_G));
+	initList.append(y);
+	initList.append(out);
+	addNodes(initList);
+	scene->clearSelection();
+}
+MainWindow::~MainWindow(){
+	delete undoStack;
+	delete ui->workspace;
+	delete ui;
 }
 
 Node* MainWindow::nodeMalloc(uint g, void* arg){

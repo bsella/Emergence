@@ -13,9 +13,11 @@ class Workspace : public QGraphicsView{
 public:
 	Workspace(QWidget *parent=0);
 private:
+	constexpr static double scaleFactor=1.05;
 	void dropEvent(QDropEvent*);
 	void dragMoveEvent(QDragMoveEvent*);
 	void dragEnterEvent(QDragEnterEvent*);
+	void wheelEvent(QWheelEvent*);
 signals:
 	void dropped(QDropEvent*);
 };

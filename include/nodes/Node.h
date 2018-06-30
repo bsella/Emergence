@@ -50,6 +50,7 @@ class Node: public QGraphicsObject{
 	Q_OBJECT
 public:
 	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
+	~Node();
 	unsigned width, height;
 	data_t eval();
 private:
@@ -60,6 +61,7 @@ private:
 	friend class MoveNodeCommand;
 	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
+		~Socket();
 		unsigned rank;
 		double iy;
 		bool visible=true;

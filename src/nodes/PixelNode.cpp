@@ -7,6 +7,9 @@ RatioNode::RatioNode():Node(RATIO_G,70,50,Qt::lightGray){
 	constant=true;
 	connect(&sm,SIGNAL(updateRatio()),this,SLOT(updateVal()));
 }
+RatioNode::~RatioNode(){
+	disconnect(&sm,SIGNAL(updateRatio()),this,SLOT(updateVal()));
+}
 
 void PixelNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget){
 	Node::paint(painter,option,widget);

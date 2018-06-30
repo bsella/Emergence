@@ -31,7 +31,7 @@ class MainWindow : public QMainWindow{
 
 public:
 	explicit MainWindow(QWidget *parent = 0);
-
+	~MainWindow();
 private:
 	Ui::MainWindow *ui;
 	QUndoStack* undoStack;

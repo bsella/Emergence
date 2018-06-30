@@ -10,6 +10,11 @@ Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsObject(parent)
 	connect(this,&Node::Socket::yChanged,this,&Node::Socket::updateLine);
 }
 
+Node::Socket::~Socket(){
+	disconnect(this,&Node::Socket::yChanged,this,&Node::Socket::updateLine);
+	disconnect(this,&Node::Socket::xChanged,this,&Node::Socket::updateLine);
+}
+
 QRectF Node::Socket::boundingRect()const{
 	return QRectF(-headSize,-headSize,headSize*2+1,headSize*2+1);
 }
@@ -126,6 +131,13 @@ Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):
 	connect(this,SIGNAL(xChanged()),this,SLOT(updateLines()));
 	connect(this,SIGNAL(yChanged()),this,SLOT(updateLines()));
 	actionDelete=new QAction("Delete");
+}
+
+Node::~Node(){
+	delete actionDelete;
+	disconnect(this,SIGNAL(yChanged()),this,SLOT(updateLines()));
+	disconnect(this,SIGNAL(xChanged()),this,SLOT(updateLines()));
+	qDeleteAll(sockets);
 }
 
 QRectF Node::boundingRect()const{

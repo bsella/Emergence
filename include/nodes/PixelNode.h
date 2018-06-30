@@ -34,6 +34,7 @@ class RatioNode:public Node{
 	inline data_t kernel()const{return Node::ratio;}
 public:
 	RatioNode();
+	~RatioNode();
 };
 
 #endif

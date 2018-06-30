@@ -71,12 +71,7 @@ void Node::Socket::connectToNode(Node* n){
 		setEnabled(false);
 		visible=false;
 		parent->updateTopology();
-		parent->constant=true;
-		for(const auto& node: parent->iNodes)
-			if(!node || !node->constant)
-				parent->constant=false;
-		if(parent->constant)
-			parent->val=parent->kernel();
+		parent->updateConstant();
 	}
 }
 
@@ -93,7 +88,7 @@ void Node::Socket::disconnectNode(){
 		parent->iNodes[rank]=nullptr;
 		reset();
 		parent->updateTopology();
-		parent->constant=false;
+		parent->updateConstant();
 	}
 }
 
@@ -224,11 +219,11 @@ data_t Node::eval(){
 	return val;
 }
 
-void Node::updateConstant(){
+void Node::updateVal(){
 	if(constant){
 		val=kernel();
-		for(auto& i : oConnections)
-			i.first->updateConstant();
+		for(const auto& i : oConnections)
+			i.first->updateVal();
 	}
 }
 
@@ -238,4 +233,14 @@ bool Node::isLooping(Node* n)const{
 		if(node && node->isLooping(n))
 				return true;
 	return false;
+}
+void Node::updateConstant(){
+	constant=true;
+	for(const auto& node: iNodes)
+		if(!node || !node->constant)
+			constant=false;
+	if(constant)
+		val=kernel();
+	for(const auto& i : oConnections)
+		i.first->updateConstant();
 }

@@ -18,6 +18,8 @@ public:
 		void resizeEvent(QResizeEvent*);
 		void paintEvent(QPaintEvent*);
 	};
+private slots:
+	void updateVal();
 private:
 	RenderArea *output;
 	bool inside=true;

@@ -56,7 +56,7 @@ void ConstNode::changeColor(){
 	if(c.isValid()){
 		val=c.rgba();
 		color=c;
-		updateConstant();
+		updateVal();
 		updateTopology();
 		update();
 	}
@@ -67,7 +67,7 @@ void ConstNode::changeNumber(){
 	double d =QInputDialog::getDouble((QWidget*)parentWidget(),"Choose Number","",0,-2147483647,2147483647,3,&ok);
 	if(ok){
 		val=d;
-		updateConstant();
+		updateVal();
 		updateTopology();
 		update();
 	}

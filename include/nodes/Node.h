@@ -90,13 +90,15 @@ private:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	virtual data_t kernel()const=0;
 	bool isLooping(Node *n)const;
+	void updateConstant();
 signals:
 	void connected(Node::Socket* s,Node* n);
 	void disconnected(Node::Socket* s);
 	void moved();
 protected slots:
 	void updateLines()const;
-	void updateConstant();
+	virtual void updateTopology();
+	virtual void updateVal();
 protected:
 	static double x,y, ratio;
 	static const int socketSize=5;
@@ -111,7 +113,6 @@ protected:
 	QVector<Socket*> sockets;
 	static SignalManager sm;
 
-	virtual void updateTopology();
 	QRectF boundingRect()const;
 	virtual void paint(QPainter* painter,
 			const QStyleOptionGraphicsItem* option,

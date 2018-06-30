@@ -8,16 +8,13 @@
 
 class AddNodeCommand: public QUndoCommand{
 public:
-	AddNodeCommand(const QList<Node*>& nodes,
-	                QGraphicsScene* scene,
-					QUndoCommand* parent=0);
 	AddNodeCommand(Node* node, QGraphicsScene* scene,
 					QUndoCommand* parent=0);
 	~AddNodeCommand();
 	void undo()override;
 	void redo()override;
 private:
-	QList<Node*> _nodes;
+	Node* _node;
 	QGraphicsScene* _scene;
 };
 

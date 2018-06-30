@@ -51,22 +51,16 @@ MainWindow::MainWindow(QWidget *parent) :
 Node* MainWindow::nodeMalloc(uint g, void* arg){
 	switch(g){
 	case DOUBLE_G:{
-		double d;
-		if(arg) d=*(double*)arg;
-		else{
-			bool ok;
-			d =QInputDialog::getDouble(this,"Choose Number","",0,-2147483647,2147483647,3,&ok);
-			if(!ok) return nullptr;
-		}
+		if(arg) return new ConstNode(*(double*)arg);
+		bool ok;
+		double d =QInputDialog::getDouble(this,"Choose Number","",0,-2147483647,2147483647,3,&ok);
+		if(!ok) return nullptr;
 		return new ConstNode(d);
 	}
 	case COLOR_G:{
-		QColor c;
-		if(arg) c=*(QColor*)arg;
-		else{
-			c =QColorDialog::getColor(Qt::white,this);
-			if(!c.isValid()) return nullptr;
-		}
+		if(arg) return new ConstNode(*(data_t::color*)arg);
+		QColor c=QColorDialog::getColor(Qt::white,this);
+		if(!c.isValid()) return nullptr;
 		return new ConstNode(c.rgba());
 	}
 	case PALETTE_G:{
@@ -137,6 +131,7 @@ void MainWindow::cut(){
 }
 
 void MainWindow::paste(){
+	scene->clearSelection();
 	const QMimeData* mime= QApplication::clipboard()->mimeData();
 	if(mime->text()=="Emergence_Nodes")
 		addNodes(textToNodes(mime->data("copy")));
@@ -269,14 +264,17 @@ void MainWindow::addNode(Node *n, const QPointF& pos){
 }
 
 void MainWindow::addNodes(const QList<Node *> &n){
+	undoStack->beginMacro("add_node");
 	for(auto& i: n){
+		if(!i) continue;
 		i->initialPos=i->pos();
 		connect(i,SIGNAL(moved()),this,SLOT(moveNodes()));
 		connect(i,SIGNAL(connected(Node::Socket*,Node*)),this,SLOT(connectNode(Node::Socket*,Node*)));
 		connect(i,SIGNAL(disconnected(Node::Socket*)),this,SLOT(disconnectNode(Node::Socket*)));
 		connect(i->actionDelete,&QAction::triggered,this,[=](){undoStack->push(new DeleteNodeCommand(i,scene));});
+		undoStack->push(new AddNodeCommand(i,scene));
 	}
-	undoStack->push(new AddNodeCommand(n,scene));
+	undoStack->endMacro();
 }
 
 void MainWindow::moveNodes(){

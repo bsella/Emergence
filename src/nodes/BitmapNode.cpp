@@ -35,9 +35,9 @@ void BitmapNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidg
 	painter->drawRect(socketSize,0,width,height);
 	QRectF rect= boundingRect();
 	painter->drawLine(rect.center()+QPointF(rect.width()/2,0),rect.center()+QPointF(rect.width()/2-socketSize,0));
-	if(bmp){
+	if(bmp)
 		painter->drawImage(socketSize+1,1,scaleImage(width-1,height-1));
-	}else
+	else
 		painter->drawText(boundingRect().center()-QPointF(12,-2),"BMP");
 }
 
@@ -56,7 +56,7 @@ void BitmapNode::changeBMP(){
 	QString f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
 	if(f.isNull())return;
 	setBMP(f);
-	updateConstant();
+	updateVal();
 	updateTopology();
 	update();
 }

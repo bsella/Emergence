@@ -84,3 +84,11 @@ void RenderNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
 	}
 	update();
 }
+
+void RenderNode::updateVal(){
+	if(constant){
+		val=kernel();
+		update();
+		output->update();
+	}
+}

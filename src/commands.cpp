@@ -1,36 +1,26 @@
 #include "include/commands.h"
 
-AddNodeCommand::AddNodeCommand(const QList<Node*>& nodes,
-				QGraphicsScene* scene,
-			   QUndoCommand* parent): QUndoCommand(parent){
-	_scene=scene;
-	_nodes=nodes;
-}
 AddNodeCommand::AddNodeCommand(Node* node, QGraphicsScene* scene,
 				QUndoCommand* parent): QUndoCommand(parent){
 	_scene=scene;
-	_nodes.append(node);
+	_node=node;
 }
 void AddNodeCommand::undo(){
-	for(const auto& n:_nodes)
-		_scene->removeItem(n);
+	_node->setSelected(false);
+	_scene->removeItem(_node);
 	_scene->update();
 }
 void AddNodeCommand::redo(){
-	_scene->clearSelection();
-	for(const auto& n:_nodes){
-		if(!n) continue;
-		_scene->addItem(n);
-		n->setSelected(true);
-		n->setZValue(0);
-		for(const auto& i: n->collidingItems())
-			if(n->zValue()<= i->zValue())
-				n->setZValue(i->zValue()+1);
-	}
+	_scene->addItem(_node);
+	_node->setSelected(true);
+	_node->setZValue(0);
+	for(const auto& i: _node->collidingItems())
+		if(_node->zValue()<= i->zValue())
+			_node->setZValue(i->zValue()+1);
 	_scene->update();
 }
 AddNodeCommand::~AddNodeCommand(){
-	qDeleteAll(_nodes);
+	delete _node;
 }
 
 DeleteNodeCommand::DeleteNodeCommand(Node* node,QGraphicsScene *scene, QUndoCommand *parent):QUndoCommand(parent){

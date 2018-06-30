@@ -5,7 +5,7 @@ PixelXNode::PixelXNode():PixelNode(X_G){}
 PixelYNode::PixelYNode():PixelNode(Y_G){}
 RatioNode::RatioNode():Node(RATIO_G,70,50,Qt::lightGray){
 	constant=true;
-	connect(&sm,SIGNAL(updateRatio()),this,SLOT(updateConstant()));
+	connect(&sm,SIGNAL(updateRatio()),this,SLOT(updateVal()));
 }
 
 void PixelNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget){

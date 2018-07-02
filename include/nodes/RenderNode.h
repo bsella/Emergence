@@ -19,14 +19,13 @@ public:
 		void paintEvent(QPaintEvent*);
 	};
 private slots:
-	void updateVal();
+	void updateOutput();
 private:
 	RenderArea *output;
 	bool inside=true;
 	uint outputNumber;
 	static uint outputs;
 	data_t kernel()const;
-	void updateTopology();
 	void paint(QPainter* painter,
 			   const QStyleOptionGraphicsItem* option,
 			   QWidget* widget);

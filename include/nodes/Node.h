@@ -99,8 +99,7 @@ signals:
 	void moved();
 protected slots:
 	void updateLines()const;
-	virtual void updateTopology();
-	virtual void updateVal();
+	void updateVal();
 protected:
 	static double x,y, ratio;
 	static const int socketSize=5;

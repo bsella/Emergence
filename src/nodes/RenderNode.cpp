@@ -38,9 +38,11 @@ void RenderNode::RenderArea::resizeEvent(QResizeEvent *){
 RenderNode::RenderNode():Node(RENDER_G,50, 50, Qt::white,1,true){
 	outputNumber=outputs++;
 	output= new RenderArea(this);
+	connect(&sm,&SignalManager::updateOutputs,this,&RenderNode::updateOutput);
 }
 
 RenderNode::~RenderNode(){
+	disconnect(&sm,&SignalManager::updateOutputs,this,&RenderNode::updateOutput);
 	delete output;
 	outputs--;
 }
@@ -65,7 +67,7 @@ void RenderNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	}
 }
 
-void RenderNode::updateTopology(){
+void RenderNode::updateOutput(){
 	update();
 	output->update();
 }
@@ -83,12 +85,4 @@ void RenderNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
 		emit sm.updateRatio();
 	}
 	update();
-}
-
-void RenderNode::updateVal(){
-	if(constant){
-		val=kernel();
-		update();
-		output->update();
-	}
 }

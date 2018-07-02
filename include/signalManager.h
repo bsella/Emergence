@@ -10,6 +10,7 @@ public:
 	~SignalManager(){}
 signals:
 	void updateRatio();
+	void updateOutputs();
 };
 
 #endif // SIGNALMANAGER_H

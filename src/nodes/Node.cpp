@@ -75,8 +75,8 @@ void Node::Socket::connectToNode(Node* n){
 		connect(n,&Node::yChanged,this,&Node::Socket::updateLine);
 		setEnabled(false);
 		visible=false;
-		parent->updateTopology();
 		parent->updateConstant();
+		emit sm.updateOutputs();
 	}
 }
 
@@ -92,8 +92,8 @@ void Node::Socket::disconnectNode(){
 		disconnect(parent->iNodes[rank],&Node::yChanged,this,&Node::Socket::updateLine);
 		parent->iNodes[rank]=nullptr;
 		reset();
-		parent->updateTopology();
 		parent->updateConstant();
+		emit sm.updateOutputs();
 	}
 }
 
@@ -214,11 +214,6 @@ Node::operator bool(){
 		if(g==nullptr || !(*g))
 			return false;
 	return true;
-}
-
-void Node::updateTopology(){
-	if(oConnections.size())
-		oConnections[0].first->updateTopology();
 }
 
 void Node::drawIcon(QPainter *painter, QString filename){

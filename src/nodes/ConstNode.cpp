@@ -57,7 +57,7 @@ void ConstNode::changeColor(){
 		val=c.rgba();
 		color=c;
 		updateVal();
-		updateTopology();
+		emit sm.updateOutputs();
 		update();
 	}
 }
@@ -68,7 +68,7 @@ void ConstNode::changeNumber(){
 	if(ok){
 		val=d;
 		updateVal();
-		updateTopology();
+		emit sm.updateOutputs();
 		update();
 	}
 }

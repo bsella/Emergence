@@ -61,6 +61,6 @@ void BitmapNode::changeBMP(){
 	if(f.isNull())return;
 	setBMP(f);
 	updateVal();
-	updateTopology();
+	emit sm.updateOutputs();
 	update();
 }

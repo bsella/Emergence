@@ -103,6 +103,8 @@ protected slots:
 protected:
 	static double x,y, ratio;
 	static const int socketSize=5;
+	static ulong pixelID;
+	ulong lastPixelID=0;
 	data_t val;			//value returned by node
 	bool constant=false;		//value is constant
 	QColor color;

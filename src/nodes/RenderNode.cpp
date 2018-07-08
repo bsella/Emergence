@@ -8,8 +8,11 @@ RenderNode::RenderArea::RenderArea(RenderNode *node, QWidget *parent):QDockWidge
 
 QImage RenderNode::RenderArea::renderImage(int w, int h){
 	QImage image(w,h ,QImage::Format_ARGB32_Premultiplied);
+	Node::ratio=double(w)/h;
+	emit sm.updateRatio();
 	for(int i=0;i<w;i++)
 		for(int j=0;j<h;j++){
+			Node::pixelID= i*j+1;
 			Node::x=(double)i/w;
 			Node::y=(double)j/h;
 			image.setPixel(i,j,start->eval());
@@ -25,8 +28,6 @@ void RenderNode::RenderArea::paintEvent(QPaintEvent *){
 uint RenderNode::outputs=0;
 
 void RenderNode::RenderArea::closeEvent(QCloseEvent*){
-	Node::ratio=1;
-	emit sm.updateRatio();
 	start->inside=true;
 	start->update();
 }
@@ -73,16 +74,10 @@ void RenderNode::updateOutput(){
 }
 
 void RenderNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
-	if(inside){
+	if(inside)
 		output->show();
-		Node::ratio=double(output->width())/output->height();
-		emit sm.updateRatio();
-		inside=false;
-	}else{
+	else
 		output->close();
-		inside=true;
-		Node::ratio=1;
-		emit sm.updateRatio();
-	}
+	inside=!inside;
 	update();
 }

@@ -119,6 +119,8 @@ double Node::x;
 double Node::y;
 double Node::ratio;
 
+ulong Node::pixelID;
+
 Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):
 	width(w),height(h),id(i),special(spec),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
 	setCursor(Qt::OpenHandCursor);
@@ -222,8 +224,10 @@ void Node::drawIcon(QPainter *painter, QString filename){
 }
 
 data_t Node::eval(){
-	if(!constant) return kernel();
-	return val;
+	if(constant) return val;
+	if(pixelID==lastPixelID) return val;
+	lastPixelID=pixelID;
+	return val=kernel();
 }
 
 void Node::updateVal(){

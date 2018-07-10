@@ -224,15 +224,15 @@ void Node::drawIcon(QPainter *painter, QString filename){
 }
 
 data_t Node::eval(){
-	if(constant) return val;
-	if(pixelID==lastPixelID) return val;
+	if(constant) return cache;
+	if(pixelID==lastPixelID) return cache;
 	lastPixelID=pixelID;
-	return val=kernel();
+	return cache=kernel();
 }
 
 void Node::updateVal(){
 	if(constant){
-		val=kernel();
+		cache=kernel();
 		for(const auto& i : oConnections)
 			i.first->updateVal();
 	}
@@ -251,7 +251,7 @@ void Node::updateConstant(){
 		if(!node || !node->constant)
 			constant=false;
 	if(constant)
-		val=kernel();
+		cache=kernel();
 	for(const auto& i : oConnections)
 		i.first->updateConstant();
 }

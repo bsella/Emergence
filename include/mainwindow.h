@@ -35,9 +35,9 @@ public:
 private:
 	Ui::MainWindow *ui;
 	QUndoStack* undoStack;
-	QList<Node*> textToNodes(const QByteArray& ba);
-	QByteArray nodesToText(const QList<QGraphicsItem *> &nodes)const;
-	Node* nodeMalloc(uint g, void *arg=nullptr);
+	QList<Node*> binToNodes(const QByteArray& ba);
+	QByteArray nodesToBin(const QList<QGraphicsItem *> &nodes)const;
+	Node* nodeMalloc(Node::Type g, void *arg=nullptr);
 	QGraphicsScene* scene;
 	void addNode(Node *n);
 	void addNode(Node *n, const QPointF& pos);

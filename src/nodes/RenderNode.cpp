@@ -1,4 +1,4 @@
-#include "include/nodes/RenderNode.h"
+#include <nodes/RenderNode.h>
 
 RenderNode::RenderArea::RenderArea(RenderNode *node, QWidget *parent):QDockWidget(parent){
 	start=node;

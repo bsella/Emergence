@@ -30,8 +30,13 @@ TODO:
 - [x] Multiple outputs
 - [x] Destructors
 - [ ] Transparancy support
-- [ ] Nodes inside nodes
-- [ ] Node inside itself
+- [ ] Functions
+  - [ ] Function Manager
+  - [ ] New save format
+  - [ ] Adapt with latest optimisation (pixel ID)
+  - [ ] Prevent Recursiveness (just for now)
+  - [ ] Draw FunctionNodes
+- [ ] Recursive Functions
 - [x] New save format
 - [ ] Data structures and lists
 - [x] Preventing cycles

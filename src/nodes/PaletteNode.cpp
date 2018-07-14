@@ -1,4 +1,4 @@
-#include "include/nodes/PaletteNode.h"
+#include "nodes/PaletteNode.h"
 
 LUTNode::LUTNode(const Palette& p): Node(PALETTE_G,140,70,Qt::white,1), plt(p){}
 

@@ -1,4 +1,4 @@
-#include "include/nodes/ConstNode.h"
+#include "nodes/ConstNode.h"
 
 ConstNode::ConstNode(double v):Node(DOUBLE_G,50,50,QColor(255,255,180)){
 	cache=v;

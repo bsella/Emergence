@@ -9,8 +9,8 @@
 #include <QGraphicsScene>
 #include <QMenu>
 
-#include "include/data_t.h"
-#include "include/signalManager.h"
+#include "data_t.h"
+#include "signalManager.h"
 
 
 class Node: public QGraphicsObject{
@@ -36,7 +36,8 @@ public:
 		MIN_G, MAX_G,
 		RGB_G, HSV_G,
 		RATIO_G,
-		CPLX_G
+		CPLX_G,
+		FUNC_G
 	};
 private:
 	friend class MainWindow;
@@ -107,7 +108,7 @@ protected:
 			QWidget* widget);
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void drawIcon(QPainter *painter, QString filename);
-	operator bool();
+	virtual operator bool()const;
 };
 
 #endif

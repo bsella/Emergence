@@ -7,20 +7,24 @@
 #include <QMessageBox>
 #include <QFile>
 
-#include "include/ExportImageDialog.h"
-#include <include/nodes/ConstNode.h>
-#include <include/nodes/MathNode.h>
-#include <include/nodes/PaletteNode.h>
-#include <include/nodes/BitmapNode.h>
-#include <include/nodes/ColorNode.h>
-#include <include/nodes/ComplexNode.h>
-#include <include/nodes/Node.h>
-#include <include/nodes/IfNode.h>
-#include <include/nodes/LogicNode.h>
-#include <include/nodes/CompNode.h>
-#include <include/nodes/RenderNode.h>
-#include <include/nodes/PixelNode.h>
-#include <include/commands.h>
+#include <ExportImageDialog.h>
+#include <nodes/ConstNode.h>
+#include <nodes/MathNode.h>
+#include <nodes/PaletteNode.h>
+#include <nodes/BitmapNode.h>
+#include <nodes/ColorNode.h>
+#include <nodes/ComplexNode.h>
+#include <nodes/Node.h>
+#include <nodes/IfNode.h>
+#include <nodes/LogicNode.h>
+#include <nodes/CompNode.h>
+#include <nodes/RenderNode.h>
+#include <nodes/PixelNode.h>
+#include <nodes/FunctionNode.h>
+#include <commands.h>
+
+#define MAGIC_NUMBER 0xa1b2affd
+#define SAVE_VERSION 0x00000003
 
 namespace Ui {
 class MainWindow;

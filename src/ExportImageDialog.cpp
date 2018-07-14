@@ -1,4 +1,4 @@
-#include "include/ExportImageDialog.h"
+#include "ExportImageDialog.h"
 #include "ui_exportimagedialog.h"
 
 ExportImageDialog::ExportImageDialog(QWidget *parent) :

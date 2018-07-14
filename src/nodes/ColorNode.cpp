@@ -1,4 +1,4 @@
-#include <include/nodes/ColorNode.h>
+#include "nodes/ColorNode.h"
 
 ColorNode::ColorNode(unsigned i):Node(i,50,100,Qt::white,3){}
 

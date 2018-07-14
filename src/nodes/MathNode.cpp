@@ -1,4 +1,4 @@
-#include "include/nodes/MathNode.h"
+#include "nodes/MathNode.h"
 
 MathNode::MathNode(unsigned i, unsigned n, unsigned w, unsigned h):Node(i,w,h,QColor(180,255,180),n){}
 

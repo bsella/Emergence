@@ -5,9 +5,6 @@
 #include <QDropEvent>
 #include <QMimeData>
 
-#define MAGIC_NUMBER 0xa1b2affd
-#define SAVE_VERSION 0x00000003
-
 class Workspace : public QGraphicsView{
 	Q_OBJECT
 public:

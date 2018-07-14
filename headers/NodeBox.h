@@ -10,7 +10,7 @@
 #include<QDrag>
 #include<QMimeData>
 
-#include"include/nodes/Node.h"
+#include"nodes/Node.h"
 
 class NodeTool : public QFrame{
 public:

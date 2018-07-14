@@ -569,12 +569,12 @@
   <customwidget>
    <class>Workspace</class>
    <extends>QGraphicsView</extends>
-   <header location="global">include/Workspace.h</header>
+   <header location="global">headers/Workspace.h</header>
   </customwidget>
   <customwidget>
    <class>NodeBox</class>
    <extends>QToolBox</extends>
-   <header>include/NodeBox.h</header>
+   <header>headers/NodeBox.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

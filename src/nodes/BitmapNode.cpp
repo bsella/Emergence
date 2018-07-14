@@ -1,4 +1,4 @@
-#include "include/nodes/BitmapNode.h"
+#include "nodes/BitmapNode.h"
 
 BitmapNode::BitmapNode(const QString& filename):Node(BITMAP_G,70,70,Qt::lightGray,2){
 	setBMP(filename);

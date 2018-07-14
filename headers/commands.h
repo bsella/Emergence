@@ -4,8 +4,8 @@
 #include <QUndoCommand>
 #include <QGraphicsScene>
 
-#include "include/nodes/Node.h"
-#include "include/nodes/ConstNode.h"
+#include "nodes/Node.h"
+#include "nodes/ConstNode.h"
 
 class AddNodeCommand: public QUndoCommand{
 public:

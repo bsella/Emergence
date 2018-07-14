@@ -1,4 +1,4 @@
-#include "include/nodes/Node.h"
+#include "nodes/Node.h"
 
 Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsObject(parent)
 	,rank(i),iy(y),line(headSize,0,headSize,0),parent(parent){
@@ -211,7 +211,7 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 	menu=nullptr;
 }
 
-Node::operator bool(){
+Node::operator bool()const{
 	for(auto g:iNodes)
 		if(g==nullptr || !(*g))
 			return false;

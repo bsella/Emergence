@@ -1,8 +1,8 @@
 #ifndef COLORNODE_H
 #define COLORNODE_H
 
-#include <include/nodes/Node.h>
-#include <include/data_t.h>
+#include "Node.h"
+#include "data_t.h"
 
 class ColorNode : public Node{
 protected:

@@ -1,4 +1,4 @@
-#include "include/nodes/LogicNode.h"
+#include "nodes/LogicNode.h"
 
 LogicNode::LogicNode(unsigned i,unsigned n):Node(i,50,50,QColor(255,180,180),n){}
 

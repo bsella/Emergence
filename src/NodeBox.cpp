@@ -1,4 +1,4 @@
-#include "include/NodeBox.h"
+#include "NodeBox.h"
 
 NodeTool::NodeTool(int id,const QString& text, const QString& iconPath)
 	:nodeID(id),icon(iconPath){
@@ -85,6 +85,7 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 	l_misc->addWidget(new NodeTool(Node::COLOR_G,"Color",":/icons/color.png"));
 	l_misc->addWidget(new NodeTool(Node::PALETTE_G,"LUT"));
 	l_misc->addWidget(new NodeTool(Node::BITMAP_G,"Image",":/icons/image.png"));
+	l_misc->addWidget(new NodeTool(Node::FUNC_G,"Function"));
 	l_misc->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));
 
 	addItem(page_Math,"Math");

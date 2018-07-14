@@ -1,4 +1,4 @@
-#include "include/Workspace.h"
+#include "Workspace.h"
 
 Workspace::Workspace(QWidget *parent):QGraphicsView(parent){
 	setAcceptDrops(true);

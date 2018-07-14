@@ -1,4 +1,4 @@
-#include "include/nodes/PixelNode.h"
+#include "nodes/PixelNode.h"
 
 PixelNode::PixelNode(unsigned i):Node(i,70,50,Qt::lightGray){}
 PixelXNode::PixelXNode():PixelNode(X_G){}

@@ -1,8 +1,8 @@
 #ifndef MATHNODE_H
 #define MATHNODE_H
 
-#include <include/nodes/Node.h>
 #include <QtMath>
+#include "Node.h"
 
 class MathNode:public Node{
 protected:

@@ -1,4 +1,4 @@
-#include "include/mainwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -111,6 +111,7 @@ Node* MainWindow::nodeMalloc(Node::Type g, void* arg){
 	case Node::Y_G:			return new PixelYNode;
 	case Node::RENDER_G:	return new RenderNode;
 	case Node::RATIO_G:		return new RatioNode;
+	case Node::FUNC_G:		return new FunctionNode;
 	default:return nullptr;
 	}
 }

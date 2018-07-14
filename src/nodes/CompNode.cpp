@@ -1,4 +1,4 @@
-#include "include/nodes/CompNode.h"
+#include "nodes/CompNode.h"
 
 CompNode::CompNode(unsigned i):Node(i,50,50,QColor(255,180,180),2){}
 

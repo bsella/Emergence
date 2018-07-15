@@ -24,11 +24,6 @@ void NodeTool::mouseMoveEvent(QMouseEvent *event){
 }
 
 NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
-	x=new NodeTool(Node::X_G,"X",":/icons/x.png");
-	y=new NodeTool(Node::Y_G,"Y",":/icons/y.png");
-	ratio=new NodeTool(Node::RATIO_G,"Width/Height");
-	output=new NodeTool(Node::RENDER_G,"Output",":/icons/output.png");
-
 	QWidget * page_Math= new QWidget;
 	QWidget * page_Comp= new QWidget;
 	QWidget * page_Logic= new QWidget;
@@ -75,10 +70,10 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 
 	l_misc->setSpacing(1);
 	l_misc->setMargin(0);
-	l_misc->addWidget(x);
-	l_misc->addWidget(y);
-	l_misc->addWidget(ratio);
-	l_misc->addWidget(output);
+	l_misc->addWidget(new NodeTool(Node::X_G,"X",":/icons/x.png"));
+	l_misc->addWidget(new NodeTool(Node::Y_G,"Y",":/icons/y.png"));
+	l_misc->addWidget(new NodeTool(Node::RATIO_G,"Width/Height"));
+	l_misc->addWidget(new NodeTool(Node::RENDER_G,"Output",":/icons/output.png"));
 	l_misc->addWidget(new NodeTool(Node::IF_G,"Condition",":/icons/if.png"));
 	l_misc->addWidget(new NodeTool(Node::RGB_G,"RGB"));
 	l_misc->addWidget(new NodeTool(Node::HSV_G,"HSV"));

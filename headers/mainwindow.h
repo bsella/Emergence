@@ -2,26 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QUndoStack>
-#include <QClipboard>
 #include <QMessageBox>
 #include <QFile>
 
 #include <ExportImageDialog.h>
-#include <nodes/ConstNode.h>
-#include <nodes/MathNode.h>
-#include <nodes/PaletteNode.h>
-#include <nodes/BitmapNode.h>
-#include <nodes/ColorNode.h>
-#include <nodes/ComplexNode.h>
-#include <nodes/Node.h>
-#include <nodes/IfNode.h>
-#include <nodes/LogicNode.h>
-#include <nodes/CompNode.h>
-#include <nodes/RenderNode.h>
-#include <nodes/PixelNode.h>
-#include <nodes/FunctionNode.h>
-#include <commands.h>
+#include "FunctionManager.h"
+#include "nodes/Node.h"
 
 #define MAGIC_NUMBER 0xa1b2affd
 #define SAVE_VERSION 0x00000003
@@ -38,27 +24,12 @@ public:
 	~MainWindow();
 private:
 	Ui::MainWindow *ui;
-	QUndoStack* undoStack;
-	QList<Node*> binToNodes(const QByteArray& ba);
-	QByteArray nodesToBin(const QList<QGraphicsItem *> &nodes)const;
-	Node* nodeMalloc(Node::Type g, void *arg=nullptr);
 	QGraphicsScene* scene;
-	void addNode(Node *n);
-	void addNode(Node *n, const QPointF& pos);
-	void addNodes(const QList<Node *> &n);
+	FunctionManager fm;
 
 private slots:
 	void save()const;
 	void load();
-	void copy()const;
-	void cut();
-	void paste();
-	void select_all()const;
-	void delete_selected();
-	void drop(QDropEvent*event);
-	void moveNodes();
-	void connectNode(Node::Socket* s, Node* n);
-	void disconnectNode(Node::Socket* s);
 	void updateActions();
 
 	void on_actionExit_triggered();
@@ -96,6 +67,7 @@ private slots:
 	void on_actionComplex_triggered();
 	void on_actionHSV_triggered();
 	void on_actionRGB_triggered();
+	void on_actionFunction_Manager_triggered();
 };
 
 #endif // MAINWINDOW_H

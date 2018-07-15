@@ -255,3 +255,136 @@ void Node::updateConstant(){
 	for(const auto& i : oConnections)
 		i.first->updateConstant();
 }
+
+#include <nodes/ConstNode.h>
+#include <nodes/MathNode.h>
+#include <nodes/PaletteNode.h>
+#include <nodes/BitmapNode.h>
+#include <nodes/ColorNode.h>
+#include <nodes/ComplexNode.h>
+#include <nodes/Node.h>
+#include <nodes/IfNode.h>
+#include <nodes/LogicNode.h>
+#include <nodes/CompNode.h>
+#include <nodes/RenderNode.h>
+#include <nodes/PixelNode.h>
+#include <nodes/FunctionNode.h>
+
+Node* Node::nodeMalloc(Node::Type g, void* arg){
+	switch(g){
+	case Node::DOUBLE_G:{
+		if(arg) return new ConstNode(*(double*)arg);
+		bool ok;
+		double d =QInputDialog::getDouble(0,"Choose Number","",0,-2147483647,2147483647,3,&ok);
+		if(!ok) return nullptr;
+		return new ConstNode(d);
+	}
+	case Node::COLOR_G:{
+		if(arg) return new ConstNode(*(data_t::color*)arg);
+		QColor c=QColorDialog::getColor(Qt::white);
+		if(!c.isValid()) return nullptr;
+		return new ConstNode(c.rgba());
+	}
+	case Node::PALETTE_G:{
+		///TODO : Implement dialog for palette
+		Palette p;
+		p.add(0xffff0000,0);
+		p.add(0xff0000ff,.5);
+		p.add(0xff00ff00,1);
+		return new LUTNode(p);
+	}
+	case Node::BITMAP_G:{
+		QString f;
+		if(arg) f=*(QString*)arg;
+		else{
+			f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
+			if(f.isNull())return nullptr;
+		}
+		return new BitmapNode(f);
+	}
+	case Node::IF_G:		return new IfNode;
+	case Node::GT_G:		return new GTNode;
+	case Node::LT_G:		return new LTNode;
+	case Node::EQ_G:		return new EQNode;
+	case Node::NE_G:		return new NENode;
+	case Node::OR_G:		return new ORNode;
+	case Node::AND_G:		return new ANDNode;
+	case Node::XOR_G:		return new XORNode;
+	case Node::NOT_G:		return new NOTNode;
+	case Node::ADD_G:		return new ADDNode;
+	case Node::SUB_G:		return new SUBNode;
+	case Node::MUL_G:		return new MULNode;
+	case Node::DIV_G:		return new DIVNode;
+	case Node::NEG_G:		return new NEGNode;
+	case Node::SQRT_G:		return new SQRTNode;
+	case Node::ABS_G:		return new ABSNode;
+	case Node::LERP_G:		return new LERPNode;
+	case Node::CLAMP_G:		return new CLAMPNode;
+	case Node::SIN_G:		return new SINNode;
+	case Node::COS_G:		return new COSNode;
+	case Node::MIN_G:		return new MINNode;
+	case Node::MAX_G:		return new MAXNode;
+	case Node::RGB_G:		return new RGBNode;
+	case Node::HSV_G:		return new HSVNode;
+	case Node::CPLX_G:		return new ComplexNode;
+	case Node::X_G:			return new PixelXNode;
+	case Node::Y_G:			return new PixelYNode;
+	case Node::RENDER_G:	return new RenderNode;
+	case Node::RATIO_G:		return new RatioNode;
+	case Node::FUNC_G:		return new FunctionNode;
+	default:return nullptr;
+	}
+}
+
+QByteArray Node::nodesToBin(const QList<QGraphicsItem*> &nodes){
+	QByteArray ret;
+	QDataStream ds (&ret,QIODevice::Append);
+	ds<<nodes.size();
+	for(const auto& i:nodes){
+		Node* n=(Node*)i;
+		ds<<n->id;
+		ds<<n->scenePos().x();
+		ds<<n->scenePos().y();
+		if(n->id==Node::DOUBLE_G)
+			ds<<n->cache.d;
+		else if(n->id==Node::COLOR_G)
+			ds<<n->cache.clr;
+	}
+	for(const auto& n : nodes)
+		for(const auto& nn: ((Node*)n)->iNodes)
+			ds<<nodes.indexOf(nn);
+	return ret;
+}
+
+QList<Node*> Node::binToNodes(const QByteArray &ba){
+	QDataStream ds(ba);
+	int n; ds>>n;
+	Node::Type id; float x,y;
+	QList<Node*> newNodes;
+	for(int i=0; i<n; i++){
+		int tmp;
+		ds>>tmp;	///FIND A WAY TO DO IT WITHOUT tmp
+		id=(Node::Type)tmp;
+		ds>>x;
+		ds>>y;
+		void* arg=nullptr;
+		if(id==Node::DOUBLE_G){
+			double d;
+			ds>>d;
+			arg=&d;
+		}else if(id==Node::COLOR_G){
+			data_t::color c;
+			ds>>c;
+			arg=&c;
+		}
+		newNodes.append(nodeMalloc(id,arg));
+		newNodes.back()->setPos(x,y);
+	}
+	for(auto& node: newNodes)
+		for(unsigned i=0; i<node->nbArgs; i++){
+			ds>>n;
+			if(n>=0)
+				node->sockets[i]->connectToNode(newNodes.at(n));
+		}
+	return newNodes;
+}

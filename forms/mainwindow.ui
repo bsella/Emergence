@@ -127,9 +127,16 @@
     <addaction name="separator"/>
     <addaction name="actionSelect_all"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionFunction_Manager"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuInsert"/>
+   <addaction name="menuTools"/>
   </widget>
   <widget class="QDockWidget" name="toolboxDock">
    <property name="minimumSize">
@@ -561,6 +568,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionFunction_Manager">
+   <property name="text">
+    <string>Function Manager</string>
    </property>
   </action>
  </widget>

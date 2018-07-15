@@ -1,14 +1,28 @@
 #include "headers/FunctionWorkspace.h"
 
-FunctionWorkspace::FunctionWorkspace(const QString& name,QWidget *parent)
-	:Workspace(parent), _name(name){
-	functions.insert(this);
-}
 FunctionWorkspace::FunctionWorkspace(QWidget *parent)
-	:FunctionWorkspace("new function",parent){
+	:Workspace(parent){
+//	outputSocket= new Socket;
 }
 FunctionWorkspace::~FunctionWorkspace(){
-	functions.remove(this);
 }
 
-QSet<FunctionWorkspace*> FunctionWorkspace::functions;
+FunctionWorkspace::Socket::Socket():Node::Socket(0,0,0){
+}
+FunctionWorkspace::Socket::~Socket(){}
+void FunctionWorkspace::Socket::connectToNode(Node *n){
+	parent->func->start=n;
+}
+void FunctionWorkspace::Socket::disconnectNode(){
+	parent->func->start=nullptr;
+}
+
+void FunctionWorkspace::dragEnterEvent(QDragEnterEvent *event){
+	Workspace::dragEnterEvent(event);
+	event->setAccepted(event->isAccepted()&& event->mimeData()->data("type").toInt()!=Node::FUNC_G);
+}
+
+void FunctionWorkspace::setFunction(Function *fun){
+	func=fun;
+	setScene(fun->scene);
+}

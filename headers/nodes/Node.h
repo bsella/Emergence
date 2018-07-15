@@ -19,7 +19,7 @@ public:
 	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
 	~Node();
 	const unsigned width, height;
-	data_t eval();
+	virtual data_t eval();
 	enum Type{
 		DOUBLE_G=1, COLOR_G,
 		IF_G,
@@ -39,25 +39,26 @@ public:
 		CPLX_G,
 		FUNC_G
 	};
+	static Node* nodeMalloc(Node::Type, void* arg=nullptr);
+	static QList<Node*> binToNodes(const QByteArray& ba);
+	static QByteArray nodesToBin(const QList<QGraphicsItem *> &nodes);
 private:
 	friend class MainWindow;
+	friend class Workspace;
 	friend class DeleteNodeCommand;
 	friend class ConnectNodeCommand;
 	friend class DisconnectNodeCommand;
 	friend class MoveNodeCommand;
+	friend class FunctionWorkspace;
 	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
 		~Socket();
-		unsigned rank;
-		double iy;
 		bool visible=true;
 		static const int headSize=8;
 		QPen pen=QPen(Qt::black);
 		QGraphicsLineItem line;
-		static Node *hover;
-		Node *parent;
-		void connectToNode(Node*n);
-		void disconnectNode();
+		virtual void connectToNode(Node*n);
+		virtual void disconnectNode();
 		QRectF boundingRect() const;
 		void updateLine();
 		Node* collidesWithNode()const;
@@ -68,6 +69,12 @@ private:
 		void mousePressEvent(QGraphicsSceneMouseEvent*);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 		void reset();
+	private:
+		friend class DisconnectNodeCommand;
+		double iy;
+		unsigned rank;
+		static Node *hover;
+		Node *parent;
 	};
 	unsigned id;
 	bool special;

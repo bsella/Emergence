@@ -57,7 +57,8 @@ SOURCES +=\
     src/commands.cpp \
     src/nodes/FunctionNode.cpp \
     src/FunctionWorkspace.cpp \
-    src/FunctionManager.cpp
+    src/FunctionManager.cpp \
+    src/Function.cpp
 
 HEADERS  +=\
     headers/mainwindow.h \
@@ -82,7 +83,8 @@ HEADERS  +=\
     headers/signalManager.h \
     headers/nodes/FunctionNode.h \
     headers/FunctionWorkspace.h \
-    headers/FunctionManager.h
+    headers/FunctionManager.h \
+    headers/Function.h
 
 FORMS += forms/mainwindow.ui \
     forms/exportimagedialog.ui \

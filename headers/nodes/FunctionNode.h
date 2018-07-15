@@ -2,14 +2,16 @@
 #define FUNCTIONNODE_H
 
 #include "Node.h"
-#include "FunctionWorkspace.h"
+#include "Function.h"
 
 class FunctionNode: public Node{
 public:
 	FunctionNode(uint args=0);
+	data_t eval();
 private:
-	FunctionWorkspace* function;
-	inline data_t kernel()const{return function->start->eval();}
+	Function* func;
+	static FunctionNode* current;
+	inline data_t kernel()const{return func->start->eval();}
 	void changeNbArgs(uint args);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event);
 	operator bool()const;

@@ -9,9 +9,20 @@ void FunctionNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
 }
 
 void FunctionNode::changeNbArgs(uint args){
-
 }
 
 FunctionNode::operator bool()const{
-	return function->start;
+	return func->start;
+}
+
+FunctionNode* FunctionNode::current;
+
+data_t FunctionNode::eval(){
+	if(constant) return cache;
+	if(pixelID==lastPixelID) return cache;
+	lastPixelID=pixelID;
+	current=this;
+	cache=kernel();
+	current=nullptr;
+	return cache;
 }

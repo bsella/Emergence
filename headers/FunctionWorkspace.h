@@ -2,19 +2,28 @@
 #define FUNCTIONWORKSPACE_H
 
 #include <Workspace.h>
-#include "nodes/Node.h"
+#include "Function.h"
 
 class FunctionWorkspace: public Workspace{
+	class FunctionInputNode: public Node{
+
+	};
+	struct Socket: Node::Socket{
+		Socket();
+		~Socket();
+		FunctionWorkspace* parent;
+		void connectToNode(Node*);
+		void disconnectNode();
+	};
 public:
-	FunctionWorkspace(const QString& name,QWidget* parent=0);
 	FunctionWorkspace(QWidget* parent=0);
 	~FunctionWorkspace();
 	uint nbArgs;
-	QString _name;
-	static QSet<FunctionWorkspace*> functions;
+	Function* func;
+	void setFunction(Function *fun);
 private:
-	Node* start;
-	friend class FunctionNode;
+	Socket *outputSocket;
+	void dragEnterEvent(QDragEnterEvent*);
 };
 
 #endif // FUNCTIONWORKSPACE_H

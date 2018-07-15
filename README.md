@@ -32,6 +32,7 @@ TODO:
 - [ ] Transparancy support
 - [ ] Functions
   - [ ] Function Manager
+  - [ ] Reimplement Sockets
   - [ ] New save format
   - [ ] Adapt with latest optimisation (pixel ID)
   - [ ] Prevent Recursiveness (just for now)

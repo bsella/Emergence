@@ -97,103 +97,103 @@ void MainWindow::on_actionExport_triggered(){
 			ExportImageDialog::exportBMP((RenderNode*)n);
 }
 void MainWindow::on_actionIf_triggered(){
-	ui->workspace->addNode(Node::IF_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::IF_G));
 }
 void MainWindow::on_actionGreaterThan_triggered(){
-	ui->workspace->addNode(Node::GT_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::GT_G));
 }
 void MainWindow::on_actionLessThan_triggered(){
-	ui->workspace->addNode(Node::LT_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::LT_G));
 }
 void MainWindow::on_actionEqual_triggered(){
-	ui->workspace->addNode(Node::EQ_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::EQ_G));
 }
 void MainWindow::on_actionNot_Equal_triggered(){
-	ui->workspace->addNode(Node::NE_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::NE_G));
 }
 void MainWindow::on_actionAND_triggered(){
-	ui->workspace->addNode(Node::AND_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::AND_G));
 }
 void MainWindow::on_actionOR_triggered(){
-	ui->workspace->addNode(Node::OR_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::OR_G));
 }
 void MainWindow::on_actionXOR_triggered(){
-	ui->workspace->addNode(Node::XOR_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::XOR_G));
 }
 void MainWindow::on_actionNOT_triggered(){
-	ui->workspace->addNode(Node::NOT_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::NOT_G));
 }
 void MainWindow::on_actionDouble_triggered(){
-	ui->workspace->addNode(Node::DOUBLE_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::DOUBLE_G));
 }
 void MainWindow::on_actionColor_triggered(){
-	ui->workspace->addNode(Node::COLOR_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::COLOR_G));
 }
 void MainWindow::on_actionLUT_triggered(){
-	ui->workspace->addNode(Node::PALETTE_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::PALETTE_G));
 }
 void MainWindow::on_actionX_triggered(){
-	ui->workspace->addNode(Node::X_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::X_G));
 }
 void MainWindow::on_actionY_triggered(){
-	ui->workspace->addNode(Node::Y_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::Y_G));
 }
 void MainWindow::on_actionRender_triggered(){
-	ui->workspace->addNode(Node::RENDER_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::RENDER_G));
 }
 void MainWindow::on_actionADD_triggered(){
-	ui->workspace->addNode(Node::ADD_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::ADD_G));
 }
 void MainWindow::on_actionSUB_triggered(){
-	ui->workspace->addNode(Node::SUB_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::SUB_G));
 }
 void MainWindow::on_actionMUL_triggered(){
-	ui->workspace->addNode(Node::MUL_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::MUL_G));
 }
 void MainWindow::on_actionDIV_triggered(){
-	ui->workspace->addNode(Node::DIV_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::DIV_G));
 }
 void MainWindow::on_actionNEG_triggered(){
-	ui->workspace->addNode(Node::NEG_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::NEG_G));
 }
 void MainWindow::on_actionSQRT_triggered(){
-	ui->workspace->addNode(Node::SQRT_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::SQRT_G));
 }
 void MainWindow::on_actionABS_triggered(){
-	ui->workspace->addNode(Node::ABS_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::ABS_G));
 }
 void MainWindow::on_actionLerp_triggered(){
-	ui->workspace->addNode(Node::LERP_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::LERP_G));
 }
 void MainWindow::on_actionClamp_triggered(){
-	ui->workspace->addNode(Node::CLAMP_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::CLAMP_G));
 }
 void MainWindow::on_actionBitmap_triggered(){
-	ui->workspace->addNode(Node::BITMAP_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::BITMAP_G));
 }
 void MainWindow::on_actionSin_triggered(){
-	ui->workspace->addNode(Node::SIN_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::SIN_G));
 }
 void MainWindow::on_actionCos_triggered(){
-	ui->workspace->addNode(Node::COS_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::COS_G));
 }
 void MainWindow::on_actionMin_triggered(){
-	ui->workspace->addNode(Node::MIN_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::MIN_G));
 }
 void MainWindow::on_actionMax_triggered(){
-	ui->workspace->addNode(Node::MAX_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::MAX_G));
 }
 void MainWindow::on_actionRatio_triggered(){
-	ui->workspace->addNode(Node::RATIO_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::RATIO_G));
 }
 void MainWindow::on_actionComplex_triggered(){
-	ui->workspace->addNode(Node::CPLX_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::CPLX_G));
 }
 void MainWindow::on_actionHSV_triggered(){
-	ui->workspace->addNode(Node::HSV_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::HSV_G));
 }
 void MainWindow::on_actionRGB_triggered(){
-	ui->workspace->addNode(Node::RGB_G);
+	ui->workspace->addNode(Node::nodeMalloc(Node::RGB_G));
 }
 void MainWindow::on_actionFunction_Manager_triggered(){
 	fm.exec();

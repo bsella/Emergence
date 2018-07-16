@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QInputDialog>
 #include <QListWidgetItem>
+#include "Function.h"
 
 namespace Ui {
 class FunctionManager;
@@ -15,6 +16,7 @@ class FunctionManager : public QDialog{
 public:
 	explicit FunctionManager(QWidget *parent = 0);
 	~FunctionManager();
+	void addFunction(const QString& name, uint nbArgs);
 
 private:
 	Ui::FunctionManager *ui;

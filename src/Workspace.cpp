@@ -1,9 +1,23 @@
 #include "Workspace.h"
+#include "commands.h"
 
 Workspace::Workspace(QWidget *parent):QGraphicsView(parent){
 	setAcceptDrops(true);
 	setDragMode(DragMode::RubberBandDrag);
 	setScene(new QGraphicsScene);
+
+	Node* y= Node::nodeMalloc(Node::Type::Y_G);
+	y->setPos(0,100);
+	y->initialPos={0,100};
+	Node* out= Node::nodeMalloc(Node::Type::RENDER_G);
+	out->setPos(100,50);
+	out->initialPos={100,50};
+	QList<Node*> initList;
+	initList.append(Node::nodeMalloc(Node::Type::X_G));
+	initList.append(y);
+	initList.append(out);
+	addNodes(initList);
+	scene()->clearSelection();
 }
 
 void Workspace::dragEnterEvent(QDragEnterEvent *event){
@@ -12,8 +26,8 @@ void Workspace::dragEnterEvent(QDragEnterEvent *event){
 }
 
 void Workspace::dropEvent(QDropEvent *event){
-	addNode((Node::Type)event->mimeData()->data("type").toInt(),
-			mapToScene(event->pos()));
+	addNode(Node::nodeMalloc((Node::Type)event->mimeData()->data("type").toInt()),
+		mapToScene(event->pos()));
 }
 
 void Workspace::dragMoveEvent(QDragMoveEvent*){}
@@ -23,12 +37,11 @@ void Workspace::wheelEvent(QWheelEvent *event){
 	else scale(1/scaleFactor,1/scaleFactor);
 }
 
-void Workspace::addNode(Node::Type id){
-	addNode(id,scene()->sceneRect().center());
+void Workspace::addNode(Node* n){
+	addNode(n,scene()->sceneRect().center());
 }
 
-void Workspace::addNode(Node::Type id, const QPointF& pos){
-	Node* n= Node::nodeMalloc(id);
+void Workspace::addNode(Node *n, const QPointF& pos){
 	if(!n) return;
 	scene()->clearSelection();
 	n->setPos(pos);

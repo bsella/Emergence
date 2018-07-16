@@ -5,16 +5,6 @@
 #include "Function.h"
 
 class FunctionWorkspace: public Workspace{
-	class FunctionInputNode: public Node{
-
-	};
-	struct Socket: Node::Socket{
-		Socket();
-		~Socket();
-		FunctionWorkspace* parent;
-		void connectToNode(Node*);
-		void disconnectNode();
-	};
 public:
 	FunctionWorkspace(QWidget* parent=0);
 	~FunctionWorkspace();
@@ -22,8 +12,10 @@ public:
 	Function* func;
 	void setFunction(Function *fun);
 private:
-	Socket *outputSocket;
+	void updateFunctionNodes()const;
 	void dragEnterEvent(QDragEnterEvent*);
+	void resizeEvent(QResizeEvent*);
+	void wheelEvent(QWheelEvent*);
 };
 
 #endif // FUNCTIONWORKSPACE_H

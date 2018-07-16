@@ -12,7 +12,7 @@ void FunctionNode::changeNbArgs(uint args){
 }
 
 FunctionNode::operator bool()const{
-	return func->start;
+	return func;
 }
 
 FunctionNode* FunctionNode::current;

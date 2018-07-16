@@ -1,7 +1,7 @@
 #include "nodes/Node.h"
 
 Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsObject(parent)
-	,rank(i),iy(y),line(headSize,0,headSize,0),parent(parent){
+	,line(headSize,0,headSize,0),rank(i),iy(y),parent(parent){
 	setZValue(parent->zValue()+1);
 	setPos(-headSize-1,y);
 	setAcceptHoverEvents(true);
@@ -186,7 +186,6 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event){
 	QGraphicsItem::mousePressEvent(event);
 }
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent*event){
-	scene()->setSceneRect(scene()->itemsBoundingRect());
 	setCursor(Qt::OpenHandCursor);
 	setZValue(0);
 	for(const auto& i: collidingItems())

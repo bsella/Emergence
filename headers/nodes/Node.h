@@ -21,6 +21,7 @@ public:
 	const unsigned width, height;
 	virtual data_t eval();
 	enum Type{
+		INPUT_G=-1, OUTPUT_G,
 		DOUBLE_G=1, COLOR_G,
 		IF_G,
 		PALETTE_G,
@@ -42,6 +43,7 @@ public:
 	static Node* nodeMalloc(Node::Type, void* arg=nullptr);
 	static QList<Node*> binToNodes(const QByteArray& ba);
 	static QByteArray nodesToBin(const QList<QGraphicsItem *> &nodes);
+	QVector<Node*> iNodes;		//INPUT NODES
 private:
 	friend class MainWindow;
 	friend class Workspace;
@@ -53,12 +55,16 @@ private:
 	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
 		~Socket();
+		QGraphicsLineItem line;
+		unsigned rank;
+		double iy;
+		static Node *hover;
+		Node *parent;
 		bool visible=true;
 		static const int headSize=8;
 		QPen pen=QPen(Qt::black);
-		QGraphicsLineItem line;
-		virtual void connectToNode(Node*n);
-		virtual void disconnectNode();
+		void connectToNode(Node*n);
+		void disconnectNode();
 		QRectF boundingRect() const;
 		void updateLine();
 		Node* collidesWithNode()const;
@@ -69,12 +75,6 @@ private:
 		void mousePressEvent(QGraphicsSceneMouseEvent*);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 		void reset();
-	private:
-		friend class DisconnectNodeCommand;
-		double iy;
-		unsigned rank;
-		static Node *hover;
-		Node *parent;
 	};
 	unsigned id;
 	bool special;
@@ -104,7 +104,6 @@ protected:
 	QMenu *menu=nullptr;
 	QPen pen;
 	uint nbArgs;
-	QVector<Node*> iNodes;		//INPUT NODES
 	QList<QPair<Node*,uint>> oConnections;
 	QVector<Socket*> sockets;
 	static SignalManager sm;

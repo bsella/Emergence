@@ -1,21 +1,9 @@
 #include "headers/FunctionWorkspace.h"
+#include "commands.h"
 
 FunctionWorkspace::FunctionWorkspace(QWidget *parent)
-	:Workspace(parent){
-//	outputSocket= new Socket;
-}
-FunctionWorkspace::~FunctionWorkspace(){
-}
-
-FunctionWorkspace::Socket::Socket():Node::Socket(0,0,0){
-}
-FunctionWorkspace::Socket::~Socket(){}
-void FunctionWorkspace::Socket::connectToNode(Node *n){
-	parent->func->start=n;
-}
-void FunctionWorkspace::Socket::disconnectNode(){
-	parent->func->start=nullptr;
-}
+	:Workspace(parent){}
+FunctionWorkspace::~FunctionWorkspace(){}
 
 void FunctionWorkspace::dragEnterEvent(QDragEnterEvent *event){
 	Workspace::dragEnterEvent(event);
@@ -25,4 +13,19 @@ void FunctionWorkspace::dragEnterEvent(QDragEnterEvent *event){
 void FunctionWorkspace::setFunction(Function *fun){
 	func=fun;
 	setScene(fun->scene);
+}
+
+void FunctionWorkspace::resizeEvent(QResizeEvent *){
+	updateFunctionNodes();
+}
+void FunctionWorkspace::wheelEvent(QWheelEvent *event){
+	Workspace::wheelEvent(event);
+	updateFunctionNodes();
+}
+void FunctionWorkspace::updateFunctionNodes() const{
+	func->start->setPos(mapToScene(rect().right()-Node::Socket::headSize,rect().height()/2));
+	for(auto& n: func->iNodes){
+		uint y= double(n->_rank+1)/(func->nbArgs+1)*rect().height();
+		n->setPos(mapToScene(-n->width-2*Node::socketSize,y));
+	}
 }

@@ -10,9 +10,10 @@ public:
 	~FunctionWorkspace();
 	uint nbArgs;
 	Function* func;
+	void _setFunction(QListWidgetItem*fun);
 	void setFunction(Function *fun);
-private:
 	void updateFunctionNodes()const;
+private:
 	void dragEnterEvent(QDragEnterEvent*);
 	void resizeEvent(QResizeEvent*);
 	void wheelEvent(QWheelEvent*);

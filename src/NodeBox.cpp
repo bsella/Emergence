@@ -19,6 +19,7 @@ void NodeTool::mouseMoveEvent(QMouseEvent *event){
 	mime->setText("nodeTool");
 	mime->setData("type",QByteArray::number(nodeID));
 	drag->setPixmap(QPixmap::fromImage(QImage(icon)));
+	mime->setParent(drag);
 	drag->exec();
 	QWidget::mouseMoveEvent(event);
 }

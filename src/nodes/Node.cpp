@@ -268,6 +268,7 @@ void Node::updateConstant(){
 #include <nodes/RenderNode.h>
 #include <nodes/PixelNode.h>
 #include <nodes/FunctionNode.h>
+#include "FunctionManager.h"
 
 Node* Node::nodeMalloc(Node::Type g, void* arg){
 	switch(g){
@@ -301,6 +302,16 @@ Node* Node::nodeMalloc(Node::Type g, void* arg){
 		}
 		return new BitmapNode(f);
 	}
+	case Node::FUNC_G:{
+//		Function *f;
+//		if(arg) f=(Function*)arg;
+//		else{
+//			f=FunctionManager::getFunction();
+//			if(!f)return nullptr;
+//		}
+//		return new FunctionNode(f);
+		return new FunctionNode;
+	}
 	case Node::IF_G:		return new IfNode;
 	case Node::GT_G:		return new GTNode;
 	case Node::LT_G:		return new LTNode;
@@ -330,7 +341,6 @@ Node* Node::nodeMalloc(Node::Type g, void* arg){
 	case Node::Y_G:			return new PixelYNode;
 	case Node::RENDER_G:	return new RenderNode;
 	case Node::RATIO_G:		return new RatioNode;
-	case Node::FUNC_G:		return new FunctionNode;
 	default:return nullptr;
 	}
 }

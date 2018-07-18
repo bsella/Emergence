@@ -15,6 +15,19 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
+    <widget class="NodeBox" name="toolBox">
+     <property name="maximumSize">
+      <size>
+       <width>150</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QListWidget" name="listWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -46,24 +59,24 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="removeFunctionButton">
+      <widget class="QPushButton" name="addFunctionButton">
        <property name="text">
-        <string>+</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="addFunctionButton">
+      <widget class="QPushButton" name="removeFunctionButton">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>-</string>
+        <string>Remove</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="disconnectButton">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -73,23 +86,18 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinBox">
-       <property name="maximum">
-        <number>10</number>
-       </property>
-      </widget>
+      <widget class="QSpinBox" name="spinBox"/>
      </item>
      <item>
-      <widget class="QPushButton" name="OKButton">
-       <property name="text">
-        <string>OK</string>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="CancelButton">
-       <property name="text">
-        <string>Cancel</string>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+       <property name="centerButtons">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -125,6 +133,12 @@
    <class>FunctionWorkspace</class>
    <extends>QGraphicsView</extends>
    <header>headers/FunctionWorkspace.h</header>
+  </customwidget>
+  <customwidget>
+   <class>NodeBox</class>
+   <extends>QToolBox</extends>
+   <header>headers/NodeBox.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

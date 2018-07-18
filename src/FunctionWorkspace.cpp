@@ -10,9 +10,13 @@ void FunctionWorkspace::dragEnterEvent(QDragEnterEvent *event){
 	event->setAccepted(event->isAccepted()&& event->mimeData()->data("type").toInt()!=Node::FUNC_G);
 }
 
+void FunctionWorkspace::_setFunction(QListWidgetItem *fun){
+	setFunction((Function*)fun);
+	updateFunctionNodes();
+}
 void FunctionWorkspace::setFunction(Function *fun){
 	func=fun;
-	setScene(fun->scene);
+	setScene(func->scene);
 }
 
 void FunctionWorkspace::resizeEvent(QResizeEvent *){

@@ -31,11 +31,11 @@ TODO:
 - [x] Destructors
 - [ ] Transparancy support
 - [ ] Functions
-  - [ ] Function Manager
+  - [x] Function Manager
   - [ ] New save format
   - [ ] Adapt with latest optimisation (pixel ID)
-  - [x] Prevent Recursiveness (just for now)
-  - [ ] Draw FunctionNodes
+  - [x] Prevent Recursion (just for now)
+  - [x] Draw FunctionNodes
 - [ ] Recursive Functions
 - [x] New save format
 - [ ] Data structures and lists

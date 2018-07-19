@@ -51,6 +51,8 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 	l_math->addWidget(new NodeTool(Node::NEG_G,"Negative",":/icons/neg.png"));
 	l_math->addWidget(new NodeTool(Node::MIN_G,"Min"));
 	l_math->addWidget(new NodeTool(Node::MAX_G,"Max"));
+	l_math->addWidget(new NodeTool(Node::POW_G,"Power"));
+	l_math->addWidget(new NodeTool(Node::LOG_G,"Logarithm"));
 	l_math->addWidget(new NodeTool(Node::SIN_G,"Sin",":/icons/sin.png"));
 	l_math->addWidget(new NodeTool(Node::COS_G,"Cos",":/icons/cos.png"));
 	l_math->addWidget(new NodeTool(Node::LERP_G,"Linear Interpolation"));
@@ -88,7 +90,7 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 	l_misc->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));
 
 	addItem(page_Math,"Math");
-	addItem(page_Comp,"Comparison");
+	addItem(page_Comp,"Compare");
 	addItem(page_Logic,"Logic");
 	addItem(page_Misc,"Miscellaneous");
 }

@@ -36,7 +36,8 @@ public:
 		MIN_G, MAX_G,
 		RGB_G, HSV_G,
 		RATIO_G,
-		CPLX_G
+		CPLX_G,
+		POW_G, LOG_G
 	};
 private:
 	friend class MainWindow;

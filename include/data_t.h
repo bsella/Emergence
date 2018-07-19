@@ -42,6 +42,8 @@ struct data_t{
 	data_t sin()const;
 	data_t cos()const;
 	data_t sqrt()const;
+	data_t log()const;
+	friend data_t pow(data_t d1, data_t d2);
 	friend data_t operator> (data_t d1, data_t d2);
 	friend data_t operator< (data_t d1, data_t d2);
 	friend data_t operator==(data_t d1, data_t d2);

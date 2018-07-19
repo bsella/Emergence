@@ -108,4 +108,18 @@ private:
 	data_t kernel()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
+class POWNode:public MathNode{
+public:
+	POWNode();
+private:
+	data_t kernel()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
+class LOGNode:public MathNode{
+public:
+	LOGNode();
+private:
+	data_t kernel()const;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+};
 #endif // MATHNODE_H

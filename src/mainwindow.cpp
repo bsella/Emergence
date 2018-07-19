@@ -111,6 +111,8 @@ Node* MainWindow::nodeMalloc(Node::Type g, void* arg){
 	case Node::Y_G:			return new PixelYNode;
 	case Node::RENDER_G:	return new RenderNode;
 	case Node::RATIO_G:		return new RatioNode;
+	case Node::POW_G:		return new POWNode;
+	case Node::LOG_G:		return new LOGNode;
 	default:return nullptr;
 	}
 }

@@ -15,6 +15,8 @@ SINNode::SINNode():MathNode(SIN_G,1){}
 COSNode::COSNode():MathNode(COS_G,1){}
 MINNode::MINNode():MathNode(MIN_G,2){}
 MAXNode::MAXNode():MathNode(MAX_G,2){}
+POWNode::POWNode():MathNode(POW_G,2){}
+LOGNode::LOGNode():MathNode(LOG_G,1){}
 
 void ADDNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option,widget);
@@ -80,7 +82,14 @@ void MAXNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	Node::paint(painter,option,widget);
 	painter->drawText(boundingRect().center()-QPointF(12,0),"max");
 }
-
+void POWNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+	Node::paint(painter,option,widget);
+	painter->drawText(boundingRect().center()-QPointF(12,0),"pow");
+}
+void LOGNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+	Node::paint(painter,option,widget);
+	painter->drawText(boundingRect().center()-QPointF(12,0),"log");
+}
 data_t ADDNode::kernel()const{
 	return iNodes[0]->eval()+iNodes[1]->eval();
 }
@@ -122,4 +131,10 @@ data_t MINNode::kernel()const{
 }
 data_t MAXNode::kernel()const{
 	return qMax(iNodes[0]->eval(),iNodes[1]->eval());
+}
+data_t POWNode::kernel()const{
+	return pow(iNodes[0]->eval(),iNodes[1]->eval());
+}
+data_t LOGNode::kernel()const{
+	return iNodes[0]->eval().log();
 }

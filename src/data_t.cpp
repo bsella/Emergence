@@ -117,3 +117,13 @@ data_t data_t::sqrt()const{
 	if(t==TypeEnum::DOUBLE)return qSqrt(d);
 	return std::sqrt(c);
 }
+data_t pow(data_t d1, data_t d2){
+	if(d1.t==TypeEnum::COMPLEX||d2.t==TypeEnum::COMPLEX)
+		return std::pow(d1.c,d2.c);
+	return qPow(d1.d,d2.d);
+}
+
+data_t data_t::log()const{
+	if(t==TypeEnum::DOUBLE) return std::log(d);
+	return std::log(c);
+}

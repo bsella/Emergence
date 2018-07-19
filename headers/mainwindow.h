@@ -68,6 +68,7 @@ private slots:
 	void on_actionHSV_triggered();
 	void on_actionRGB_triggered();
 	void on_actionFunction_Manager_triggered();
+	void on_actionFunction_triggered();
 };
 
 #endif // MAINWINDOW_H

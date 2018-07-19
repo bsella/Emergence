@@ -102,6 +102,7 @@
     <addaction name="separator"/>
     <addaction name="menuPixel"/>
     <addaction name="actionRender"/>
+    <addaction name="actionFunction"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -575,19 +576,24 @@
     <string>Function Manager</string>
    </property>
   </action>
+  <action name="actionFunction">
+   <property name="text">
+    <string>Function</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-  <customwidget>
-   <class>Workspace</class>
-   <extends>QGraphicsView</extends>
-   <header location="global">headers/Workspace.h</header>
-  </customwidget>
   <customwidget>
    <class>NodeBox</class>
    <extends>QToolBox</extends>
    <header>headers/NodeBox.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Workspace</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">headers/Workspace.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

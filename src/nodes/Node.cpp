@@ -304,13 +304,12 @@ Node* Node::nodeMalloc(Node::Type g, void* arg){
 	}
 	case Node::FUNC_G:{
 //		Function *f;
-//		if(arg) f=(Function*)arg;
+		if(arg) return new FunctionNode((Function*)arg);
+		return new FunctionNode;
 //		else{
 //			f=FunctionManager::getFunction();
 //			if(!f)return nullptr;
 //		}
-//		return new FunctionNode(f);
-		return new FunctionNode;
 	}
 	case Node::IF_G:		return new IfNode;
 	case Node::GT_G:		return new GTNode;

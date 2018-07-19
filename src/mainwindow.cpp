@@ -198,3 +198,8 @@ void MainWindow::on_actionRGB_triggered(){
 void MainWindow::on_actionFunction_Manager_triggered(){
 	fm.exec();
 }
+void MainWindow::on_actionFunction_triggered(){
+	Function* f= FunctionManager::getFunction();
+	if(f)
+		ui->workspace->addNode(Node::nodeMalloc(Node::FUNC_G,f));
+}

@@ -118,8 +118,8 @@ SignalManager Node::sm;
 double Node::x;
 double Node::y;
 double Node::ratio;
-
 ulong Node::pixelID;
+uint Node::widthByHeight;
 
 Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):
 	width(w),height(h),id(i),special(spec),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
@@ -220,13 +220,6 @@ Node::operator bool()const{
 void Node::drawIcon(QPainter *painter, QString filename){
 	QImage icon=QImage(filename);
 	painter->drawImage(width/2-icon.width()/2+socketSize,height/2-icon.height()/2,icon);
-}
-
-data_t Node::eval(){
-	if(constant) return cache;
-	if(pixelID==lastPixelID) return cache;
-	lastPixelID=pixelID;
-	return cache=kernel();
 }
 
 void Node::updateVal(){
@@ -342,6 +335,18 @@ Node* Node::nodeMalloc(Node::Type g, void* arg){
 	case Node::RATIO_G:		return new RatioNode;
 	default:return nullptr;
 	}
+}
+
+data_t Node::eval(){
+	if(constant) return cache;
+	if(FunctionNode::current){
+		if(pixelID+Node::widthByHeight*FunctionNode::current->nodeNumber==lastPixelID) return cache;
+		lastPixelID=pixelID+Node::widthByHeight*FunctionNode::current->nodeNumber;
+	}else{
+		if(pixelID==lastPixelID) return cache;
+		lastPixelID=pixelID;
+	}
+	return cache=kernel();
 }
 
 QByteArray Node::nodesToBin(const QList<QGraphicsItem*> &nodes){

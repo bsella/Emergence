@@ -8,10 +8,13 @@ class FunctionNode: public Node{
 public:
 	FunctionNode(Function *f);
 	FunctionNode();
+	~FunctionNode();
 	data_t eval();
 	static FunctionNode* current;
 	Function* func;
+	uint nodeNumber;
 private:
+	static uint nbNodes;
 	inline data_t kernel()const{return func->start->eval();}
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
 	void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);

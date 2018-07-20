@@ -2,11 +2,15 @@
 
 #include "FunctionManager.h"
 
+uint FunctionNode::nbNodes=0;
+
 FunctionNode::FunctionNode(Function* f)
-	:Node(FUNC_G,60,50+10*f->nbArgs,Qt::lightGray,f->nbArgs),func(f){
-//	connect(&sm,&SignalManager::nbArgChanged,this,&FunctionNode::changeNbArgs);
+	:Node(FUNC_G,60,50+10*f->nbArgs,Qt::lightGray,f->nbArgs),
+	func(f),nodeNumber(nbNodes++){}
+FunctionNode::FunctionNode():Node(FUNC_G,60,50,Qt::lightGray),nodeNumber(nbNodes++){}
+FunctionNode::~FunctionNode(){
+	nbNodes--;
 }
-FunctionNode::FunctionNode():Node(FUNC_G,60,50,Qt::lightGray){}
 
 void FunctionNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
 	Function* newFunc=FunctionManager::getFunction();

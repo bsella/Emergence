@@ -94,6 +94,7 @@ protected:
 	};
 	static double x,y, ratio;
 	static const int socketSize=5;
+	static uint widthByHeight;
 	static ulong pixelID;
 	ulong lastPixelID=0;
 	data_t cache;		//value returned by node

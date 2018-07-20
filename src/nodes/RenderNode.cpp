@@ -9,6 +9,7 @@ RenderNode::RenderArea::RenderArea(RenderNode *node, QWidget *parent):QDockWidge
 QImage RenderNode::RenderArea::renderImage(int w, int h){
 	QImage image(w,h ,QImage::Format_ARGB32_Premultiplied);
 	Node::ratio=double(w)/h;
+	Node::widthByHeight=w*h;
 	emit sm.updateRatio();
 	for(int i=0;i<w;i++)
 		for(int j=0;j<h;j++){
@@ -33,6 +34,7 @@ void RenderNode::RenderArea::closeEvent(QCloseEvent*){
 }
 void RenderNode::RenderArea::resizeEvent(QResizeEvent *){
 	Node::ratio=double(width())/height();
+	Node::widthByHeight=width()*height();
 	emit sm.updateRatio();
 }
 

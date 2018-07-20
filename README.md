@@ -33,7 +33,7 @@ TODO:
 - [ ] Functions
   - [x] Function Manager
   - [ ] New save format
-  - [ ] Adapt with latest optimisation (pixel ID)
+  - [x] Adapt with latest optimisation (pixel ID)
   - [x] Prevent Recursion (just for now)
   - [x] Draw FunctionNodes
 - [ ] Recursive Functions

@@ -1,6 +1,6 @@
 #include "nodes/LogicNode.h"
 
-LogicNode::LogicNode(unsigned i,unsigned n):Node(i,50,50,QColor(255,180,180),n){}
+LogicNode::LogicNode(Type i,unsigned n):Node(i,50,50,QColor(255,180,180),n){}
 
 ORNode::ORNode():LogicNode(OR_G,2){}
 ANDNode::ANDNode():LogicNode(AND_G,2){}

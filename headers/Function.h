@@ -4,6 +4,8 @@
 #include "nodes/Node.h"
 #include <QGraphicsScene>
 #include <QListWidgetItem>
+#include "Workspace.h"
+
 class Function: public QListWidgetItem{
 public:
 	struct InputNode: public Node{
@@ -22,9 +24,7 @@ public:
 	uint nbArgs;
 	OutputNode* start;
 	QVector<InputNode*> iNodes;
-	QGraphicsScene* scene;
-public slots:
-	void changeNbArgs(uint args);
+	Workspace* scene;
 };
 
 #endif // FUNCTION_H

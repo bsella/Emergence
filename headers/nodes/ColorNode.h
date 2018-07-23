@@ -6,7 +6,7 @@
 
 class ColorNode : public Node{
 protected:
-	ColorNode(unsigned i);
+	ColorNode(Type i);
 	virtual void paint(QPainter* painter,
 					const QStyleOptionGraphicsItem*option,
 					QWidget *widget)=0;

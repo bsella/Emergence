@@ -56,7 +56,6 @@ SOURCES +=\
     src/NodeBox.cpp \
     src/commands.cpp \
     src/nodes/FunctionNode.cpp \
-    src/FunctionWorkspace.cpp \
     src/FunctionManager.cpp \
     src/Function.cpp
 
@@ -82,7 +81,6 @@ HEADERS  +=\
     headers/commands.h \
     headers/signalManager.h \
     headers/nodes/FunctionNode.h \
-    headers/FunctionWorkspace.h \
     headers/FunctionManager.h \
     headers/Function.h
 

@@ -121,7 +121,7 @@ double Node::ratio;
 ulong Node::pixelID;
 uint Node::widthByHeight;
 
-Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):
+Node::Node(Type i, unsigned w, unsigned h, QColor c, uint n, bool spec):
 	width(w),height(h),id(i),special(spec),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
 	setCursor(Qt::OpenHandCursor);
 	if(!spec)setData(0,"node");
@@ -186,6 +186,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent* event){
 	QGraphicsItem::mousePressEvent(event);
 }
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent*event){
+	scene()->setSceneRect(scene()->itemsBoundingRect());
 	setCursor(Qt::OpenHandCursor);
 	setZValue(0);
 	for(const auto& i: collidingItems())

@@ -36,5 +36,6 @@
         <file>icons/open.png</file>
         <file>icons/save.png</file>
         <file>icons/neg.png</file>
+        <file>icons/arrow.png</file>
     </qresource>
 </RCC>

@@ -85,7 +85,7 @@ NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
 	l_misc->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));
 
 	addItem(page_Math,"Math");
-	addItem(page_Comp,"Comparison");
+	addItem(page_Comp,"Compare");
 	addItem(page_Logic,"Logic");
 	addItem(page_Misc,"Miscellaneous");
 }

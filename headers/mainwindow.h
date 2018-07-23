@@ -8,6 +8,7 @@
 #include <ExportImageDialog.h>
 #include "FunctionManager.h"
 #include "nodes/Node.h"
+#include "Workspace.h"
 
 #define MAGIC_NUMBER 0xa1b2affd
 #define SAVE_VERSION 0x00000003
@@ -24,13 +25,16 @@ public:
 	~MainWindow();
 private:
 	Ui::MainWindow *ui;
-	QGraphicsScene* scene;
+	Workspace* scene;
 	FunctionManager fm;
+	QAction zoomIN, zoomOUT;
 
 private slots:
 	void save()const;
 	void load();
 	void updateActions();
+	void zoomIn()const;
+	void zoomOut()const;
 
 	void on_actionExit_triggered();
 	void on_actionExport_triggered();

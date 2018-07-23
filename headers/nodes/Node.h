@@ -16,10 +16,6 @@
 class Node: public QGraphicsObject{
 	Q_OBJECT
 public:
-	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
-	~Node();
-	unsigned width, height;
-	virtual data_t eval();
 	enum Type{
 		INPUT_G=-1, OUTPUT_G,
 		DOUBLE_G=1, COLOR_G,
@@ -40,6 +36,10 @@ public:
 		CPLX_G,
 		FUNC_G
 	};
+	Node(Type i, unsigned w=50, unsigned h=50, QColor c=Qt::white, uint n=0, bool spec=false);
+	~Node();
+	unsigned width, height;
+	virtual data_t eval();
 	static Node* nodeMalloc(Node::Type, void* arg=nullptr);
 	static QList<Node*> binToNodes(const QByteArray& ba);
 	static QByteArray nodesToBin(const QList<QGraphicsItem *> &nodes);
@@ -53,12 +53,10 @@ private:
 	friend class ConnectNodeCommand;
 	friend class DisconnectNodeCommand;
 	friend class MoveNodeCommand;
-	friend class FunctionWorkspace;
-	unsigned id;
+	Type id;
 	bool special;
 	QPointF initialPos;
 	static QPointF tmpPos;
-	QAction* actionDelete;
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	virtual data_t kernel()const=0;
@@ -105,6 +103,7 @@ protected:
 	uint nbArgs;
 	QList<QPair<Node*,uint>> oConnections;
 	QVector<Socket*> sockets;
+	QAction* actionDelete;
 
 	QRectF boundingRect()const;
 	virtual void paint(QPainter* painter,

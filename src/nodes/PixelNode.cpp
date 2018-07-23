@@ -1,6 +1,6 @@
 #include "nodes/PixelNode.h"
 
-PixelNode::PixelNode(unsigned i):Node(i,70,50,Qt::lightGray){}
+PixelNode::PixelNode(Type i):Node(i,70,50,Qt::lightGray){}
 PixelXNode::PixelXNode():PixelNode(X_G){}
 PixelYNode::PixelYNode():PixelNode(Y_G){}
 RatioNode::RatioNode():Node(RATIO_G,70,50,Qt::lightGray){

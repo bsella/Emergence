@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="1">
-     <widget class="Workspace" name="workspace"/>
+     <widget class="QGraphicsView" name="workspace"/>
     </item>
    </layout>
   </widget>
@@ -589,11 +589,6 @@
    <extends>QToolBox</extends>
    <header>headers/NodeBox.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Workspace</class>
-   <extends>QGraphicsView</extends>
-   <header location="global">headers/Workspace.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

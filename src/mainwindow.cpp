@@ -8,30 +8,47 @@ MainWindow::MainWindow(QWidget *parent) :
 	QWidget::setWindowTitle("Emergence");
 	QWidget::setWindowIcon(QIcon(":/icons/emgc.ico"));
 
-	scene=ui->workspace->scene();
+	ui->workspace->setScene(scene=new Workspace);
+	ui->workspace->setAcceptDrops(true);
+	ui->workspace->setDragMode(QGraphicsView::DragMode::RubberBandDrag);
+	scene->putXYandOutput();
 
-	connect(ui->actionCopy,SIGNAL(triggered(bool)),ui->workspace,SLOT(copy()));
-	connect(ui->actionPaste,SIGNAL(triggered(bool)),ui->workspace,SLOT(paste()));
-	connect(ui->actionCut,SIGNAL(triggered(bool)),ui->workspace,SLOT(cut()));
-	connect(ui->actionDelete,SIGNAL(triggered(bool)),ui->workspace,SLOT(delete_selected()));
-	connect(ui->actionSelect_all,SIGNAL(triggered(bool)),ui->workspace,SLOT(select_all()));
+	scene->undoStack.setClean();
+	connect(ui->actionCopy,SIGNAL(triggered(bool)),scene,SLOT(copy()));
+	connect(ui->actionPaste,SIGNAL(triggered(bool)),scene,SLOT(paste()));
+	connect(ui->actionCut,SIGNAL(triggered(bool)),scene,SLOT(cut()));
+	connect(ui->actionDelete,SIGNAL(triggered(bool)),scene,SLOT(delete_selected()));
+	connect(ui->actionSelect_all,SIGNAL(triggered(bool)),scene,SLOT(select_all()));
 
 	connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(save()));
 	connect(ui->actionOpen,SIGNAL(triggered(bool)),this,SLOT(load()));
 
-	connect(ui->actionUndo,SIGNAL(triggered(bool)),&ui->workspace->undoStack,SLOT(undo()));
-	connect(ui->actionRedo,SIGNAL(triggered(bool)),&ui->workspace->undoStack,SLOT(redo()));
+	connect(ui->actionUndo,SIGNAL(triggered(bool)),&scene->undoStack,SLOT(undo()));
+	connect(ui->actionRedo,SIGNAL(triggered(bool)),&scene->undoStack,SLOT(redo()));
 	ui->actionUndo->setEnabled(false); ui->actionRedo->setEnabled(false);
-	connect(&ui->workspace->undoStack,SIGNAL(canUndoChanged(bool)),ui->actionUndo,SLOT(setEnabled(bool)));
-	connect(&ui->workspace->undoStack,SIGNAL(canRedoChanged(bool)),ui->actionRedo,SLOT(setEnabled(bool)));
+	connect(&scene->undoStack,SIGNAL(canUndoChanged(bool)),ui->actionUndo,SLOT(setEnabled(bool)));
+	connect(&scene->undoStack,SIGNAL(canRedoChanged(bool)),ui->actionRedo,SLOT(setEnabled(bool)));
 
 	connect(scene,SIGNAL(selectionChanged()),this,SLOT(updateActions()));
+	updateActions();
+	ui->actionPaste->setEnabled(QApplication::clipboard()->mimeData()->text()=="Emergence_Nodes");
+	zoomIN.setShortcut(QKeySequence::ZoomIn);
+	zoomOUT.setShortcut(QKeySequence::ZoomOut);
+	addAction(&zoomIN);
+	addAction(&zoomOUT);
+	connect(&zoomIN,SIGNAL(triggered(bool)),this,SLOT(zoomIn()));
+	connect(&zoomOUT,SIGNAL(triggered(bool)),this,SLOT(zoomOut()));
 }
 MainWindow::~MainWindow(){
 	delete ui->workspace;
 	delete ui;
 }
-
+void MainWindow::zoomIn()const{
+	ui->workspace->scale(Workspace::scaleFactor,Workspace::scaleFactor);
+}
+void MainWindow::zoomOut()const{
+	ui->workspace->scale(1/Workspace::scaleFactor,1/Workspace::scaleFactor);
+}
 void MainWindow::save()const{
 	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
 	if(fileName.isEmpty()) return;
@@ -48,7 +65,7 @@ void MainWindow::save()const{
 	out << MAGIC_NUMBER;
 	out << SAVE_VERSION;
 
-	ui->workspace->select_all();
+	scene->select_all();
 	out << Node::nodesToBin(scene->selectedItems());
 	scene->clearSelection();
 	file.close();
@@ -72,11 +89,11 @@ void MainWindow::load(){
 	}
 	in.skipRawData(4);
 
-	ui->workspace->select_all();
-	ui->workspace->undoStack.beginMacro("load");
-	ui->workspace->delete_selected();
-	ui->workspace->addNodes(Node::binToNodes(file.readAll()));
-	ui->workspace->undoStack.endMacro();
+	scene->select_all();
+	scene->undoStack.beginMacro("load");
+	scene->delete_selected();
+	scene->addNodes(Node::binToNodes(file.readAll()));
+	scene->undoStack.endMacro();
 	scene->clearSelection();
 }
 
@@ -85,11 +102,18 @@ void MainWindow::on_actionExit_triggered(){
 }
 void MainWindow::updateActions(){
 	ui->actionExport->setEnabled(false);
-	for(auto& n: scene->selectedItems())
+	bool someNodeIsSelected=false;
+	for(auto& n: scene->selectedItems()){
+		if(((Node*)n)->id!=Node::OUTPUT_G &&((Node*)n)->id!=Node::INPUT_G)
+			someNodeIsSelected=true;
 		if(((Node*)n)->id==Node::RENDER_G && *((RenderNode*)n)){
 			ui->actionExport->setEnabled(true);
 			break;
 		}
+	}
+	ui->actionCut->setEnabled(someNodeIsSelected);
+	ui->actionCopy->setEnabled(someNodeIsSelected);
+	ui->actionDelete->setEnabled(someNodeIsSelected);
 }
 void MainWindow::on_actionExport_triggered(){
 	for(const auto& n: scene->selectedItems())
@@ -97,109 +121,108 @@ void MainWindow::on_actionExport_triggered(){
 			ExportImageDialog::exportBMP((RenderNode*)n);
 }
 void MainWindow::on_actionIf_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::IF_G));
+	scene->addNode(Node::nodeMalloc(Node::IF_G));
 }
 void MainWindow::on_actionGreaterThan_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::GT_G));
+	scene->addNode(Node::nodeMalloc(Node::GT_G));
 }
 void MainWindow::on_actionLessThan_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::LT_G));
+	scene->addNode(Node::nodeMalloc(Node::LT_G));
 }
 void MainWindow::on_actionEqual_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::EQ_G));
+	scene->addNode(Node::nodeMalloc(Node::EQ_G));
 }
 void MainWindow::on_actionNot_Equal_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::NE_G));
+	scene->addNode(Node::nodeMalloc(Node::NE_G));
 }
 void MainWindow::on_actionAND_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::AND_G));
+	scene->addNode(Node::nodeMalloc(Node::AND_G));
 }
 void MainWindow::on_actionOR_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::OR_G));
+	scene->addNode(Node::nodeMalloc(Node::OR_G));
 }
 void MainWindow::on_actionXOR_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::XOR_G));
+	scene->addNode(Node::nodeMalloc(Node::XOR_G));
 }
 void MainWindow::on_actionNOT_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::NOT_G));
+	scene->addNode(Node::nodeMalloc(Node::NOT_G));
 }
 void MainWindow::on_actionDouble_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::DOUBLE_G));
+	scene->addNode(Node::nodeMalloc(Node::DOUBLE_G));
 }
 void MainWindow::on_actionColor_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::COLOR_G));
+	scene->addNode(Node::nodeMalloc(Node::COLOR_G));
 }
 void MainWindow::on_actionLUT_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::PALETTE_G));
+	scene->addNode(Node::nodeMalloc(Node::PALETTE_G));
 }
 void MainWindow::on_actionX_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::X_G));
+	scene->addNode(Node::nodeMalloc(Node::X_G));
 }
 void MainWindow::on_actionY_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::Y_G));
+	scene->addNode(Node::nodeMalloc(Node::Y_G));
 }
 void MainWindow::on_actionRender_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::RENDER_G));
+	scene->addNode(Node::nodeMalloc(Node::RENDER_G));
 }
 void MainWindow::on_actionADD_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::ADD_G));
+	scene->addNode(Node::nodeMalloc(Node::ADD_G));
 }
 void MainWindow::on_actionSUB_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::SUB_G));
+	scene->addNode(Node::nodeMalloc(Node::SUB_G));
 }
 void MainWindow::on_actionMUL_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::MUL_G));
+	scene->addNode(Node::nodeMalloc(Node::MUL_G));
 }
 void MainWindow::on_actionDIV_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::DIV_G));
+	scene->addNode(Node::nodeMalloc(Node::DIV_G));
 }
 void MainWindow::on_actionNEG_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::NEG_G));
+	scene->addNode(Node::nodeMalloc(Node::NEG_G));
 }
 void MainWindow::on_actionSQRT_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::SQRT_G));
+	scene->addNode(Node::nodeMalloc(Node::SQRT_G));
 }
 void MainWindow::on_actionABS_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::ABS_G));
+	scene->addNode(Node::nodeMalloc(Node::ABS_G));
 }
 void MainWindow::on_actionLerp_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::LERP_G));
+	scene->addNode(Node::nodeMalloc(Node::LERP_G));
 }
 void MainWindow::on_actionClamp_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::CLAMP_G));
+	scene->addNode(Node::nodeMalloc(Node::CLAMP_G));
 }
 void MainWindow::on_actionBitmap_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::BITMAP_G));
+	scene->addNode(Node::nodeMalloc(Node::BITMAP_G));
 }
 void MainWindow::on_actionSin_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::SIN_G));
+	scene->addNode(Node::nodeMalloc(Node::SIN_G));
 }
 void MainWindow::on_actionCos_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::COS_G));
+	scene->addNode(Node::nodeMalloc(Node::COS_G));
 }
 void MainWindow::on_actionMin_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::MIN_G));
+	scene->addNode(Node::nodeMalloc(Node::MIN_G));
 }
 void MainWindow::on_actionMax_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::MAX_G));
+	scene->addNode(Node::nodeMalloc(Node::MAX_G));
 }
 void MainWindow::on_actionRatio_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::RATIO_G));
+	scene->addNode(Node::nodeMalloc(Node::RATIO_G));
 }
 void MainWindow::on_actionComplex_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::CPLX_G));
+	scene->addNode(Node::nodeMalloc(Node::CPLX_G));
 }
 void MainWindow::on_actionHSV_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::HSV_G));
+	scene->addNode(Node::nodeMalloc(Node::HSV_G));
 }
 void MainWindow::on_actionRGB_triggered(){
-	ui->workspace->addNode(Node::nodeMalloc(Node::RGB_G));
+	scene->addNode(Node::nodeMalloc(Node::RGB_G));
 }
 void MainWindow::on_actionFunction_Manager_triggered(){
 	fm.exec();
 }
 void MainWindow::on_actionFunction_triggered(){
 	Function* f= FunctionManager::getFunction();
-	if(f)
-		ui->workspace->addNode(Node::nodeMalloc(Node::FUNC_G,f));
+	if(f) scene->addNode(Node::nodeMalloc(Node::FUNC_G,f));
 }

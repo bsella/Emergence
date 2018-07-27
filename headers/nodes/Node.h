@@ -16,8 +16,7 @@
 class Node: public QGraphicsObject{
 	Q_OBJECT
 public:
-	enum Type{
-		INPUT_G=-1, OUTPUT_G,
+	enum Type:char{
 		DOUBLE_G=1, COLOR_G,
 		IF_G,
 		PALETTE_G,
@@ -34,6 +33,7 @@ public:
 		RGB_G, HSV_G,
 		RATIO_G,
 		CPLX_G,
+		INPUT_G, OUTPUT_G,
 		FUNC_G
 	};
 	Node(Type i, unsigned w=50, unsigned h=50, QColor c=Qt::white, uint n=0, bool spec=false);
@@ -46,6 +46,9 @@ public:
 	QVector<Node*> iNodes;		//INPUT NODES
 	static SignalManager sm;
 	virtual operator bool()const;
+	friend std::ostream& operator<<(std::ostream& out, const Node&);
+	friend std::ostream& operator<<(std::ostream& out, const QList<Node*>&);
+	friend std::istream& operator>>(std::istream& in , QList<Node*>&);
 private:
 	friend class MainWindow;
 	friend class Workspace;
@@ -53,7 +56,7 @@ private:
 	friend class ConnectNodeCommand;
 	friend class DisconnectNodeCommand;
 	friend class MoveNodeCommand;
-	Type id;
+	const Type id;
 	bool special;
 	QPointF initialPos;
 	static QPointF tmpPos;
@@ -116,5 +119,6 @@ signals:
 	void disconnected(Node::Socket* s);
 	void moved();
 };
+
 
 #endif

@@ -10,7 +10,7 @@ class Function: public QListWidgetItem{
 public:
 	struct InputNode: public Node{
 		InputNode(uint rank);
-		const uint _rank;
+		const int _rank;
 		data_t kernel()const;
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 	};
@@ -19,12 +19,15 @@ public:
 		inline data_t kernel()const{return iNodes[0]->eval();}
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 	};
+	Function(int,const QString&);
 	Function();
 	~Function();
-	uint nbArgs;
+	int nbArgs;
 	OutputNode* start;
 	QVector<InputNode*> iNodes;
 	Workspace* scene;
+	friend std::ostream& operator<<(std::ostream& out, const Function&f);
 };
+
 
 #endif // FUNCTION_H

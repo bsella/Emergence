@@ -20,6 +20,11 @@ public:
 	~FunctionManager();
 	static Function* getFunction(FunctionNode* node=0);
 	static FunctionManager* singleton;
+	static Function* functionAt(int);
+	static int indexOf(Function*);
+	static int count();
+	void clear();
+	friend std::istream& operator>>(std::istream&, FunctionManager&);
 private:
 	static bool userIntented;
 	Ui::FunctionManager *ui;
@@ -34,7 +39,6 @@ private:
 private slots:
 	void accept();
 	void reject();
-	void addNewFunction()const;
 	void renameFunction(QListWidgetItem*);
 	void on_spinBox_valueChanged(int arg1);
 	void on_addFunctionButton_clicked();

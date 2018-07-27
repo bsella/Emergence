@@ -3,15 +3,13 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
-#include <QFile>
+
+#include <fstream>
 
 #include <ExportImageDialog.h>
 #include "FunctionManager.h"
 #include "nodes/Node.h"
 #include "Workspace.h"
-
-#define MAGIC_NUMBER 0xa1b2affd
-#define SAVE_VERSION 0x00000003
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +22,8 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 private:
+	static const int _magic_number=0xa1b2affd;
+	static const int _version=4;
 	Ui::MainWindow *ui;
 	Workspace* scene;
 	FunctionManager fm;

@@ -17,10 +17,16 @@ public:
 	void addNode(Node*, const QPointF&);
 	void addNodes(const QList<Node *>&);
 	void putXYandOutput();
+	friend std::ostream& operator<<(std::ostream& out, const Workspace& w);
+	friend std::istream& operator>>(std::istream& in, Workspace& w);
+	int count()const;
+	Node* nodeAt(int)const;
+	int nodeIndex(Node*)const;
 private:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *);
 	void dragMoveEvent(QGraphicsSceneDragDropEvent*);
 	void dropEvent(QGraphicsSceneDragDropEvent*);
+	QList<Node*> nodes()const;
 public slots:
 	void paste();
 	void select_all()const;
@@ -31,5 +37,6 @@ public slots:
 	void connectNode(Node::Socket*, Node*);
 	void disconnectNode(Node::Socket*);
 };
+
 
 #endif // WORKSPACE_H

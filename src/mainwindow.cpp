@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+const int MainWindow::_magic_number;
+const int MainWindow::_version;
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow){
@@ -50,51 +52,72 @@ void MainWindow::zoomOut()const{
 	ui->workspace->scale(1/Workspace::scaleFactor,1/Workspace::scaleFactor);
 }
 void MainWindow::save()const{
-	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
-	if(fileName.isEmpty()) return;
-	if(!fileName.endsWith(".emrg"))
-		fileName.append(".emrg");
-	QFile file(fileName);
-	if(!file.open(QIODevice::WriteOnly)){
-		QMessageBox::information(ui->workspace,"Unable to open file",file.errorString());
-		return;
-	}
-	file.resize(0);
-	QDataStream out(&file);
+//	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
+//	if(fileName.isEmpty()) return;
+//	if(!fileName.endsWith(".emrg"))
+//		fileName.append(".emrg");
+//	QFile file(fileName);
+//	if(!file.open(QIODevice::WriteOnly)){
+//		QMessageBox::information(ui->workspace,"Unable to open file",file.errorString());
+//		return;
+//	}
+//	file.resize(0);
+//	QDataStream out(&file);
 
-	out << MAGIC_NUMBER;
-	out << SAVE_VERSION;
+//	out << MAGIC_NUMBER;
+//	out << SAVE_VERSION;
 
-	scene->select_all();
-	out << Node::nodesToBin(scene->selectedItems());
-	scene->clearSelection();
-	file.close();
+//	scene->select_all();
+//	out << Node::nodesToBin(scene->selectedItems());
+//	scene->clearSelection();
+//	file.close();
+	std::ofstream ofs("test.bin");
+	ofs.write(reinterpret_cast<const char*>(&_magic_number),4);
+	ofs.write(reinterpret_cast<const char*>(&_version),4);
+	int tmp= FunctionManager::count();
+	ofs << tmp << '\n';
+	for(int i=0; i<tmp;i++)
+		ofs<<*FunctionManager::functionAt(i);
+	ofs << *scene;
+	ofs.close();
 }
 
 void MainWindow::load(){
-	QString f= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
-	if(f.isNull()) return;
-	QFile file(f);
-	file.open(QIODevice::ReadOnly);
-	QDataStream in(&file);
-	uint magic; in>>magic;
-	if(magic!=MAGIC_NUMBER){
-		QMessageBox::warning(0,"Wrong format","Bad File Format");
-		return;
-	}
-	uint version; in>>version;
-	if(version<SAVE_VERSION){
-		QMessageBox::warning(0,"Wrong version","Sorry, this save file is too old.");
-		return;
-	}
-	in.skipRawData(4);
+//	QString f= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
+//	if(f.isNull()) return;
+//	QFile file(f);
+//	file.open(QIODevice::ReadOnly);
+//	QDataStream in(&file);
+//	int magic; in>>magic;
+//	uint version; in>>version;
+//	in.skipRawData(4);
 
-	scene->select_all();
-	scene->undoStack.beginMacro("load");
-	scene->delete_selected();
-	scene->addNodes(Node::binToNodes(file.readAll()));
-	scene->undoStack.endMacro();
-	scene->clearSelection();
+//	scene->select_all();
+//	scene->undoStack.beginMacro("load");
+//	scene->delete_selected();
+//	scene->addNodes(Node::binToNodes(file.readAll()));
+//	scene->undoStack.endMacro();
+//	scene->clearSelection();
+	std::ifstream ifs("test.bin");
+	int tmp;
+	ifs.read(reinterpret_cast<char*>(&tmp),4);
+	if(tmp!=_magic_number){
+		QMessageBox::warning(0,"Wrong format","Bad File Format");
+		ifs.close();
+		return;
+	}
+	ifs.read(reinterpret_cast<char*>(&tmp),4);
+	if(tmp<_version){
+		QMessageBox::warning(0,"Wrong version","Sorry, this save file is too old.");
+		ifs.close();
+		return;
+	}
+//	fm.clear();
+	ifs>>tmp;
+	for(int i=0;i<tmp;i++)
+		ifs >> fm;
+	ifs >> *scene;
+	ifs.close();
 }
 
 void MainWindow::on_actionExit_triggered(){

@@ -125,6 +125,7 @@ Node::Node(Type i, unsigned w, unsigned h, QColor c, uint n, bool spec):
 	width(w),height(h),id(i),special(spec),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
 	setCursor(Qt::OpenHandCursor);
 	if(!spec)setData(0,"node");
+	setData(1,"countMe");
 	for(uint i=0; i<nbArgs;i++){
 		sockets.push_back(new Socket(i,height*((i+1.0)/(nbArgs+1.0)),this));
 		iNodes.push_back(nullptr);
@@ -334,6 +335,8 @@ Node* Node::nodeMalloc(Node::Type g, void* arg){
 	case Node::Y_G:			return new PixelYNode;
 	case Node::RENDER_G:	return new RenderNode;
 	case Node::RATIO_G:		return new RatioNode;
+	case Node::OUTPUT_G:	return new Function::OutputNode;
+	case Node::INPUT_G:		return new Function::InputNode(*(uint*)arg);
 	default:return nullptr;
 	}
 }
@@ -401,4 +404,82 @@ QList<Node*> Node::binToNodes(const QByteArray &ba){
 				node->sockets[i]->connectToNode(newNodes.at(n));
 		}
 	return newNodes;
+}
+
+std::ostream& operator<<(std::ostream& out, const Node& n){
+	out << n.id;
+	float tmp=n.scenePos().x();
+	out.write(reinterpret_cast<char*>(&tmp),4);
+	tmp=n.scenePos().y();
+	out.write(reinterpret_cast<char*>(&tmp),4);
+	switch(n.id){
+	case Node::DOUBLE_G:
+		out << n.cache.d << '\n';
+		break;
+	case Node::COLOR_G:
+		out.write(reinterpret_cast<const char*>(&n.cache.clr),sizeof(data_t::color));
+		break;
+	case Node::FUNC_G:
+		out << FunctionManager::indexOf(((FunctionNode*)&n)->func) << '\n';
+		break;
+	case Node::INPUT_G:
+		out << ((Function::InputNode*)&n)->_rank<< '\n';
+	default:break;
+	}
+	return out;
+}
+std::ostream& operator<<(std::ostream& out,const QList<Node*>&nodes){
+	out << nodes.size()<< '\n';
+	for(const auto& n:nodes)
+		out << *n;
+	for(const auto& n:nodes)
+		for(const auto& nn:n->iNodes)
+			out << nodes.indexOf(nn) << '\n';
+	return out;
+}
+
+std::istream& operator>>(std::istream& in, QList<Node*>&nodes){
+	int tmp;
+	in>>tmp;
+	for(int i=0;i<tmp;i++){
+		Node* n;
+		int id;
+		in>>id;
+		float xx,yy;
+		in.read(reinterpret_cast<char*>(&xx),4);
+		in.read(reinterpret_cast<char*>(&yy),4);
+		double tmpD;
+		data_t::color tmpC;
+		int tmpI;
+		switch(id){
+		case Node::DOUBLE_G:
+			in >> tmpD;
+			n=Node::nodeMalloc((Node::Type)id,&tmpD);
+			break;
+		case Node::COLOR_G:
+			in.read(reinterpret_cast<char*>(&tmpC),sizeof(data_t::color));
+			n=Node::nodeMalloc((Node::Type)id,&tmpC);
+			break;
+		case Node::FUNC_G:
+			in >> tmpI;
+			n=Node::nodeMalloc((Node::Type)id,FunctionManager::functionAt(tmpI));
+			break;
+		case Node::INPUT_G:
+			in >> tmpI;
+			n=Node::nodeMalloc((Node::Type)id,&tmpI);
+			break;
+		default:
+			n=Node::nodeMalloc((Node::Type)id);
+		}
+		n->setPos(xx,yy);
+		nodes.push_back(n);
+	}
+	for(const auto& n:nodes)
+		for(uint i=0; i<n->nbArgs; i++){
+			int tmp;
+			in>>tmp;
+			if(tmp>=0)
+				n->sockets[i]->connectToNode(nodes.at(tmp));
+		}
+	return in;
 }

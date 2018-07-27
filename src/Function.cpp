@@ -21,14 +21,17 @@ void Function::OutputNode::paint(QPainter *p, const QStyleOptionGraphicsItem *o,
 	Node::drawIcon(p,":/icons/arrow.png");
 }
 
-Function::Function():QListWidgetItem("New Function"), nbArgs(0){
+Function::Function(int n, const QString& name):QListWidgetItem(name), nbArgs(n){
 	scene= new Workspace;
 	start= new OutputNode;
 	scene->addItem(start);
-	for(uint i=0;i<nbArgs;i++){
+	for(int i=0;i<nbArgs;i++){
 		iNodes.append(new InputNode(i));
 		scene->addItem(iNodes[i]);
 	}
+}
+Function::Function(){
+	scene= new Workspace;
 }
 Function::~Function(){
 	for(int i=nbArgs-1;i>=0;i--){
@@ -38,4 +41,14 @@ Function::~Function(){
 	scene->removeItem(start);
 	delete start;
 //	delete scene;
+}
+
+std::ostream& operator<<(std::ostream& out, const Function&f){
+	out << f.text().toStdString()<<"\n";
+	out << *(f.scene);
+	out << f.scene->nodeIndex(f.start) <<'\n';
+	out << f.nbArgs << '\n';
+	for(const auto& n:f.iNodes)
+		out << f.scene->nodeIndex(n) <<'\n';
+	return out;
 }

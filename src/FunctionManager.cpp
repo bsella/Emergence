@@ -9,11 +9,7 @@ FunctionManager::FunctionManager(QWidget *parent):
 	singleton=this;
 	ui->workspace->setAcceptDrops(true);
 	ui->workspace->setDragMode(QGraphicsView::DragMode::RubberBandDrag);
-	undoStack.push(new AddFunctionCommand);
-	setFunction((Function*)ui->listWidget->item(0));
-	undoStack.setClean();
 	ui->removeFunctionButton->setEnabled(false);
-	ui->listWidget->setItemSelected(ui->listWidget->item(0),true);
 	connect(ui->listWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(renameFunction(QListWidgetItem*)));
 	connect(ui->listWidget,&QListWidget::currentItemChanged,this,&FunctionManager::setFunction);
 	connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(accept()));
@@ -39,6 +35,8 @@ void FunctionManager::accept(){
 	undoStack.setClean();
 	for(int i=0; i<ui->listWidget->count();i++)
 		((Function*)ui->listWidget->item(i))->scene->undoStack.setClean();
+	func=nullptr;
+	ui->workspace->setScene(nullptr);
 	QDialog::accept();
 }
 void FunctionManager::reject(){
@@ -49,11 +47,23 @@ void FunctionManager::reject(){
 		while(!f->scene->undoStack.isClean())
 			f->scene->undoStack.undo();
 	}
+	func=nullptr;
+	ui->workspace->setScene(nullptr);
 	QDialog::reject();
 }
 
 FunctionManager::~FunctionManager(){
 	delete ui;
+}
+
+Function* FunctionManager::functionAt(int i){
+	return (Function*)singleton->ui->listWidget->item(i);
+}
+int FunctionManager::indexOf(Function *f){
+	return singleton->ui->listWidget->row(f);
+}
+int FunctionManager::count(){
+	return singleton->ui->listWidget->count();
 }
 
 void FunctionManager::on_addFunctionButton_clicked(){
@@ -75,19 +85,6 @@ Function* FunctionManager::getFunction(FunctionNode *node){
 	return nullptr;
 }
 
-void FunctionManager::addNewFunction()const{
-	Function* func= new Function;
-	ui->listWidget->addItem(func);
-	ui->listWidget->setCurrentItem(func);
-	connect(func->start,SIGNAL(connected(Node::Socket*,Node*)),func->scene,SLOT(connectNode(Node::Socket*,Node*)));
-	connect(func->start,SIGNAL(disconnected(Node::Socket*)),func->scene,SLOT(disconnectNode(Node::Socket*)));
-	for(Node* n:func->iNodes){
-		connect(n,SIGNAL(connected(Node::Socket*,Node*)),func->scene,SLOT(connectNode(Node::Socket*,Node*)));
-		connect(n,SIGNAL(disconnected(Node::Socket*)),func->scene,SLOT(disconnectNode(Node::Socket*)));
-	}
-	ui->removeFunctionButton->setEnabled(true);
-}
-
 bool FunctionManager::userIntented=true;
 
 void FunctionManager::on_spinBox_valueChanged(int arg1){
@@ -96,6 +93,14 @@ void FunctionManager::on_spinBox_valueChanged(int arg1){
 }
 
 void FunctionManager::setFunction(QListWidgetItem* f){
+	if(!f){
+		ui->workspace->setScene(0);
+		ui->spinBox->setEnabled(false);
+		ui->removeFunctionButton->setEnabled(false);
+		return;
+	}
+	ui->spinBox->setEnabled(true);
+	ui->removeFunctionButton->setEnabled(true);
 	if(func){
 		disconnect(&redo,SIGNAL(triggered(bool)),&func->scene->undoStack,SLOT(redo()));
 		disconnect(&undo,SIGNAL(triggered(bool)),&func->scene->undoStack,SLOT(undo()));
@@ -164,7 +169,7 @@ void ChangeNbArgsCommand::redo(){
 
 AddFunctionCommand::AddFunctionCommand(QUndoCommand*parent)
 	:QUndoCommand(parent){
-	func= new Function;
+	func= new Function(0,"New_Function");
 }
 void AddFunctionCommand::undo(){
 	QObject::disconnect(func->start,SIGNAL(disconnected(Node::Socket*)),func->scene,SLOT(disconnectNode(Node::Socket*)));
@@ -179,7 +184,6 @@ void AddFunctionCommand::undo(){
 }
 void AddFunctionCommand::redo(){
 	FunctionManager::singleton->ui->listWidget->addItem(func);
-	FunctionManager::singleton->ui->listWidget->setCurrentItem(func);
 
 	QObject::connect(func->start,SIGNAL(connected(Node::Socket*,Node*)),func->scene,SLOT(connectNode(Node::Socket*,Node*)));
 	QObject::connect(func->start,SIGNAL(disconnected(Node::Socket*)),func->scene,SLOT(disconnectNode(Node::Socket*)));
@@ -201,7 +205,7 @@ void RemoveFunctionCommand::undo(){
 void RemoveFunctionCommand::redo(){
 	func=(Function*)FunctionManager::singleton->ui->listWidget->takeItem(_rank);
 	FunctionManager::singleton->ui->removeFunctionButton->setEnabled(
-				FunctionManager::singleton->ui->listWidget->count()>1);
+				FunctionManager::singleton->ui->listWidget->count());
 }
 
 RenameFunctionCommand::RenameFunctionCommand(Function *f, const QString &to, QUndoCommand *parent)
@@ -215,4 +219,31 @@ void RenameFunctionCommand::undo(){
 }
 void RenameFunctionCommand::redo(){
 	func->setText(_to);
+}
+
+void FunctionManager::clear(){
+	ui->workspace->setScene(0);
+	while(ui->listWidget->count())
+		delete ui->listWidget->takeItem(0);
+	ui->removeFunctionButton->setEnabled(false);
+	ui->spinBox->setEnabled(false);
+}
+
+std::istream& operator>>(std::istream& in , FunctionManager&fm){
+	Function *f= new Function;
+	std::string str;
+	in >> str;
+	f->setText(QString::fromStdString(str));
+	in >> *f->scene;
+
+	int tmp;
+	in>>tmp;
+	f->start= (Function::OutputNode*)f->scene->nodeAt(tmp);
+	in >> f->nbArgs;
+	for(int i=0; i<f->nbArgs;i++){
+		in>>tmp;
+		f->iNodes.push_back((Function::InputNode*)f->scene->nodeAt(tmp));
+	}
+	fm.ui->listWidget->addItem(f);
+	return in;
 }

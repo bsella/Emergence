@@ -76,17 +76,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="disconnectButton">
+      <widget class="QSpinBox" name="spinBox">
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="text">
-        <string>Disconnect</string>
-       </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="spinBox"/>
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">

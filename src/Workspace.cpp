@@ -112,3 +112,32 @@ void Workspace::cut(){
 	copy();
 	delete_selected();
 }
+
+QList<Node*> Workspace::nodes()const{
+	QList<Node*> ret;
+	for(const auto& n:items())
+		if(n->data(1)=="countMe")
+			ret.append((Node*)n);
+	return ret;
+}
+int Workspace::count()const{
+	return nodes().size();
+}
+Node* Workspace::nodeAt(int i) const{
+	return nodes().at(i);
+}
+int Workspace::nodeIndex(Node* n) const{
+	return nodes().indexOf(n);
+}
+
+std::ostream& operator<<(std::ostream& out, const Workspace& w){
+	out << w.nodes();
+	return out;
+}
+
+std::istream& operator>>(std::istream& in, Workspace& w){
+	QList<Node*> nodes;
+	in>>nodes;
+	w.addNodes(nodes);
+	return in;
+}

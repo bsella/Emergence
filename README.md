@@ -30,9 +30,9 @@ TODO:
 - [x] Multiple outputs
 - [x] Destructors
 - [ ] Transparancy support
-- [ ] Functions
+- [x] Functions
   - [x] Function Manager
-  - [ ] New save format
+  - [x] New save format
   - [x] Adapt with latest optimisation (pixel ID)
   - [x] Draw FunctionNodes
 - [ ] Recursive Functions

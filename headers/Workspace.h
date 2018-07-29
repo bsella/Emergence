@@ -22,11 +22,11 @@ public:
 	int count()const;
 	Node* nodeAt(int)const;
 	int nodeIndex(Node*)const;
+	QList<Node*> nodes()const;
 private:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *);
 	void dragMoveEvent(QGraphicsSceneDragDropEvent*);
 	void dropEvent(QGraphicsSceneDragDropEvent*);
-	QList<Node*> nodes()const;
 public slots:
 	void paste();
 	void select_all()const;

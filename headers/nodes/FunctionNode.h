@@ -12,7 +12,7 @@ public:
 	data_t eval();
 	static FunctionNode* current;
 	Function* func;
-	uint nodeNumber;
+	const uint nodeNumber;
 private:
 	static uint nbNodes;
 	inline data_t kernel()const{return func->start->eval();}

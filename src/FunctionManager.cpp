@@ -35,8 +35,6 @@ void FunctionManager::accept(){
 	undoStack.setClean();
 	for(int i=0; i<ui->listWidget->count();i++)
 		((Function*)ui->listWidget->item(i))->scene->undoStack.setClean();
-	func=nullptr;
-	ui->workspace->setScene(nullptr);
 	QDialog::accept();
 }
 void FunctionManager::reject(){
@@ -47,8 +45,6 @@ void FunctionManager::reject(){
 		while(!f->scene->undoStack.isClean())
 			f->scene->undoStack.undo();
 	}
-	func=nullptr;
-	ui->workspace->setScene(nullptr);
 	QDialog::reject();
 }
 
@@ -88,12 +84,14 @@ Function* FunctionManager::getFunction(FunctionNode *node){
 bool FunctionManager::userIntented=true;
 
 void FunctionManager::on_spinBox_valueChanged(int arg1){
-	if(userIntented)
+	if(userIntented){
+		Function* func=(Function*)ui->listWidget->currentItem();
 		func->scene->undoStack.push(new ChangeNbArgsCommand(func,func->nbArgs,arg1));
+	}
 }
 
-void FunctionManager::setFunction(QListWidgetItem* f){
-	if(!f){
+void FunctionManager::setFunction(QListWidgetItem* curr, QListWidgetItem* prev){
+	if(!curr){
 		ui->workspace->setScene(0);
 		ui->spinBox->setEnabled(false);
 		ui->removeFunctionButton->setEnabled(false);
@@ -101,27 +99,28 @@ void FunctionManager::setFunction(QListWidgetItem* f){
 	}
 	ui->spinBox->setEnabled(true);
 	ui->removeFunctionButton->setEnabled(true);
-	if(func){
-		disconnect(&redo,SIGNAL(triggered(bool)),&func->scene->undoStack,SLOT(redo()));
-		disconnect(&undo,SIGNAL(triggered(bool)),&func->scene->undoStack,SLOT(undo()));
-		disconnect(&select_all,SIGNAL(triggered(bool)),func->scene,SLOT(select_all()));
-		disconnect(&paste,SIGNAL(triggered(bool)),func->scene,SLOT(paste()));
-		disconnect(&cut,SIGNAL(triggered(bool)),func->scene,SLOT(cut()));
-		disconnect(&copy,SIGNAL(triggered(bool)),func->scene,SLOT(copy()));
-		disconnect(&del,SIGNAL(triggered(bool)),func->scene,SLOT(delete_selected()));
+	if(Function* fPrev=(Function*)prev){
+		disconnect(&redo,SIGNAL(triggered(bool)),&fPrev->scene->undoStack,SLOT(redo()));
+		disconnect(&undo,SIGNAL(triggered(bool)),&fPrev->scene->undoStack,SLOT(undo()));
+		disconnect(&select_all,SIGNAL(triggered(bool)),fPrev->scene,SLOT(select_all()));
+		disconnect(&paste,SIGNAL(triggered(bool)),fPrev->scene,SLOT(paste()));
+		disconnect(&cut,SIGNAL(triggered(bool)),fPrev->scene,SLOT(cut()));
+		disconnect(&copy,SIGNAL(triggered(bool)),fPrev->scene,SLOT(copy()));
+		disconnect(&del,SIGNAL(triggered(bool)),fPrev->scene,SLOT(delete_selected()));
 	}
-	func=(Function*)f;
-	ui->workspace->setScene(func->scene);
-	userIntented=false;
-	ui->spinBox->setValue(func->nbArgs);
-	userIntented=true;
-	connect(&del,SIGNAL(triggered(bool)),func->scene,SLOT(delete_selected()));
-	connect(&copy,SIGNAL(triggered(bool)),func->scene,SLOT(copy()));
-	connect(&cut,SIGNAL(triggered(bool)),func->scene,SLOT(cut()));
-	connect(&paste,SIGNAL(triggered(bool)),func->scene,SLOT(paste()));
-	connect(&select_all,SIGNAL(triggered(bool)),func->scene,SLOT(select_all()));
-	connect(&undo,SIGNAL(triggered(bool)),&func->scene->undoStack,SLOT(undo()));
-	connect(&redo,SIGNAL(triggered(bool)),&func->scene->undoStack,SLOT(redo()));
+	if(Function* fCurr=(Function*)curr){
+		ui->workspace->setScene(fCurr->scene);
+		userIntented=false;
+		ui->spinBox->setValue(fCurr->nbArgs);
+		userIntented=true;
+		connect(&del,SIGNAL(triggered(bool)),fCurr->scene,SLOT(delete_selected()));
+		connect(&copy,SIGNAL(triggered(bool)),fCurr->scene,SLOT(copy()));
+		connect(&cut,SIGNAL(triggered(bool)),fCurr->scene,SLOT(cut()));
+		connect(&paste,SIGNAL(triggered(bool)),fCurr->scene,SLOT(paste()));
+		connect(&select_all,SIGNAL(triggered(bool)),fCurr->scene,SLOT(select_all()));
+		connect(&undo,SIGNAL(triggered(bool)),&fCurr->scene->undoStack,SLOT(undo()));
+		connect(&redo,SIGNAL(triggered(bool)),&fCurr->scene->undoStack,SLOT(redo()));
+	}
 }
 
 ChangeNbArgsCommand::ChangeNbArgsCommand(Function* f,int from, int to,QUndoCommand* parent)
@@ -236,14 +235,10 @@ std::istream& operator>>(std::istream& in , FunctionManager&fm){
 	f->setText(QString::fromStdString(str));
 	in >> *f->scene;
 
-	int tmp;
-	in>>tmp;
-	f->start= (Function::OutputNode*)f->scene->nodeAt(tmp);
+	f->start= f->getOutputFromScene();
 	in >> f->nbArgs;
-	for(int i=0; i<f->nbArgs;i++){
-		in>>tmp;
-		f->iNodes.push_back((Function::InputNode*)f->scene->nodeAt(tmp));
-	}
+	for(int i=0; i<f->nbArgs;i++)
+		f->iNodes.push_back(f->getNthInputFromScene(i));
 	fm.ui->listWidget->addItem(f);
 	return in;
 }

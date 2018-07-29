@@ -34,21 +34,28 @@ Function::Function(){
 	scene= new Workspace;
 }
 Function::~Function(){
-	for(int i=nbArgs-1;i>=0;i--){
-		scene->removeItem(iNodes[i]);
+	for(int i=nbArgs-1;i>=0;i--)
 		delete iNodes[i];
-	}
-	scene->removeItem(start);
 	delete start;
 //	delete scene;
+}
+
+Function::OutputNode * Function::getOutputFromScene()const{
+	for(const auto& n: scene->nodes())
+		if(n->id==Node::OUTPUT_G)
+			return (OutputNode*)n;
+	return nullptr;
+}
+Function::InputNode * Function::getNthInputFromScene(int n)const{
+	for(const auto& node: scene->nodes())
+		if(node->id==Node::INPUT_G&& ((InputNode*)node)->_rank==n)
+			return (InputNode*)node;
+	return nullptr;
 }
 
 std::ostream& operator<<(std::ostream& out, const Function&f){
 	out << f.text().toStdString()<<"\n";
 	out << *(f.scene);
-	out << f.scene->nodeIndex(f.start) <<'\n';
 	out << f.nbArgs << '\n';
-	for(const auto& n:f.iNodes)
-		out << f.scene->nodeIndex(n) <<'\n';
 	return out;
 }

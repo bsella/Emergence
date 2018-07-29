@@ -71,7 +71,7 @@ void Workspace::paste(){
 }
 
 void Workspace::select_all() const{
-	for(auto& n : items())
+	for(const auto& n : items())
 		n->setSelected(true);
 }
 

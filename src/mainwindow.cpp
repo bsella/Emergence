@@ -34,12 +34,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(scene,SIGNAL(selectionChanged()),this,SLOT(updateActions()));
 	updateActions();
 	ui->actionPaste->setEnabled(QApplication::clipboard()->mimeData()->text()=="Emergence_Nodes");
+	connect(ui->actionCopy,SIGNAL(triggered(bool)),ui->actionPaste,SLOT(setDisabled(bool)));
 	zoomIN.setShortcut(QKeySequence::ZoomIn);
 	zoomOUT.setShortcut(QKeySequence::ZoomOut);
-	addAction(&zoomIN);
-	addAction(&zoomOUT);
 	connect(&zoomIN,SIGNAL(triggered(bool)),this,SLOT(zoomIn()));
 	connect(&zoomOUT,SIGNAL(triggered(bool)),this,SLOT(zoomOut()));
+	addAction(&zoomIN);
+	addAction(&zoomOUT);
 }
 MainWindow::~MainWindow(){
 	delete ui->workspace;
@@ -52,26 +53,12 @@ void MainWindow::zoomOut()const{
 	ui->workspace->scale(1/Workspace::scaleFactor,1/Workspace::scaleFactor);
 }
 void MainWindow::save()const{
-//	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
-//	if(fileName.isEmpty()) return;
-//	if(!fileName.endsWith(".emrg"))
-//		fileName.append(".emrg");
-//	QFile file(fileName);
-//	if(!file.open(QIODevice::WriteOnly)){
-//		QMessageBox::information(ui->workspace,"Unable to open file",file.errorString());
-//		return;
-//	}
-//	file.resize(0);
-//	QDataStream out(&file);
-
-//	out << MAGIC_NUMBER;
-//	out << SAVE_VERSION;
-
-//	scene->select_all();
-//	out << Node::nodesToBin(scene->selectedItems());
-//	scene->clearSelection();
-//	file.close();
-	std::ofstream ofs("test.bin");
+	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
+	if(fileName.isEmpty()) return;
+	if(!fileName.endsWith(".emrg"))
+		fileName.append(".emrg");
+	std::ofstream ofs(fileName.toStdString());
+//	QMessageBox::information(ui->workspace,"Unable to open file",file.errorString());
 	ofs.write(reinterpret_cast<const char*>(&_magic_number),4);
 	ofs.write(reinterpret_cast<const char*>(&_version),4);
 	int tmp= FunctionManager::count();
@@ -83,22 +70,10 @@ void MainWindow::save()const{
 }
 
 void MainWindow::load(){
-//	QString f= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
-//	if(f.isNull()) return;
-//	QFile file(f);
-//	file.open(QIODevice::ReadOnly);
-//	QDataStream in(&file);
-//	int magic; in>>magic;
-//	uint version; in>>version;
-//	in.skipRawData(4);
+	QString filename= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
+	if(filename.isNull()) return;
 
-//	scene->select_all();
-//	scene->undoStack.beginMacro("load");
-//	scene->delete_selected();
-//	scene->addNodes(Node::binToNodes(file.readAll()));
-//	scene->undoStack.endMacro();
-//	scene->clearSelection();
-	std::ifstream ifs("test.bin");
+	std::ifstream ifs(filename.toStdString());
 	int tmp;
 	ifs.read(reinterpret_cast<char*>(&tmp),4);
 	if(tmp!=_magic_number){
@@ -112,11 +87,16 @@ void MainWindow::load(){
 		ifs.close();
 		return;
 	}
-//	fm.clear();
+	fm.clear();
 	ifs>>tmp;
 	for(int i=0;i<tmp;i++)
 		ifs >> fm;
+	scene->select_all();
+	scene->undoStack.beginMacro("load");
+	scene->delete_selected();
 	ifs >> *scene;
+	scene->undoStack.endMacro();
+	scene->clearSelection();
 	ifs.close();
 }
 
@@ -129,7 +109,7 @@ void MainWindow::updateActions(){
 	for(auto& n: scene->selectedItems()){
 		if(((Node*)n)->id!=Node::OUTPUT_G &&((Node*)n)->id!=Node::INPUT_G)
 			someNodeIsSelected=true;
-		if(((Node*)n)->id==Node::RENDER_G && *((RenderNode*)n)){
+		if(((Node*)n)->id==Node::RENDER_G){
 			ui->actionExport->setEnabled(true);
 			break;
 		}

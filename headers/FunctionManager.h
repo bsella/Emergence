@@ -28,10 +28,9 @@ public:
 private:
 	static bool userIntented;
 	Ui::FunctionManager *ui;
-	Function* func=nullptr;
 	QAction del,copy,cut,paste,undo,redo,select_all;
 	QUndoStack undoStack;
-	void setFunction(QListWidgetItem *);
+	void setFunction(QListWidgetItem *,QListWidgetItem*);
 	friend class ChangeNbArgsCommand;
 	friend class AddFunctionCommand;
 	friend class RemoveFunctionCommand;

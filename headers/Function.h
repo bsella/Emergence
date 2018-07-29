@@ -27,6 +27,8 @@ public:
 	QVector<InputNode*> iNodes;
 	Workspace* scene;
 	friend std::ostream& operator<<(std::ostream& out, const Function&f);
+	OutputNode* getOutputFromScene()const;
+	InputNode* getNthInputFromScene(int n)const;
 };
 
 

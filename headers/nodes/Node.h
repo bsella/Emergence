@@ -56,6 +56,7 @@ private:
 	friend class ConnectNodeCommand;
 	friend class DisconnectNodeCommand;
 	friend class MoveNodeCommand;
+	friend class Function;
 	const Type id;
 	bool special;
 	QPointF initialPos;

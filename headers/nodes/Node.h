@@ -42,8 +42,6 @@ public:
 	unsigned width, height;
 	virtual data_t eval();
 	static Node* nodeMalloc(Node::Type, void* arg=nullptr);
-	static QList<Node*> binToNodes(const QByteArray& ba);
-	static QByteArray nodesToBin(const QList<QGraphicsItem *> &nodes);
 	QVector<Node*> iNodes;		//INPUT NODES
 	static SignalManager sm;
 	virtual operator bool()const;

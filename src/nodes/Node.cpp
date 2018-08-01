@@ -355,59 +355,6 @@ data_t Node::eval(){
 	return cache=kernel();
 }
 
-QByteArray Node::nodesToBin(const QList<QGraphicsItem*> &nodes){
-	QByteArray ret;
-	QDataStream ds (&ret,QIODevice::Append);
-	ds<<nodes.size();
-	for(const auto& i:nodes){
-		Node* n=(Node*)i;
-		ds<<n->id;
-		ds<<n->scenePos().x();
-		ds<<n->scenePos().y();
-		if(n->id==Node::DOUBLE_G)
-			ds<<n->cache.d;
-		else if(n->id==Node::COLOR_G)
-			ds<<n->cache.clr;
-	}
-	for(const auto& n : nodes)
-		for(const auto& nn: ((Node*)n)->iNodes)
-			ds<<nodes.indexOf(nn);
-	return ret;
-}
-
-QList<Node*> Node::binToNodes(const QByteArray &ba){
-	QDataStream ds(ba);
-	int n; ds>>n;
-	Node::Type id; float x,y;
-	QList<Node*> newNodes;
-	for(int i=0; i<n; i++){
-		int tmp;
-		ds>>tmp;	///FIND A WAY TO DO IT WITHOUT tmp
-		id=(Node::Type)tmp;
-		ds>>x;
-		ds>>y;
-		void* arg=nullptr;
-		if(id==Node::DOUBLE_G){
-			double d;
-			ds>>d;
-			arg=&d;
-		}else if(id==Node::COLOR_G){
-			data_t::color c;
-			ds>>c;
-			arg=&c;
-		}
-		newNodes.append(nodeMalloc(id,arg));
-		newNodes.back()->setPos(x,y);
-	}
-	for(auto& node: newNodes)
-		for(unsigned i=0; i<node->nbArgs; i++){
-			ds>>n;
-			if(n>=0)
-				node->sockets[i]->connectToNode(newNodes.at(n));
-		}
-	return newNodes;
-}
-
 std::ostream& operator<<(std::ostream& out, const Node& n){
 	out << n.id;
 	float tmp=n.scenePos().x();

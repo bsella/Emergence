@@ -66,8 +66,12 @@ void Workspace::addNodes(const QList<Node *> &n){
 void Workspace::paste(){
 	clearSelection();
 	const QMimeData* mime= QApplication::clipboard()->mimeData();
-	if(mime->text()=="Emergence_Nodes")
-		addNodes(Node::binToNodes(mime->data("copy")));
+	if(mime->text()=="Emergence_Nodes"){
+		QList<Node*> nodes;
+		std::istringstream istr(mime->data("copy").toStdString());
+		istr >> nodes;
+		addNodes(nodes);
+	}
 }
 
 void Workspace::select_all() const{
@@ -104,7 +108,15 @@ void Workspace::disconnectNode(Node::Socket* s){
 void Workspace::copy()const{
 	QMimeData * mime=new QMimeData;
 	mime->setText("Emergence_Nodes");
-	mime->setData("copy",Node::nodesToBin(selectedItems()));
+	QList<Node*> nodes;
+	for(const auto& i: selectedItems())
+		nodes.append((Node*)i);
+	std::ostringstream oss;
+	oss << nodes;
+	std::string str= oss.str();
+
+	QByteArray ba(str.c_str(),str.length());
+	mime->setData("copy",ba);
 	QApplication::clipboard()->setMimeData(mime);
 }
 

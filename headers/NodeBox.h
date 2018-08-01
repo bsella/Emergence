@@ -10,7 +10,7 @@
 #include<QDrag>
 #include<QMimeData>
 
-#include"include/nodes/Node.h"
+#include"nodes/Node.h"
 
 class NodeTool : public QFrame{
 public:
@@ -24,7 +24,6 @@ private:
 class NodeBox : public QToolBox{
 public:
 	NodeBox(QWidget* parent=0);
-	NodeTool *x, *y, *ratio, *output;
 };
 
 #endif // NODEBOX_H

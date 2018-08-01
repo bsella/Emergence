@@ -1,4 +1,4 @@
-#include "include/commands.h"
+#include "commands.h"
 
 AddNodeCommand::AddNodeCommand(Node* node, QGraphicsScene* scene,
 				QUndoCommand* parent): QUndoCommand(parent){

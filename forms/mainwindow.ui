@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="1">
-     <widget class="Workspace" name="workspace"/>
+     <widget class="QGraphicsView" name="workspace"/>
     </item>
    </layout>
   </widget>
@@ -102,6 +102,7 @@
     <addaction name="separator"/>
     <addaction name="menuPixel"/>
     <addaction name="actionRender"/>
+    <addaction name="actionFunction"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -127,9 +128,16 @@
     <addaction name="separator"/>
     <addaction name="actionSelect_all"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionFunction_Manager"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuInsert"/>
+   <addaction name="menuTools"/>
   </widget>
   <widget class="QDockWidget" name="toolboxDock">
    <property name="minimumSize">
@@ -563,18 +571,23 @@
     <string>Ctrl+A</string>
    </property>
   </action>
+  <action name="actionFunction_Manager">
+   <property name="text">
+    <string>Function Manager</string>
+   </property>
+  </action>
+  <action name="actionFunction">
+   <property name="text">
+    <string>Function</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Workspace</class>
-   <extends>QGraphicsView</extends>
-   <header location="global">include/Workspace.h</header>
-  </customwidget>
-  <customwidget>
    <class>NodeBox</class>
    <extends>QToolBox</extends>
-   <header>include/NodeBox.h</header>
+   <header>headers/NodeBox.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

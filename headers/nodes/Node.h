@@ -9,18 +9,14 @@
 #include <QGraphicsScene>
 #include <QMenu>
 
-#include "include/data_t.h"
-#include "include/signalManager.h"
+#include "data_t.h"
+#include "signalManager.h"
 
 
 class Node: public QGraphicsObject{
 	Q_OBJECT
 public:
-	Node(unsigned i, unsigned w=50, unsigned h=50, QColor c=Qt::white,uint n=0, bool spec=false);
-	~Node();
-	const unsigned width, height;
-	data_t eval();
-	enum Type{
+	enum Type:char{
 		DOUBLE_G=1, COLOR_G,
 		IF_G,
 		PALETTE_G,
@@ -37,25 +33,55 @@ public:
 		RGB_G, HSV_G,
 		RATIO_G,
 		CPLX_G,
-		POW_G, LOG_G
+		POW_G, LOG_G,
+		INPUT_G, OUTPUT_G,
+		FUNC_G
 	};
+	Node(Type i, unsigned w=50, unsigned h=50, QColor c=Qt::white, uint n=0, bool spec=false);
+	~Node();
+	unsigned width, height;
+	virtual data_t eval();
+	static Node* nodeMalloc(Node::Type, void* arg=nullptr);
+	static QList<Node*> binToNodes(const QByteArray& ba);
+	static QByteArray nodesToBin(const QList<QGraphicsItem *> &nodes);
+	QVector<Node*> iNodes;		//INPUT NODES
+	static SignalManager sm;
+	virtual operator bool()const;
+	friend std::ostream& operator<<(std::ostream& out, const Node&);
+	friend std::ostream& operator<<(std::ostream& out, const QList<Node*>&);
+	friend std::istream& operator>>(std::istream& in , QList<Node*>&);
 private:
 	friend class MainWindow;
+	friend class Workspace;
 	friend class DeleteNodeCommand;
 	friend class ConnectNodeCommand;
 	friend class DisconnectNodeCommand;
 	friend class MoveNodeCommand;
+	friend class Function;
+	const Type id;
+	bool special;
+	QPointF initialPos;
+	static QPointF tmpPos;
+	void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+	virtual data_t kernel()const=0;
+	bool isLooping(Node *n)const;
+	void updateConstant();
+protected slots:
+	void updateLines()const;
+	void updateVal();
+protected:
 	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
 		~Socket();
+		QGraphicsLineItem line;
 		unsigned rank;
 		double iy;
+		static Node *hover;
+		Node *parent;
 		bool visible=true;
 		static const int headSize=8;
 		QPen pen=QPen(Qt::black);
-		QGraphicsLineItem line;
-		static Node *hover;
-		Node *parent;
 		void connectToNode(Node*n);
 		void disconnectNode();
 		QRectF boundingRect() const;
@@ -69,26 +95,9 @@ private:
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 		void reset();
 	};
-	unsigned id;
-	bool special;
-	QPointF initialPos;
-	static QPointF tmpPos;
-	QAction* actionDelete;
-	void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual data_t kernel()const=0;
-	bool isLooping(Node *n)const;
-	void updateConstant();
-signals:
-	void connected(Node::Socket* s,Node* n);
-	void disconnected(Node::Socket* s);
-	void moved();
-protected slots:
-	void updateLines()const;
-	void updateVal();
-protected:
 	static double x,y, ratio;
 	static const int socketSize=5;
+	static uint widthByHeight;
 	static ulong pixelID;
 	ulong lastPixelID=0;
 	data_t cache;		//value returned by node
@@ -97,10 +106,9 @@ protected:
 	QMenu *menu=nullptr;
 	QPen pen;
 	uint nbArgs;
-	QVector<Node*> iNodes;		//INPUT NODES
 	QList<QPair<Node*,uint>> oConnections;
 	QVector<Socket*> sockets;
-	static SignalManager sm;
+	QAction* actionDelete;
 
 	QRectF boundingRect()const;
 	virtual void paint(QPainter* painter,
@@ -108,7 +116,11 @@ protected:
 			QWidget* widget);
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void drawIcon(QPainter *painter, QString filename);
-	operator bool();
+signals:
+	void connected(Node::Socket* s,Node* n);
+	void disconnected(Node::Socket* s);
+	void moved();
 };
+
 
 #endif

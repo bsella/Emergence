@@ -1,7 +1,7 @@
-#include "include/nodes/Node.h"
+#include "nodes/Node.h"
 
 Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsObject(parent)
-	,rank(i),iy(y),line(headSize,0,headSize,0),parent(parent){
+	,line(headSize,0,headSize,0),rank(i),iy(y),parent(parent){
 	setZValue(parent->zValue()+1);
 	setPos(-headSize-1,y);
 	setAcceptHoverEvents(true);
@@ -118,13 +118,14 @@ SignalManager Node::sm;
 double Node::x;
 double Node::y;
 double Node::ratio;
-
 ulong Node::pixelID;
+uint Node::widthByHeight;
 
-Node::Node(unsigned i, unsigned w, unsigned h, QColor c, uint n, bool spec):
+Node::Node(Type i, unsigned w, unsigned h, QColor c, uint n, bool spec):
 	width(w),height(h),id(i),special(spec),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
 	setCursor(Qt::OpenHandCursor);
 	if(!spec)setData(0,"node");
+	setData(1,"countMe");
 	for(uint i=0; i<nbArgs;i++){
 		sockets.push_back(new Socket(i,height*((i+1.0)/(nbArgs+1.0)),this));
 		iNodes.push_back(nullptr);
@@ -211,7 +212,7 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 	menu=nullptr;
 }
 
-Node::operator bool(){
+Node::operator bool()const{
 	for(auto g:iNodes)
 		if(g==nullptr || !(*g))
 			return false;
@@ -221,13 +222,6 @@ Node::operator bool(){
 void Node::drawIcon(QPainter *painter, QString filename){
 	QImage icon=QImage(filename);
 	painter->drawImage(width/2-icon.width()/2+socketSize,height/2-icon.height()/2,icon);
-}
-
-data_t Node::eval(){
-	if(constant) return cache;
-	if(pixelID==lastPixelID) return cache;
-	lastPixelID=pixelID;
-	return cache=kernel();
 }
 
 void Node::updateVal(){
@@ -254,4 +248,240 @@ void Node::updateConstant(){
 		cache=kernel();
 	for(const auto& i : oConnections)
 		i.first->updateConstant();
+}
+
+#include <nodes/ConstNode.h>
+#include <nodes/MathNode.h>
+#include <nodes/PaletteNode.h>
+#include <nodes/BitmapNode.h>
+#include <nodes/ColorNode.h>
+#include <nodes/ComplexNode.h>
+#include <nodes/Node.h>
+#include <nodes/IfNode.h>
+#include <nodes/LogicNode.h>
+#include <nodes/CompNode.h>
+#include <nodes/RenderNode.h>
+#include <nodes/PixelNode.h>
+#include <nodes/FunctionNode.h>
+#include "FunctionManager.h"
+
+Node* Node::nodeMalloc(Node::Type g, void* arg){
+	switch(g){
+	case Node::DOUBLE_G:{
+		if(arg) return new ConstNode(*(double*)arg);
+		bool ok;
+		double d =QInputDialog::getDouble(0,"Choose Number","",0,-2147483647,2147483647,3,&ok);
+		if(!ok) return nullptr;
+		return new ConstNode(d);
+	}
+	case Node::COLOR_G:{
+		if(arg) return new ConstNode(*(data_t::color*)arg);
+		QColor c=QColorDialog::getColor(Qt::white);
+		if(!c.isValid()) return nullptr;
+		return new ConstNode(c.rgba());
+	}
+	case Node::PALETTE_G:{
+		///TODO : Implement dialog for palette
+		Palette p;
+		p.add(0xffff0000,0);
+		p.add(0xff0000ff,.5);
+		p.add(0xff00ff00,1);
+		return new LUTNode(p);
+	}
+	case Node::BITMAP_G:{
+		QString f;
+		if(arg) f=*(QString*)arg;
+		else{
+			f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
+			if(f.isNull())return nullptr;
+		}
+		return new BitmapNode(f);
+	}
+	case Node::FUNC_G:{
+//		Function *f;
+		if(arg) return new FunctionNode((Function*)arg);
+		return new FunctionNode;
+//		else{
+//			f=FunctionManager::getFunction();
+//			if(!f)return nullptr;
+//		}
+	}
+	case Node::IF_G:		return new IfNode;
+	case Node::GT_G:		return new GTNode;
+	case Node::LT_G:		return new LTNode;
+	case Node::EQ_G:		return new EQNode;
+	case Node::NE_G:		return new NENode;
+	case Node::OR_G:		return new ORNode;
+	case Node::AND_G:		return new ANDNode;
+	case Node::XOR_G:		return new XORNode;
+	case Node::NOT_G:		return new NOTNode;
+	case Node::ADD_G:		return new ADDNode;
+	case Node::SUB_G:		return new SUBNode;
+	case Node::MUL_G:		return new MULNode;
+	case Node::DIV_G:		return new DIVNode;
+	case Node::NEG_G:		return new NEGNode;
+	case Node::SQRT_G:		return new SQRTNode;
+	case Node::ABS_G:		return new ABSNode;
+	case Node::LERP_G:		return new LERPNode;
+	case Node::CLAMP_G:		return new CLAMPNode;
+	case Node::SIN_G:		return new SINNode;
+	case Node::COS_G:		return new COSNode;
+	case Node::MIN_G:		return new MINNode;
+	case Node::MAX_G:		return new MAXNode;
+	case Node::RGB_G:		return new RGBNode;
+	case Node::HSV_G:		return new HSVNode;
+	case Node::CPLX_G:		return new ComplexNode;
+	case Node::X_G:			return new PixelXNode;
+	case Node::Y_G:			return new PixelYNode;
+	case Node::RENDER_G:	return new RenderNode;
+	case Node::RATIO_G:		return new RatioNode;
+	case Node::POW_G:		return new POWNode;
+	case Node::LOG_G:		return new LOGNode;
+	case Node::OUTPUT_G:	return new Function::OutputNode;
+	case Node::INPUT_G:		return new Function::InputNode(*(uint*)arg);
+	default:return nullptr;
+	}
+}
+
+data_t Node::eval(){
+	if(constant) return cache;
+	if(FunctionNode::current){
+		if(pixelID+Node::widthByHeight*FunctionNode::current->nodeNumber==lastPixelID) return cache;
+		lastPixelID=pixelID+Node::widthByHeight*FunctionNode::current->nodeNumber;
+	}else{
+		if(pixelID==lastPixelID) return cache;
+		lastPixelID=pixelID;
+	}
+	return cache=kernel();
+}
+
+QByteArray Node::nodesToBin(const QList<QGraphicsItem*> &nodes){
+	QByteArray ret;
+	QDataStream ds (&ret,QIODevice::Append);
+	ds<<nodes.size();
+	for(const auto& i:nodes){
+		Node* n=(Node*)i;
+		ds<<n->id;
+		ds<<n->scenePos().x();
+		ds<<n->scenePos().y();
+		if(n->id==Node::DOUBLE_G)
+			ds<<n->cache.d;
+		else if(n->id==Node::COLOR_G)
+			ds<<n->cache.clr;
+	}
+	for(const auto& n : nodes)
+		for(const auto& nn: ((Node*)n)->iNodes)
+			ds<<nodes.indexOf(nn);
+	return ret;
+}
+
+QList<Node*> Node::binToNodes(const QByteArray &ba){
+	QDataStream ds(ba);
+	int n; ds>>n;
+	Node::Type id; float x,y;
+	QList<Node*> newNodes;
+	for(int i=0; i<n; i++){
+		int tmp;
+		ds>>tmp;	///FIND A WAY TO DO IT WITHOUT tmp
+		id=(Node::Type)tmp;
+		ds>>x;
+		ds>>y;
+		void* arg=nullptr;
+		if(id==Node::DOUBLE_G){
+			double d;
+			ds>>d;
+			arg=&d;
+		}else if(id==Node::COLOR_G){
+			data_t::color c;
+			ds>>c;
+			arg=&c;
+		}
+		newNodes.append(nodeMalloc(id,arg));
+		newNodes.back()->setPos(x,y);
+	}
+	for(auto& node: newNodes)
+		for(unsigned i=0; i<node->nbArgs; i++){
+			ds>>n;
+			if(n>=0)
+				node->sockets[i]->connectToNode(newNodes.at(n));
+		}
+	return newNodes;
+}
+
+std::ostream& operator<<(std::ostream& out, const Node& n){
+	out << n.id;
+	float tmp=n.scenePos().x();
+	out.write(reinterpret_cast<char*>(&tmp),4);
+	tmp=n.scenePos().y();
+	out.write(reinterpret_cast<char*>(&tmp),4);
+	switch(n.id){
+	case Node::DOUBLE_G:
+		out << n.cache.d << '\n';
+		break;
+	case Node::COLOR_G:
+		out.write(reinterpret_cast<const char*>(&n.cache.clr),sizeof(data_t::color));
+		break;
+	case Node::FUNC_G:
+		out << FunctionManager::indexOf(((FunctionNode*)&n)->func) << '\n';
+		break;
+	case Node::INPUT_G:
+		out << ((Function::InputNode*)&n)->_rank<< '\n';
+	default:break;
+	}
+	return out;
+}
+std::ostream& operator<<(std::ostream& out,const QList<Node*>&nodes){
+	out << nodes.size()<< '\n';
+	for(const auto& n:nodes)
+		out << *n;
+	for(const auto& n:nodes)
+		for(const auto& nn:n->iNodes)
+			out << nodes.indexOf(nn) << '\n';
+	return out;
+}
+
+std::istream& operator>>(std::istream& in, QList<Node*>&nodes){
+	int tmp;
+	in>>tmp;
+	for(int i=0;i<tmp;i++){
+		Node* n;
+		int id;
+		in>>id;
+		float xx,yy;
+		in.read(reinterpret_cast<char*>(&xx),4);
+		in.read(reinterpret_cast<char*>(&yy),4);
+		double tmpD;
+		data_t::color tmpC;
+		int tmpI;
+		switch(id){
+		case Node::DOUBLE_G:
+			in >> tmpD;
+			n=Node::nodeMalloc((Node::Type)id,&tmpD);
+			break;
+		case Node::COLOR_G:
+			in.read(reinterpret_cast<char*>(&tmpC),sizeof(data_t::color));
+			n=Node::nodeMalloc((Node::Type)id,&tmpC);
+			break;
+		case Node::FUNC_G:
+			in >> tmpI;
+			n=Node::nodeMalloc((Node::Type)id,FunctionManager::functionAt(tmpI));
+			break;
+		case Node::INPUT_G:
+			in >> tmpI;
+			n=Node::nodeMalloc((Node::Type)id,&tmpI);
+			break;
+		default:
+			n=Node::nodeMalloc((Node::Type)id);
+		}
+		n->setPos(xx,yy);
+		nodes.push_back(n);
+	}
+	for(const auto& n:nodes)
+		for(uint i=0; i<n->nbArgs; i++){
+			int tmp;
+			in>>tmp;
+			if(tmp>=0)
+				n->sockets[i]->connectToNode(nodes.at(tmp));
+		}
+	return in;
 }

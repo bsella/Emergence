@@ -1,12 +1,12 @@
 #ifndef COLORNODE_H
 #define COLORNODE_H
 
-#include <include/nodes/Node.h>
-#include <include/data_t.h>
+#include "Node.h"
+#include "data_t.h"
 
 class ColorNode : public Node{
 protected:
-	ColorNode(unsigned i);
+	ColorNode(Type i);
 	virtual void paint(QPainter* painter,
 					const QStyleOptionGraphicsItem*option,
 					QWidget *widget)=0;

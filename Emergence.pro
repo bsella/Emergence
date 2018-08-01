@@ -54,32 +54,41 @@ SOURCES +=\
     src/data_t.cpp \
     src/nodes/ComplexNode.cpp \
     src/NodeBox.cpp \
-    src/commands.cpp
+    src/commands.cpp \
+    src/nodes/FunctionNode.cpp \
+    src/FunctionManager.cpp \
+    src/Function.cpp
 
 HEADERS  +=\
-    include/mainwindow.h \
-    include/nodes/Node.h \
-    include/nodes/IfNode.h \
-    include/nodes/LogicNode.h \
-    include/Palette.h \
-    include/nodes/PaletteNode.h \
-    include/nodes/CompNode.h \
-    include/nodes/ConstNode.h \
-    include/nodes/PixelNode.h \
-    include/data_t.h \
-    include/nodes/RenderNode.h \
-    include/Workspace.h \
-    include/nodes/MathNode.h \
-    include/nodes/BitmapNode.h \
-    include/ExportImageDialog.h \
-    include/nodes/ColorNode.h \
-    include/nodes/ComplexNode.h \
-    include/NodeBox.h \
-    include/commands.h \
-    include/signalManager.h
+    headers/mainwindow.h \
+    headers/nodes/Node.h \
+    headers/nodes/IfNode.h \
+    headers/nodes/LogicNode.h \
+    headers/Palette.h \
+    headers/nodes/PaletteNode.h \
+    headers/nodes/CompNode.h \
+    headers/nodes/ConstNode.h \
+    headers/nodes/PixelNode.h \
+    headers/data_t.h \
+    headers/nodes/RenderNode.h \
+    headers/Workspace.h \
+    headers/nodes/MathNode.h \
+    headers/nodes/BitmapNode.h \
+    headers/ExportImageDialog.h \
+    headers/nodes/ColorNode.h \
+    headers/nodes/ComplexNode.h \
+    headers/NodeBox.h \
+    headers/commands.h \
+    headers/signalManager.h \
+    headers/nodes/FunctionNode.h \
+    headers/FunctionManager.h \
+    headers/Function.h
 
 FORMS += forms/mainwindow.ui \
-    forms/exportimagedialog.ui
+    forms/exportimagedialog.ui \
+    forms/functionmanager.ui
+
+INCLUDEPATH+= headers
 
 RESOURCES += \
     application.qrc

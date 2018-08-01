@@ -1,4 +1,4 @@
-#include "include/nodes/ComplexNode.h"
+#include "nodes/ComplexNode.h"
 
 ComplexNode::ComplexNode():Node(CPLX_G,50,50,Qt::white,2){
 }

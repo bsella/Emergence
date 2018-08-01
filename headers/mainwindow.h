@@ -2,25 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QUndoStack>
-#include <QClipboard>
 #include <QMessageBox>
-#include <QFile>
 
-#include "include/ExportImageDialog.h"
-#include <include/nodes/ConstNode.h>
-#include <include/nodes/MathNode.h>
-#include <include/nodes/PaletteNode.h>
-#include <include/nodes/BitmapNode.h>
-#include <include/nodes/ColorNode.h>
-#include <include/nodes/ComplexNode.h>
-#include <include/nodes/Node.h>
-#include <include/nodes/IfNode.h>
-#include <include/nodes/LogicNode.h>
-#include <include/nodes/CompNode.h>
-#include <include/nodes/RenderNode.h>
-#include <include/nodes/PixelNode.h>
-#include <include/commands.h>
+#include <fstream>
+
+#include <ExportImageDialog.h>
+#include "FunctionManager.h"
+#include "nodes/Node.h"
+#include "Workspace.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,29 +22,19 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 private:
+	static const int _magic_number=0xa1b2affd;
+	static const int _version=4;
 	Ui::MainWindow *ui;
-	QUndoStack* undoStack;
-	QList<Node*> binToNodes(const QByteArray& ba);
-	QByteArray nodesToBin(const QList<QGraphicsItem *> &nodes)const;
-	Node* nodeMalloc(Node::Type g, void *arg=nullptr);
-	QGraphicsScene* scene;
-	void addNode(Node *n);
-	void addNode(Node *n, const QPointF& pos);
-	void addNodes(const QList<Node *> &n);
+	Workspace* scene;
+	FunctionManager fm;
+	QAction zoomIN, zoomOUT;
 
 private slots:
 	void save()const;
 	void load();
-	void copy()const;
-	void cut();
-	void paste();
-	void select_all()const;
-	void delete_selected();
-	void drop(QDropEvent*event);
-	void moveNodes();
-	void connectNode(Node::Socket* s, Node* n);
-	void disconnectNode(Node::Socket* s);
 	void updateActions();
+	void zoomIn()const;
+	void zoomOut()const;
 
 	void on_actionExit_triggered();
 	void on_actionExport_triggered();
@@ -92,6 +71,8 @@ private slots:
 	void on_actionComplex_triggered();
 	void on_actionHSV_triggered();
 	void on_actionRGB_triggered();
+	void on_actionFunction_Manager_triggered();
+	void on_actionFunction_triggered();
 };
 
 #endif // MAINWINDOW_H

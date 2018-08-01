@@ -1,4 +1,4 @@
-#include "include/nodes/IfNode.h"
+#include "nodes/IfNode.h"
 
 IfNode::IfNode():Node(IF_G,50,100,QColor(180,180,255),3){}
 

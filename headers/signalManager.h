@@ -11,6 +11,7 @@ public:
 signals:
 	void updateRatio();
 	void updateOutputs();
+	void nbArgChanged(void*,uint);
 };
 
 #endif // SIGNALMANAGER_H

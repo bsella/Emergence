@@ -6,7 +6,7 @@
 #include <QImage>
 #include <QPixmap>
 #include <QPainter>
-#include "include/nodes/RenderNode.h"
+#include "nodes/RenderNode.h"
 
 namespace Ui {
 class ExportImageDialog;

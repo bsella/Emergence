@@ -5,7 +5,7 @@
 
 class PixelNode:public Node{
 protected:
-		PixelNode(unsigned i);
+		PixelNode(Type i);
 		virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 };
 

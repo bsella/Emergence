@@ -1,40 +1,43 @@
-#ifndef COMPNODE_H
-#define COMPNODE_H
+#ifndef LOGICNODE_H
+#define LOGICNODE_H
 
 #include "Node.h"
 
-class CompNode:public Node{
+class LogicNode:public Node{
 protected:
-	CompNode(unsigned i);
-	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget)=0;
+	LogicNode(Type i, unsigned n);
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;
 };
 
-class GTNode:public CompNode{
+class ORNode:public LogicNode{
+public:
+	ORNode();
+private:
 	data_t kernel()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-public:
-	GTNode();
 };
 
-class LTNode:public CompNode{
+class ANDNode:public LogicNode{
+public:
+	ANDNode();
+private:
 	data_t kernel()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-public:
-	LTNode();
 };
 
-class EQNode:public CompNode{
+class XORNode:public LogicNode{
+public:
+	XORNode();
+private:
 	data_t kernel()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-public:
-	EQNode();
 };
 
-class NENode:public CompNode{
+class NOTNode:public LogicNode{
+public:
+	NOTNode();
+private:
 	data_t kernel()const;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-public:
-	NENode();
 };
-
 #endif

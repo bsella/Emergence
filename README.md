@@ -19,6 +19,7 @@ TODO:
 - [ ] Navigate/Zoom
   - [x] Zoom
   - [ ] Navigate
+- [ ] File oriented
 - [x] Clipboard
 - [x] Undo/Redo
   - [x] Add
@@ -30,8 +31,12 @@ TODO:
 - [x] Multiple outputs
 - [x] Destructors
 - [ ] Transparancy support
-- [ ] Nodes inside nodes
-- [ ] Node inside itself
+- [x] Functions
+  - [x] Function Manager
+  - [x] New save format
+  - [x] Adapt with latest optimisation (pixel ID)
+  - [x] Draw FunctionNodes
+- [ ] Recursive Functions
 - [x] New save format
 - [ ] Data structures and lists
 - [x] Preventing cycles

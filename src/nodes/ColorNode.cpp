@@ -1,6 +1,6 @@
-#include <include/nodes/ColorNode.h>
+#include "nodes/ColorNode.h"
 
-ColorNode::ColorNode(unsigned i):Node(i,50,100,Qt::white,3){}
+ColorNode::ColorNode(Type i):Node(i,50,100,Qt::white,3){}
 
 RGBNode::RGBNode():ColorNode(RGB_G){}
 HSVNode::HSVNode():ColorNode(HSV_G){}

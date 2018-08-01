@@ -1,6 +1,6 @@
-#include "include/nodes/MathNode.h"
+#include "nodes/MathNode.h"
 
-MathNode::MathNode(unsigned i, unsigned n, unsigned w, unsigned h):Node(i,w,h,QColor(180,255,180),n){}
+MathNode::MathNode(Type i, unsigned n, unsigned w, unsigned h):Node(i,w,h,QColor(180,255,180),n){}
 
 ADDNode::ADDNode():MathNode(ADD_G,2){}
 SUBNode::SUBNode():MathNode(SUB_G,2){}

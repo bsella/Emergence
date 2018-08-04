@@ -289,11 +289,11 @@ Node* Node::nodeMalloc(Node::Type g, void* arg){
 		return new LUTNode(p);
 	}
 	case Node::BITMAP_G:{
-		QString f;
-		if(arg) f=*(QString*)arg;
+		std::string f;
+		if(arg) f=*(std::string*)arg;
 		else{
-			f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
-			if(f.isNull())return nullptr;
+			f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)").toStdString();
+			if(QString::fromStdString(f).isNull())return nullptr;
 		}
 		return new BitmapNode(f);
 	}
@@ -373,6 +373,10 @@ std::ostream& operator<<(std::ostream& out, const Node& n){
 		break;
 	case Node::INPUT_G:
 		out << ((Function::InputNode*)&n)->_rank<< '\n';
+		break;
+	case Node::BITMAP_G:
+		out << ((BitmapNode*)&n)->path << "\n";
+		break;
 	default:break;
 	}
 	return out;
@@ -400,6 +404,7 @@ std::istream& operator>>(std::istream& in, QList<Node*>&nodes){
 		double tmpD;
 		data_t::color tmpC;
 		int tmpI;
+		std::string tmpS;
 		switch(id){
 		case Node::DOUBLE_G:
 			in >> tmpD;
@@ -416,6 +421,10 @@ std::istream& operator>>(std::istream& in, QList<Node*>&nodes){
 		case Node::INPUT_G:
 			in >> tmpI;
 			n=Node::nodeMalloc((Node::Type)id,&tmpI);
+			break;
+		case Node::BITMAP_G:
+			in >> tmpS;
+			n=Node::nodeMalloc((Node::Type)id,&tmpS);
 			break;
 		default:
 			n=Node::nodeMalloc((Node::Type)id);

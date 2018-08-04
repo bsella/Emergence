@@ -1,6 +1,7 @@
 #include "nodes/BitmapNode.h"
 
-BitmapNode::BitmapNode(const QString& filename):Node(BITMAP_G,70,70,Qt::lightGray,2){
+BitmapNode::BitmapNode(const std::string& filename):
+	Node(BITMAP_G,70,70,Qt::lightGray,2),path(filename){
 	setBMP(filename);
 }
 
@@ -8,8 +9,9 @@ BitmapNode::~BitmapNode(){
 	delete bmp;
 }
 
-void BitmapNode::setBMP(const QString &filename){
-	bmp= new QPixmap(filename);
+void BitmapNode::setBMP(const std::string& filename){
+	path=filename;
+	bmp= new QPixmap(QString::fromStdString(filename));
 	bmpWidth=bmp->width();
 	bmpHeight=bmp->height();
 }
@@ -39,10 +41,12 @@ void BitmapNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidg
 	painter->drawRect(socketSize,0,width,height);
 	QRectF rect= boundingRect();
 	painter->drawLine(rect.center()+QPointF(rect.width()/2,0),rect.center()+QPointF(rect.width()/2-socketSize,0));
-	if(bmp)
-		painter->drawImage(socketSize+1,1,scaleImage(width-1,height-1));
+	if(bmp->isNull()){
+		painter->drawText(boundingRect().center()+QPointF(-20,-2),"Bitmap");
+		painter->drawText(boundingRect().center()+QPointF(-28,12),"not found");
+	}
 	else
-		painter->drawText(boundingRect().center()-QPointF(12,-2),"BMP");
+		painter->drawImage(socketSize+1,1,scaleImage(width-1,height-1));
 }
 
 void BitmapNode::contextMenuEvent(QGraphicsSceneContextMenuEvent* event){
@@ -59,7 +63,7 @@ void BitmapNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
 void BitmapNode::changeBMP(){
 	QString f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
 	if(f.isNull())return;
-	setBMP(f);
+	setBMP(f.toStdString());
 	updateVal();
 	emit sm.updateOutputs();
 	update();

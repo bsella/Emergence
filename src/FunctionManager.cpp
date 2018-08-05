@@ -70,8 +70,10 @@ void FunctionManager::on_removeFunctionButton_clicked(){
 }
 void FunctionManager::renameFunction(QListWidgetItem *item){
 	QString newname= QInputDialog::getText(this,"Change function name", "Name :");
-	if(!newname.isNull())
+	if(!newname.isNull()){
+		newname.replace(' ','_');
 		undoStack.push(new RenameFunctionCommand((Function*)item,newname));
+	}
 }
 
 Function* FunctionManager::getFunction(FunctionNode *node){

@@ -1,22 +1,6 @@
 #include "Workspace.h"
-#include "commands.h"
 
 Workspace::Workspace(QWidget *parent):QGraphicsScene(parent){}
-
-void Workspace::putXYandOutput(){
-	Node* y= Node::nodeMalloc(Node::Type::Y_G);
-	y->setPos(0,100);
-	y->initialPos={0,100};
-	Node* out= Node::nodeMalloc(Node::Type::RENDER_G);
-	out->setPos(100,50);
-	out->initialPos={100,50};
-	QList<Node*> initList;
-	initList.append(Node::nodeMalloc(Node::Type::X_G));
-	initList.append(y);
-	initList.append(out);
-	addNodes(initList);
-	clearSelection();
-}
 
 void Workspace::dragEnterEvent(QGraphicsSceneDragDropEvent *event){
 	QGraphicsScene::dragEnterEvent(event);
@@ -24,7 +8,8 @@ void Workspace::dragEnterEvent(QGraphicsSceneDragDropEvent *event){
 }
 
 void Workspace::dropEvent(QGraphicsSceneDragDropEvent *event){
-	addNode(Node::nodeMalloc((Node::Type)event->mimeData()->data("type").toInt()),
+	addNode(Node::nodeMalloc(
+				Node::knownTypes.at(event->mimeData()->data("type").toInt())),
 			event->scenePos());
 }
 
@@ -82,7 +67,7 @@ void Workspace::select_all() const{
 void Workspace::delete_selected(){
 	bool found=false;
 	for(auto& n:selectedItems()){
-		if(((Node*)n)->id!=Node::OUTPUT_G&&((Node*)n)->id!=Node::INPUT_G){
+		if(((Node*)n)->_type!="output"&&((Node*)n)->_type!="input"){
 			if(!found) undoStack.beginMacro("delete");
 			found=true;
 			undoStack.push(new DeleteNodeCommand((Node*)n,this));
@@ -152,4 +137,90 @@ std::istream& operator>>(std::istream& in, Workspace& w){
 	in>>nodes;
 	w.addNodes(nodes);
 	return in;
+}
+
+AddNodeCommand::AddNodeCommand(Node* node, QGraphicsScene* scene,
+				QUndoCommand* parent): QUndoCommand(parent){
+	_scene=scene;
+	_node=node;
+}
+void AddNodeCommand::undo(){
+	_node->setSelected(false);
+	_scene->removeItem(_node);
+	_scene->update();
+}
+void AddNodeCommand::redo(){
+	_scene->addItem(_node);
+	_node->setSelected(true);
+	_node->setZValue(0);
+	for(const auto& i: _node->collidingItems())
+		if(_node->zValue()<= i->zValue())
+			_node->setZValue(i->zValue()+1);
+	_scene->update();
+}
+AddNodeCommand::~AddNodeCommand(){
+	delete _node;
+}
+
+DeleteNodeCommand::DeleteNodeCommand(Node* node,QGraphicsScene *scene, QUndoCommand *parent):QUndoCommand(parent){
+	_scene=scene;
+	_node=node;
+	iNodes=node->iNodes;
+	oConnections=node->oConnections;
+}
+void DeleteNodeCommand::undo(){
+	_scene->addItem(_node);
+	for(int j=0; j<iNodes.size();j++)
+		if(iNodes[j])
+			_node->sockets[j]->connectToNode(iNodes[j]);
+	for(int j=0; j<oConnections.size();j++)
+		oConnections[j].first->sockets[oConnections[j].second]->connectToNode(_node);
+	_scene->update();
+}
+void DeleteNodeCommand::redo(){
+	for(auto& s:_node->sockets)
+		s->disconnectNode();
+	for(auto& c:_node->oConnections)
+		c.first->sockets[c.second]->disconnectNode();
+	_scene->removeItem(_node);
+	_scene->update();
+}
+
+ConnectNodeCommand::ConnectNodeCommand(Node::Socket *s, Node *in,
+					QUndoCommand *parent): QUndoCommand(parent){
+	_socket=s;
+	_iNode=in;
+}
+void ConnectNodeCommand::undo(){
+	_socket->disconnectNode();
+}
+void ConnectNodeCommand::redo(){
+	_socket->connectToNode(_iNode);
+}
+
+DisconnectNodeCommand::DisconnectNodeCommand(Node::Socket *s,
+						QUndoCommand *parent): QUndoCommand(parent){
+	_node=s->parent->iNodes[s->rank];
+	_socket=s;
+}
+void DisconnectNodeCommand::undo(){
+	_socket->connectToNode(_node);
+}
+void DisconnectNodeCommand::redo(){
+	_socket->disconnectNode();
+}
+
+MoveNodeCommand::MoveNodeCommand(Node* node,
+				QUndoCommand *parent): QUndoCommand(parent){
+	_node=node;
+	_pos=node->pos();
+	_oldPos=node->initialPos;
+}
+void MoveNodeCommand::undo(){
+	_node->setPos(_oldPos);
+	_node->initialPos=_oldPos;
+}
+void MoveNodeCommand::redo(){
+	_node->setPos(_pos);
+	_node->initialPos=_pos;
 }

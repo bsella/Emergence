@@ -1,4 +1,4 @@
-#include "nodes/Node.h"
+#include "Node.h"
 
 Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsObject(parent)
 	,line(headSize,0,headSize,0),rank(i),iy(y),parent(parent){
@@ -76,7 +76,7 @@ void Node::Socket::connectToNode(Node* n){
 		setEnabled(false);
 		visible=false;
 		parent->updateConstant();
-		emit sm.updateOutputs();
+//		emit sm.updateOutputs();
 	}
 }
 
@@ -93,7 +93,7 @@ void Node::Socket::disconnectNode(){
 		parent->iNodes[rank]=nullptr;
 		reset();
 		parent->updateConstant();
-		emit sm.updateOutputs();
+//		emit sm.updateOutputs();
 	}
 }
 
@@ -113,16 +113,13 @@ void Node::Socket::reset(){
 }
 
 Node* Node::Socket::hover;
-SignalManager Node::sm;
+//SignalManager Node::sm;
 
-double Node::x;
-double Node::y;
-double Node::ratio;
 ulong Node::pixelID;
 uint Node::widthByHeight;
 
-Node::Node(Type i, unsigned w, unsigned h, QColor c, uint n, bool spec):
-	width(w),height(h),id(i),special(spec),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
+Node::Node(const QString& type, unsigned w, unsigned h, QColor c, uint n, bool spec):
+	width(w),height(h),_type(type),special(spec),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
 	setCursor(Qt::OpenHandCursor);
 	if(!spec)setData(0,"node");
 	setData(1,"countMe");
@@ -250,101 +247,90 @@ void Node::updateConstant(){
 		i.first->updateConstant();
 }
 
-#include <nodes/ConstNode.h>
-#include <nodes/MathNode.h>
-#include <nodes/PaletteNode.h>
-#include <nodes/BitmapNode.h>
-#include <nodes/ColorNode.h>
-#include <nodes/ComplexNode.h>
-#include <nodes/Node.h>
-#include <nodes/IfNode.h>
-#include <nodes/LogicNode.h>
-#include <nodes/CompNode.h>
-#include <nodes/RenderNode.h>
-#include <nodes/PixelNode.h>
-#include <nodes/FunctionNode.h>
-#include "FunctionManager.h"
+QList<const QString> Node::knownTypes;
+std::map<const QString, Node*(*)(void*)> Node::makeNodeMethods;
 
-Node* Node::nodeMalloc(Node::Type g, void* arg){
-	switch(g){
-	case Node::DOUBLE_G:{
-		if(arg) return new ConstNode(*(double*)arg);
-		bool ok;
-		double d =QInputDialog::getDouble(0,"Choose Number","",0,-2147483647,2147483647,3,&ok);
-		if(!ok) return nullptr;
-		return new ConstNode(d);
-	}
-	case Node::COLOR_G:{
-		if(arg) return new ConstNode(*(data_t::color*)arg);
-		QColor c=QColorDialog::getColor(Qt::white);
-		if(!c.isValid()) return nullptr;
-		return new ConstNode(c.rgba());
-	}
-	case Node::PALETTE_G:{
-		///TODO : Implement dialog for palette
-		Palette p;
-		p.add(0xffff0000,0);
-		p.add(0xff0000ff,.5);
-		p.add(0xff00ff00,1);
-		return new LUTNode(p);
-	}
-	case Node::BITMAP_G:{
-		std::string f;
-		if(arg) f=*(std::string*)arg;
-		else{
-			f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)").toStdString();
-			if(QString::fromStdString(f).isNull())return nullptr;
-		}
-		return new BitmapNode(f);
-	}
-	case Node::FUNC_G:{
-//		Function *f;
-		if(arg) return new FunctionNode((Function*)arg);
-		return new FunctionNode;
+Node* Node::nodeMalloc(const QString& type, void* arg){
+	if(makeNodeMethods.find(type)!= makeNodeMethods.end())
+		return makeNodeMethods[type](arg);
+	return nullptr;
+//	case Node::DOUBLE_G:{
+//		if(arg) return new ConstNode(*(double*)arg);
+//		bool ok;
+//		double d =QInputDialog::getDouble(0,"Choose Number","",0,-2147483647,2147483647,3,&ok);
+//		if(!ok) return nullptr;
+//		return new ConstNode(d);
+//	}
+//	case Node::COLOR_G:{
+//		if(arg) return new ConstNode(*(data_t::color*)arg);
+//		QColor c=QColorDialog::getColor(Qt::white);
+//		if(!c.isValid()) return nullptr;
+//		return new ConstNode(c.rgba());
+//	}
+//	case Node::PALETTE_G:{
+//		///TODO : Implement dialog for palette
+//		Palette p;
+//		p.add(0xffff0000,0);
+//		p.add(0xff0000ff,.5);
+//		p.add(0xff00ff00,1);
+//		return new LUTNode(p);
+//	}
+//	case Node::BITMAP_G:{
+//		std::string f;
+//		if(arg) f=*(std::string*)arg;
 //		else{
-//			f=FunctionManager::getFunction();
-//			if(!f)return nullptr;
+//			f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)").toStdString();
+//			if(QString::fromStdString(f).isNull())return nullptr;
 //		}
-	}
-	case Node::IF_G:		return new IfNode;
-	case Node::GT_G:		return new GTNode;
-	case Node::LT_G:		return new LTNode;
-	case Node::EQ_G:		return new EQNode;
-	case Node::NE_G:		return new NENode;
-	case Node::OR_G:		return new ORNode;
-	case Node::AND_G:		return new ANDNode;
-	case Node::XOR_G:		return new XORNode;
-	case Node::NOT_G:		return new NOTNode;
-	case Node::ADD_G:		return new ADDNode;
-	case Node::SUB_G:		return new SUBNode;
-	case Node::MUL_G:		return new MULNode;
-	case Node::DIV_G:		return new DIVNode;
-	case Node::NEG_G:		return new NEGNode;
-	case Node::SQRT_G:		return new SQRTNode;
-	case Node::ABS_G:		return new ABSNode;
-	case Node::LERP_G:		return new LERPNode;
-	case Node::CLAMP_G:		return new CLAMPNode;
-	case Node::SIN_G:		return new SINNode;
-	case Node::COS_G:		return new COSNode;
-	case Node::MIN_G:		return new MINNode;
-	case Node::MAX_G:		return new MAXNode;
-	case Node::RGB_G:		return new RGBNode;
-	case Node::HSV_G:		return new HSVNode;
-	case Node::CPLX_G:		return new ComplexNode;
-	case Node::X_G:			return new PixelXNode;
-	case Node::Y_G:			return new PixelYNode;
-	case Node::RENDER_G:	return new RenderNode;
-	case Node::RATIO_G:		return new RatioNode;
-	case Node::POW_G:		return new POWNode;
-	case Node::LOG_G:		return new LOGNode;
-	case Node::OUTPUT_G:	return new Function::OutputNode;
-	case Node::INPUT_G:		return new Function::InputNode(*(uint*)arg);
-	default:return nullptr;
-	}
+//		return new BitmapNode(f);
+//	}
+//	case Node::FUNC_G:{
+////		Function *f;
+//		if(arg) return new FunctionNode((Function*)arg);
+//		return new FunctionNode;
+////		else{
+////			f=FunctionManager::getFunction();
+////			if(!f)return nullptr;
+////		}
+//	}
+//	case Node::IF_G:		return new IfNode;
+//	case Node::GT_G:		return new GTNode;
+//	case Node::LT_G:		return new LTNode;
+//	case Node::EQ_G:		return new EQNode;
+//	case Node::NE_G:		return new NENode;
+//	case Node::OR_G:		return new ORNode;
+//	case Node::AND_G:		return new ANDNode;
+//	case Node::XOR_G:		return new XORNode;
+//	case Node::NOT_G:		return new NOTNode;
+//	case Node::ADD_G:		return new ADDNode;
+//	case Node::SUB_G:		return new SUBNode;
+//	case Node::MUL_G:		return new MULNode;
+//	case Node::DIV_G:		return new DIVNode;
+//	case Node::NEG_G:		return new NEGNode;
+//	case Node::SQRT_G:		return new SQRTNode;
+//	case Node::ABS_G:		return new ABSNode;
+//	case Node::LERP_G:		return new LERPNode;
+//	case Node::CLAMP_G:		return new CLAMPNode;
+//	case Node::SIN_G:		return new SINNode;
+//	case Node::COS_G:		return new COSNode;
+//	case Node::MIN_G:		return new MINNode;
+//	case Node::MAX_G:		return new MAXNode;
+//	case Node::RGB_G:		return new RGBNode;
+//	case Node::HSV_G:		return new HSVNode;
+//	case Node::CPLX_G:		return new ComplexNode;
+//	case Node::X_G:			return new PixelXNode;
+//	case Node::Y_G:			return new PixelYNode;
+//	case Node::RENDER_G:	return new RenderNode;
+//	case Node::RATIO_G:		return new RatioNode;
+//	case Node::POW_G:		return new POWNode;
+//	case Node::LOG_G:		return new LOGNode;
+//	case Node::OUTPUT_G:	return new Function::OutputNode;
+//	case Node::INPUT_G:		return new Function::InputNode(*(uint*)arg);
 }
 
 data_t Node::eval(){
 	if(constant) return cache;
+#ifdef FUNCTION_PLUGIN
 	if(FunctionNode::current){
 		if(pixelID+Node::widthByHeight*FunctionNode::current->nodeNumber==lastPixelID) return cache;
 		lastPixelID=pixelID+Node::widthByHeight*FunctionNode::current->nodeNumber;
@@ -352,33 +338,39 @@ data_t Node::eval(){
 		if(pixelID==lastPixelID) return cache;
 		lastPixelID=pixelID;
 	}
+#else
+	if(pixelID==lastPixelID) return cache;
+	lastPixelID=pixelID;
+#endif
 	return cache=kernel();
 }
 
+void Node::toBin(std::ostream&)const{}
+void Node::fromBin(std::istream &, void*)const{}
+
 std::ostream& operator<<(std::ostream& out, const Node& n){
-	out << n.id;
+	out << Node::knownTypes.indexOf(n._type);
 	float tmp=n.scenePos().x();
 	out.write(reinterpret_cast<char*>(&tmp),4);
 	tmp=n.scenePos().y();
 	out.write(reinterpret_cast<char*>(&tmp),4);
-	switch(n.id){
-	case Node::DOUBLE_G:
-		out << n.cache.d << '\n';
-		break;
-	case Node::COLOR_G:
-		out.write(reinterpret_cast<const char*>(&n.cache.clr),sizeof(data_t::color));
-		break;
-	case Node::FUNC_G:
-		out << FunctionManager::indexOf(((FunctionNode*)&n)->func) << '\n';
-		break;
-	case Node::INPUT_G:
-		out << ((Function::InputNode*)&n)->_rank<< '\n';
-		break;
-	case Node::BITMAP_G:
-		out << ((BitmapNode*)&n)->path << "\n";
-		break;
-	default:break;
-	}
+
+	n.toBin(out);
+//	case Node::DOUBLE_G:
+//		out << n.cache.d << '\n';
+//		break;
+//	case Node::COLOR_G:
+//		out.write(reinterpret_cast<const char*>(&n.cache.clr),sizeof(data_t::color));
+//		break;
+//	case Node::FUNC_G:
+//		out << FunctionManager::indexOf(((FunctionNode*)&n)->func) << '\n';
+//		break;
+//	case Node::INPUT_G:
+//		out << ((Function::InputNode*)&n)->_rank<< '\n';
+//		break;
+//	case Node::BITMAP_G:
+//		out << ((BitmapNode*)&n)->path << "\n";
+//		break;
 	return out;
 }
 std::ostream& operator<<(std::ostream& out,const QList<Node*>&nodes){
@@ -401,34 +393,29 @@ std::istream& operator>>(std::istream& in, QList<Node*>&nodes){
 		float xx,yy;
 		in.read(reinterpret_cast<char*>(&xx),4);
 		in.read(reinterpret_cast<char*>(&yy),4);
-		double tmpD;
-		data_t::color tmpC;
-		int tmpI;
-		std::string tmpS;
-		switch(id){
-		case Node::DOUBLE_G:
-			in >> tmpD;
-			n=Node::nodeMalloc((Node::Type)id,&tmpD);
-			break;
-		case Node::COLOR_G:
-			in.read(reinterpret_cast<char*>(&tmpC),sizeof(data_t::color));
-			n=Node::nodeMalloc((Node::Type)id,&tmpC);
-			break;
-		case Node::FUNC_G:
-			in >> tmpI;
-			n=Node::nodeMalloc((Node::Type)id,FunctionManager::functionAt(tmpI));
-			break;
-		case Node::INPUT_G:
-			in >> tmpI;
-			n=Node::nodeMalloc((Node::Type)id,&tmpI);
-			break;
-		case Node::BITMAP_G:
-			in >> tmpS;
-			n=Node::nodeMalloc((Node::Type)id,&tmpS);
-			break;
-		default:
-			n=Node::nodeMalloc((Node::Type)id);
-		}
+//		case Node::DOUBLE_G:
+//			in >> tmpD;
+//			n=Node::nodeMalloc((Node::Type)id,&tmpD);
+//			break;
+//		case Node::COLOR_G:
+//			in.read(reinterpret_cast<char*>(&tmpC),sizeof(data_t::color));
+//			n=Node::nodeMalloc((Node::Type)id,&tmpC);
+//			break;
+//		case Node::FUNC_G:
+//			in >> tmpI;
+//			n=Node::nodeMalloc((Node::Type)id,FunctionManager::functionAt(tmpI));
+//			break;
+//		case Node::INPUT_G:
+//			in >> tmpI;
+//			n=Node::nodeMalloc((Node::Type)id,&tmpI);
+//			break;
+//		case Node::BITMAP_G:
+//			in >> tmpS;
+//			n=Node::nodeMalloc((Node::Type)id,&tmpS);
+//			break;
+		void* arg=0;
+		n->fromBin(in,arg);
+		n=Node::nodeMalloc(Node::knownTypes.at(id),arg);
 		n->setPos(xx,yy);
 		nodes.push_back(n);
 	}

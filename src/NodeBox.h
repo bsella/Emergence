@@ -10,8 +10,6 @@
 #include<QDrag>
 #include<QMimeData>
 
-#include"nodes/Node.h"
-
 class NodeTool : public QFrame{
 public:
 	NodeTool(int id,const QString &text="", const QString &iconPath=":/icons/no_icon.png");

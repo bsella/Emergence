@@ -1,11 +1,11 @@
-#include "nodes/LogicNode.h"
+#include "LogicNode.h"
 
-LogicNode::LogicNode(Type i,unsigned n):Node(i,50,50,QColor(255,180,180),n){}
+LogicNode::LogicNode(const QString &type, unsigned n):Node(type,50,50,QColor(255,180,180),n){}
 
-ORNode::ORNode():LogicNode(OR_G,2){}
-ANDNode::ANDNode():LogicNode(AND_G,2){}
-XORNode::XORNode():LogicNode(XOR_G,2){}
-NOTNode::NOTNode():LogicNode(NOT_G,1){}
+ORNode::ORNode():LogicNode("or",2){}
+ANDNode::ANDNode():LogicNode("and",2){}
+XORNode::XORNode():LogicNode("xor",2){}
+NOTNode::NOTNode():LogicNode("not",1){}
 
 void ORNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option, widget);

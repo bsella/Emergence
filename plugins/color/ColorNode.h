@@ -5,14 +5,20 @@
 #include "data_t.h"
 
 class ColorNode : public Node{
-protected:
-	ColorNode(Type i);
-	virtual void paint(QPainter* painter,
-					const QStyleOptionGraphicsItem*option,
-					QWidget *widget)=0;
+public:
+	ColorNode(data_t::color c);
+private:
+	inline data_t kernel()const{return cache;}
+	void paint(QPainter*,
+	           const QStyleOptionGraphicsItem*,
+	           QWidget*)=0;
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent*);
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
+private slots:
+	void changeColor();
 };
 
-class RGBNode : public ColorNode{
+class RGBNode : public Node{
 public:
 	RGBNode();
 private:
@@ -22,7 +28,7 @@ private:
 					QWidget *widget);
 };
 
-class HSVNode : public ColorNode{
+class HSVNode : public Node{
 public:
 	HSVNode();
 private:

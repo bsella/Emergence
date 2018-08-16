@@ -10,40 +10,18 @@
 #include <QMenu>
 
 #include "data_t.h"
-#include "signalManager.h"
-
+//#include "signalManager.h"
 
 class Node: public QGraphicsObject{
 	Q_OBJECT
 public:
-	enum Type:char{
-		DOUBLE_G=1, COLOR_G,
-		IF_G,
-		PALETTE_G,
-		GT_G, LT_G, EQ_G, NE_G,
-		OR_G, AND_G, XOR_G, NOT_G,
-		X_G, Y_G,
-		RENDER_G,
-		ADD_G, SUB_G, MUL_G, DIV_G,
-		NEG_G, SQRT_G, ABS_G,
-		LERP_G, CLAMP_G,
-		BITMAP_G,
-		SIN_G, COS_G,
-		MIN_G, MAX_G,
-		RGB_G, HSV_G,
-		RATIO_G,
-		CPLX_G,
-		POW_G, LOG_G,
-		INPUT_G, OUTPUT_G,
-		FUNC_G
-	};
-	Node(Type i, unsigned w=50, unsigned h=50, QColor c=Qt::white, uint n=0, bool spec=false);
+	Node(const QString& type, unsigned w=50, unsigned h=50, QColor c=Qt::white, uint n=0, bool spec=false);
 	~Node();
 	unsigned width, height;
 	virtual data_t eval();
-	static Node* nodeMalloc(Node::Type, void* arg=nullptr);
+	static Node* nodeMalloc(const QString&, void* arg=nullptr);
 	QVector<Node*> iNodes;		//INPUT NODES
-	static SignalManager sm;
+//	static SignalManager sm;
 	virtual operator bool()const;
 	friend std::ostream& operator<<(std::ostream& out, const Node&);
 	friend std::ostream& operator<<(std::ostream& out, const QList<Node*>&);
@@ -56,7 +34,8 @@ private:
 	friend class DisconnectNodeCommand;
 	friend class MoveNodeCommand;
 	friend class Function;
-	const Type id;
+	const QString _type;
+	static QList<const QString> knownTypes;
 	bool special;
 	QPointF initialPos;
 	static QPointF tmpPos;
@@ -65,10 +44,13 @@ private:
 	virtual data_t kernel()const=0;
 	bool isLooping(Node *n)const;
 	void updateConstant();
+	virtual void toBin(std::ostream&)const;
+	virtual void fromBin(std::istream&,void*)const;
 protected slots:
 	void updateLines()const;
 	void updateVal();
 protected:
+	static std::map<const QString, Node*(*)(void*)> makeNodeMethods;
 	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
 		~Socket();
@@ -93,7 +75,6 @@ protected:
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
 		void reset();
 	};
-	static double x,y, ratio;
 	static const int socketSize=5;
 	static uint widthByHeight;
 	static ulong pixelID;

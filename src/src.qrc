@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>emgc.ico</file>
+    </qresource>
+</RCC>

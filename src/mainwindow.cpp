@@ -140,11 +140,13 @@ void MainWindow::on_actionExit_triggered(){
 //	if(f) scene->addNode(Node::nodeMalloc(Node::FUNC_G,f));
 //}
 
+#include <iostream>
 bool MainWindow::loadPlugins(){
 	QDir dir(qApp->applicationDirPath());
-	dir.cd("plugins/libs");
+	dir.cd("../lib");
 	bool success=false;
 	for(const auto& fileName: dir.entryList(QDir::Files)){
+		std::cout << dir.absoluteFilePath(dir.absoluteFilePath(fileName)).toStdString() <<std::endl;
 		QPluginLoader pluginLoader(dir.absoluteFilePath(dir.absoluteFilePath(fileName)));
 		QObject *plugin = pluginLoader.instance();
 		if (plugin) {

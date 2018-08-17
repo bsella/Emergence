@@ -2,3 +2,5 @@ Emergence.pro.user
 wiki
 build
 **/*.pro.user
+**/CMakeLists.txt.user
+CMakeLists.txt.user

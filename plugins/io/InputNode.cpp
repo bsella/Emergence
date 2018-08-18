@@ -31,3 +31,4 @@ void RatioNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	QRectF rect=boundingRect();
 	painter->drawText(rect.x()+rect.width()/3,rect.y()+rect.height()/2+3,"W/H");
 }
+

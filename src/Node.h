@@ -51,7 +51,6 @@ protected slots:
 	void updateLines()const;
 	void updateVal();
 protected:
-	static Node* makeNode(void* arg);
 	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
 		~Socket();

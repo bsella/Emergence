@@ -1,18 +1,15 @@
 #include "ColorNode.h"
 
-ColorNode::ColorNode(data_t::color c):Node("color",50,50,c){
+ColorNode::ColorNode(const data_t::color& c):Node("color",50,50,c){
 	cache=c;
 	constant=true;
 }
-
-RGBNode::RGBNode():Node("rgb",50,100,Qt::white,3){}
-HSVNode::HSVNode():Node("hsv",50,100,Qt::white,3){}
 
 void ColorNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget){
 	Node::paint(painter,option,widget);
 	painter->drawText(boundingRect().center()-QPoint(16,-2),"Color");
 }
-void ColorNode::contextMenuEvent(QGraphicsSceneContextMenuEvent *){
+void ColorNode::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
 	menu=new QMenu;
 	connect(menu->addAction(QString("Change color")), &QAction::triggered,this,&ColorNode::changeColor);
 	Node::contextMenuEvent(event);
@@ -21,16 +18,27 @@ void ColorNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
 	changeColor();
 }
 
-void ConstNode::changeColor(){
+void ColorNode::changeColor(){
 	QColor c =QColorDialog::getColor(Qt::white,(QWidget*)parentWidget());
 	if(c.isValid()){
 		cache=c.rgba();
 		color=c;
 		updateVal();
-		emit sm.updateOutputs();
+//		emit sm.updateOutputs();
 		update();
 	}
 }
+
+Node* ColorNode::makeNode(void *arg){
+	if(arg) return new ColorNode(*(data_t::color*)arg);
+	QColor c= QColorDialog::getColor(Qt::white);
+	if(c.isValid())
+		return new ColorNode(c.rgba());
+	return nullptr;
+}
+
+RGBNode::RGBNode():Node("rgb",50,100,Qt::white,3){}
+HSVNode::HSVNode():Node("hsv",50,100,Qt::white,3){}
 
 void RGBNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter, option, widget);

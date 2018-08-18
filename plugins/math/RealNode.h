@@ -2,7 +2,6 @@
 #define REALNODE_H
 
 #include "Node.h"
-#include <QColorDialog>
 #include <QInputDialog>
 
 class RealNode:public Node{

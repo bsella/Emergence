@@ -140,19 +140,19 @@ void MainWindow::on_actionExit_triggered(){
 //	if(f) scene->addNode(Node::nodeMalloc(Node::FUNC_G,f));
 //}
 
-#include <iostream>
 bool MainWindow::loadPlugins(){
 	QDir dir(qApp->applicationDirPath());
 	dir.cd("../lib");
 	bool success=false;
 	for(const auto& fileName: dir.entryList(QDir::Files)){
-		std::cout << dir.absoluteFilePath(dir.absoluteFilePath(fileName)).toStdString() <<std::endl;
 		QPluginLoader pluginLoader(dir.absoluteFilePath(dir.absoluteFilePath(fileName)));
-		QObject *plugin = pluginLoader.instance();
-		if (plugin) {
-			nodeInterface = qobject_cast<NodeInterface *>(plugin);
-			if (nodeInterface)
+		if (auto plugin = pluginLoader.instance()){
+			NodeInterface* nInterface= qobject_cast<NodeInterface *>(plugin);
+			if (nInterface){
+				nInterface->updateUI(ui->menuInsert,ui->toolBox,(Workspace*)ui->workspace->scene());
+				nInterface->addNodes();
 				success= true;
+			}
 		}
 	}
 	return success;

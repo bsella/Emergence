@@ -1,9 +1,13 @@
 #pragma once
 
+#include <QMenu>
+#include "NodeBox.h"
+#include "Workspace.h"
+
 class NodeInterface{
 public:
-	virtual ~NodeInterface(){}
-	virtual void initialize()=0;
+	virtual void updateUI(QMenu*, NodeBox*,Workspace*)const{}
+	virtual void addNodes()const{}
 };
 
 #define Plugin_iid "Emergence.Plugin"

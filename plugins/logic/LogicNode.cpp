@@ -27,15 +27,12 @@ void NOTNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 data_t ORNode::kernel()const{
 	return iNodes[0]->eval() || iNodes[1]->eval();
 }
-
 data_t ANDNode::kernel()const{
 	return iNodes[0]->eval() && iNodes[1]->eval();
 }
-
 data_t XORNode::kernel()const{
 	return bool(bool(iNodes[0]->eval()) ^ bool(iNodes[1]->eval()));
 }
-
 data_t NOTNode::kernel()const{
 	return !iNodes[0]->eval();
 }

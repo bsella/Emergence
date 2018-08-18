@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>add.png</file>
+        <file>complex.png</file>
+        <file>cos.png</file>
+        <file>divide.png</file>
+        <file>multiply.png</file>
+        <file>neg.png</file>
+        <file>real.png</file>
+        <file>sqrt.png</file>
+        <file>sin.png</file>
+        <file>subtract.png</file>
+    </qresource>
+</RCC>

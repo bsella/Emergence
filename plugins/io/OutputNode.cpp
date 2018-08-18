@@ -1,60 +1,60 @@
-#include <nodes/RenderNode.h>
-
-RenderNode::RenderArea::RenderArea(RenderNode *node, QWidget *parent):QDockWidget(parent){
+#include "OutputNode.h"
+/*
+OutputNode::RenderArea::RenderArea(OutputNode *node, QWidget *parent):QDockWidget(parent){
 	start=node;
 	setFeatures(0);
 	setWindowTitle("Output "+QString::number(start->outputNumber));
 }
 
-QImage RenderNode::RenderArea::renderImage(int w, int h){
+QImage OutputNode::RenderArea::renderImage(int w, int h){
 	QImage image(w,h ,QImage::Format_ARGB32_Premultiplied);
-	Node::ratio=double(w)/h;
+	RatioNode::ratio=double(w)/h;
 	Node::widthByHeight=w*h;
 	emit sm.updateRatio();
 	for(int i=0;i<w;i++)
 		for(int j=0;j<h;j++){
 			Node::pixelID= i*j+1;
-			Node::x=(double)i/w;
-			Node::y=(double)j/h;
+			InputNode::input_x=(double)i/w;
+			InputNode::input_y=(double)j/h;
 			image.setPixel(i,j,start->eval());
 		}
 	return image;
 }
 
-void RenderNode::RenderArea::paintEvent(QPaintEvent *){
+void OutputNode::RenderArea::paintEvent(QPaintEvent *){
 	if(*start)
 		QPainter(this).drawImage(0,0,renderImage(width(),height()));
 }
 
-uint RenderNode::outputs=0;
+uint OutputNode::outputs=0;
 
-void RenderNode::RenderArea::closeEvent(QCloseEvent*){
+void OutputNode::RenderArea::closeEvent(QCloseEvent*){
 	start->inside=true;
 	start->update();
 }
-void RenderNode::RenderArea::resizeEvent(QResizeEvent *){
-	Node::ratio=double(width())/height();
+void OutputNode::RenderArea::resizeEvent(QResizeEvent *){
+	RatioNode::ratio=double(width())/height();
 	Node::widthByHeight=width()*height();
 	emit sm.updateRatio();
 }
 
-RenderNode::RenderNode():Node(RENDER_G,50, 50, Qt::white,1,true){
+OutputNode::OutputNode():Node("out",50, 50, Qt::white,1,true){
 	outputNumber=outputs++;
 	output= new RenderArea(this);
-	connect(&sm,&SignalManager::updateOutputs,this,&RenderNode::updateOutput);
+	connect(&sm,&SignalManager::updateOutputs,this,&OutputNode::updateOutput);
 }
 
-RenderNode::~RenderNode(){
-	disconnect(&sm,&SignalManager::updateOutputs,this,&RenderNode::updateOutput);
+OutputNode::~OutputNode(){
+	disconnect(&sm,&SignalManager::updateOutputs,this,&OutputNode::updateOutput);
 	delete output;
 	outputs--;
 }
 
-data_t RenderNode::kernel()const{
+data_t OutputNode::kernel()const{
 	return iNodes[0]->eval();
 }
 
-void RenderNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget){
+void OutputNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget){
 	pen.setColor(isSelected()?Qt::darkGreen:Qt::black);
 	if(inside){
 		pen.setWidth(isSelected()?2:1);
@@ -70,12 +70,12 @@ void RenderNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	}
 }
 
-void RenderNode::updateOutput(){
+void OutputNode::updateOutput(){
 	update();
 	output->update();
 }
 
-void RenderNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
+void OutputNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
 	if(inside)
 		output->show();
 	else
@@ -83,3 +83,4 @@ void RenderNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
 	inside=!inside;
 	update();
 }
+*/

@@ -29,7 +29,6 @@ private:
 //	FunctionManager fm;
 	QAction zoomIN, zoomOUT;
 	bool loadPlugins();
-	NodeInterface* nodeInterface;
 
 private slots:
 	void save()const;

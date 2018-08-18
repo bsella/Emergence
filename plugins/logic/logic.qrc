@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>and.png</file>
+        <file>not.png</file>
+        <file>or.png</file>
+        <file>xor.png</file>
+    </qresource>
+</RCC>

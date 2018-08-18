@@ -10,7 +10,7 @@
 #include <QMenu>
 
 #include "data_t.h"
-//#include "signalManager.h"
+#include "signalManager.h"
 
 class Node: public QGraphicsObject{
 	Q_OBJECT
@@ -21,8 +21,10 @@ public:
 	virtual data_t eval();
 	static Node* nodeMalloc(const QString&, void* arg=nullptr);
 	QVector<Node*> iNodes;		//INPUT NODES
-//	static SignalManager sm;
+	static SignalManager sm;
 	virtual operator bool()const;
+	static std::map<const QString, Node*(*)(void*)> makeNodeMethods;
+	static QList<const QString> knownTypes;
 	friend std::ostream& operator<<(std::ostream& out, const Node&);
 	friend std::ostream& operator<<(std::ostream& out, const QList<Node*>&);
 	friend std::istream& operator>>(std::istream& in , QList<Node*>&);
@@ -35,7 +37,6 @@ private:
 	friend class MoveNodeCommand;
 	friend class Function;
 	const QString _type;
-	static QList<const QString> knownTypes;
 	bool special;
 	QPointF initialPos;
 	static QPointF tmpPos;
@@ -50,7 +51,7 @@ protected slots:
 	void updateLines()const;
 	void updateVal();
 protected:
-	static std::map<const QString, Node*(*)(void*)> makeNodeMethods;
+	static Node* makeNode(void* arg);
 	struct Socket : public QGraphicsObject{
 		Socket(unsigned i, double y, Node *parent);
 		~Socket();

@@ -1,51 +1,51 @@
-#include "nodes/MathNode.h"
+#include "MathNode.h"
 
-MathNode::MathNode(Type i, unsigned n, unsigned w, unsigned h):Node(i,w,h,QColor(180,255,180),n){}
+MathNode::MathNode(const QString &type, unsigned n, unsigned w, unsigned h):Node(type,w,h,QColor(180,255,180),n){}
 
-ADDNode::ADDNode():MathNode(ADD_G,2){}
-SUBNode::SUBNode():MathNode(SUB_G,2){}
-MULNode::MULNode():MathNode(MUL_G,2){}
-DIVNode::DIVNode():MathNode(DIV_G,2){}
-NEGNode::NEGNode():MathNode(NEG_G,1){}
-SQRTNode::SQRTNode():MathNode(SQRT_G,1){}
-ABSNode::ABSNode():MathNode(ABS_G,1){}
-LERPNode::LERPNode():MathNode(LERP_G,3,50,100){}
-CLAMPNode::CLAMPNode():MathNode(CLAMP_G,3,50,100){}
-SINNode::SINNode():MathNode(SIN_G,1){}
-COSNode::COSNode():MathNode(COS_G,1){}
-MINNode::MINNode():MathNode(MIN_G,2){}
-MAXNode::MAXNode():MathNode(MAX_G,2){}
-POWNode::POWNode():MathNode(POW_G,2){}
-LOGNode::LOGNode():MathNode(LOG_G,1){}
+ADDNode::ADDNode():MathNode("add",2){}
+SUBNode::SUBNode():MathNode("sub",2){}
+MULNode::MULNode():MathNode("mul",2){}
+DIVNode::DIVNode():MathNode("div",2){}
+NEGNode::NEGNode():MathNode("neg",1){}
+SQRTNode::SQRTNode():MathNode("sqrt",1){}
+ABSNode::ABSNode():MathNode("abs",1){}
+LERPNode::LERPNode():MathNode("lerp",3,50,100){}
+CLAMPNode::CLAMPNode():MathNode("clamp",3,50,100){}
+SINNode::SINNode():MathNode("sin",1){}
+COSNode::COSNode():MathNode("cos",1){}
+MINNode::MINNode():MathNode("min",2){}
+MAXNode::MAXNode():MathNode("max",2){}
+POWNode::POWNode():MathNode("pow",2){}
+LOGNode::LOGNode():MathNode("log",1){}
 
 void ADDNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option,widget);
-	drawIcon(painter,":/icons/add.png");
+	drawIcon(painter,":/add.png");
 }
 
 void SUBNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option,widget);
-	drawIcon(painter,":/icons/subtract.png");
+	drawIcon(painter,":/subtract.png");
 }
 
 void MULNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option,widget);
-	drawIcon(painter,":/icons/multiply.png");
+	drawIcon(painter,":/multiply.png");
 }
 
 void DIVNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option,widget);
-	drawIcon(painter,":/icons/divide.png");
+	drawIcon(painter,":/divide.png");
 }
 
 void NEGNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option,widget);
-	drawIcon(painter,":/icons/neg.png");
+	drawIcon(painter,":/neg.png");
 }
 
 void SQRTNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option,widget);
-	QImage icon=QImage(":/icons/sqrt.png");
+	QImage icon=QImage(":/sqrt.png");
 	painter->drawImage(width/2-icon.width()/2+5,height/2-icon.height()/2,icon);
 }
 void ABSNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){

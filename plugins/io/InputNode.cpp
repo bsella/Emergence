@@ -1,9 +1,9 @@
-#include "nodes/PixelNode.h"
+#include "InputNode.h"
 
-PixelNode::PixelNode(Type i):Node(i,70,50,Qt::lightGray){}
-PixelXNode::PixelXNode():PixelNode(X_G){}
-PixelYNode::PixelYNode():PixelNode(Y_G){}
-RatioNode::RatioNode():Node(RATIO_G,70,50,Qt::lightGray){
+InputNode::InputNode(const QString& type):Node(type,70,50,Qt::lightGray){}
+XNode::XNode():InputNode("x"){}
+YNode::YNode():InputNode("y"){}
+RatioNode::RatioNode():Node("ratio",70,50,Qt::lightGray){
 	constant=true;
 	connect(&sm,SIGNAL(updateRatio()),this,SLOT(updateVal()));
 }
@@ -11,17 +11,17 @@ RatioNode::~RatioNode(){
 	disconnect(&sm,SIGNAL(updateRatio()),this,SLOT(updateVal()));
 }
 
-void PixelNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget){
+void InputNode::paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget){
 	Node::paint(painter,option,widget);
 }
 
-void PixelXNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
-	PixelNode::paint(painter,option,widget);
+void XNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+	InputNode::paint(painter,option,widget);
 	QRectF rect=boundingRect();
 	painter->drawText(rect.center()+QPointF(-5,3),"X");
 }
-void PixelYNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
-	PixelNode::paint(painter,option,widget);
+void YNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+	InputNode::paint(painter,option,widget);
 	QRectF rect=boundingRect();
 	painter->drawText(rect.center()+QPoint(-5,3),"Y");
 }

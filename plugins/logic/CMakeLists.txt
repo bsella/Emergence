@@ -5,16 +5,17 @@ find_package(Qt5Core    REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Gui     REQUIRED)
 
-file(GLOB PLUGIN_SOURCES LogicPlugin.cpp)
-file(GLOB PLUGIN_HEADERS LogicPlugin.h)
-file(GLOB SOURCES LogicNode.cpp)
-file(GLOB HEADERS LogicNode.h)
-
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fPIC")
+#qt5_add_resources(QRC logic.qrc)
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH} )
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH})
 set(Qt5_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Gui_LIBRARIES})
 
-include_directories(${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
+include_directories(. ${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
-add_library(Logic SHARED ${PLUGIN_SOURCES} ${PLUGIN_HEADERS})
+add_library(Logic SHARED LogicPlugin.cpp LogicPlugin.h)
+add_library(logic_lib LogicNode.cpp LogicPlugin.h)
+
+target_link_libraries(Logic logic_lib ${QRC})

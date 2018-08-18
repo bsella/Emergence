@@ -1,11 +1,10 @@
-#include "nodes/ComplexNode.h"
+#include "ComplexNode.h"
 
-ComplexNode::ComplexNode():Node(CPLX_G,50,50,Qt::white,2){
-}
+ComplexNode::ComplexNode():Node("cplx",50,50,Qt::white,2){}
 
 void ComplexNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 	Node::paint(painter,option,widget);
-	drawIcon(painter,":/icons/complex.png");
+	drawIcon(painter,":/complex.png");
 }
 
 data_t ComplexNode::kernel()const{

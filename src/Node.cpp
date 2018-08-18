@@ -298,10 +298,6 @@ Node* Node::nodeMalloc(const QString& type, void* arg){
 //	case Node::LT_G:		return new LTNode;
 //	case Node::EQ_G:		return new EQNode;
 //	case Node::NE_G:		return new NENode;
-//	case Node::OR_G:		return new ORNode;
-//	case Node::AND_G:		return new ANDNode;
-//	case Node::XOR_G:		return new XORNode;
-//	case Node::NOT_G:		return new NOTNode;
 //	case Node::ADD_G:		return new ADDNode;
 //	case Node::SUB_G:		return new SUBNode;
 //	case Node::MUL_G:		return new MULNode;

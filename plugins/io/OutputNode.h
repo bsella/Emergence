@@ -2,22 +2,25 @@
 #define RENDERNODE_H
 
 #include "Node.h"
+#include "InputNode.h"
 #include <QDockWidget>
 
-class RenderNode : public Node{
+/*
+ class OutputNode : public Node{
 public:
-	RenderNode();
-	~RenderNode();
+	OutputNode();
+	~OutputNode();
 	class RenderArea : public QDockWidget{
 	public:
-		RenderArea(RenderNode* node,QWidget* parent=0);
+		RenderArea(OutputNode* node,QWidget* parent=0);
 		QImage renderImage(int w,int h);
 	private:
-		RenderNode *start;
+		OutputNode *start;
 		void closeEvent(QCloseEvent *);
 		void resizeEvent(QResizeEvent*);
 		void paintEvent(QPaintEvent*);
 	};
+	inline static Node* makeNode(void*){return new OutputNode;}
 private slots:
 	void updateOutput();
 private:
@@ -32,5 +35,5 @@ private:
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
 	friend class ExportImageDialog;
 };
-
+*/
 #endif // RENDERNODE_H

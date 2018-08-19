@@ -1,13 +1,13 @@
-#ifndef IMAGEPLUGIN_H
-#define IMAGEPLUGIN_H
+#ifndef CONDITIONPLUGIN_H
+#define CONDITIONPLUGIN_H
 
 #include <QObject>
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "BitmapNode.h"
+#include "IfNode.h"
 
-class ImagePlugin: public QObject, NodeInterface{
+class ConditionPlugin: public QObject, NodeInterface{
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID "Emergence.Plugin")
 	Q_INTERFACES(NodeInterface)

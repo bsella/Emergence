@@ -5,7 +5,7 @@
 
 class CompNode:public Node{
 protected:
-	CompNode(Type i);
+	CompNode(const QString& type);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget)=0;
 };
 
@@ -14,6 +14,7 @@ class GTNode:public CompNode{
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
 	GTNode();
+	static Node* makeNode(void*){return new GTNode;}
 };
 
 class LTNode:public CompNode{
@@ -21,6 +22,7 @@ class LTNode:public CompNode{
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
 	LTNode();
+	static Node* makeNode(void*){return new LTNode;}
 };
 
 class EQNode:public CompNode{
@@ -28,6 +30,7 @@ class EQNode:public CompNode{
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
 	EQNode();
+	static Node* makeNode(void*){return new EQNode;}
 };
 
 class NENode:public CompNode{
@@ -35,6 +38,7 @@ class NENode:public CompNode{
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
 	NENode();
+	static Node* makeNode(void*){return new NENode;}
 };
 
 #endif

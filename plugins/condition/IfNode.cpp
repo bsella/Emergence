@@ -1,6 +1,6 @@
-#include "nodes/IfNode.h"
+#include "IfNode.h"
 
-IfNode::IfNode():Node(IF_G,50,100,QColor(180,180,255),3){}
+IfNode::IfNode():Node("if",50,100,QColor(180,180,255),3){}
 
 void IfNode::paint(QPainter* painter,
 				const QStyleOptionGraphicsItem*option,

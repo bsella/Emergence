@@ -1,13 +1,13 @@
-#ifndef IMAGEPLUGIN_H
-#define IMAGEPLUGIN_H
+#ifndef COMPAREPLUGIN_H
+#define COMPAREPLUGIN_H
 
 #include <QObject>
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "BitmapNode.h"
+#include "CompNode.h"
 
-class ImagePlugin: public QObject, NodeInterface{
+class ComparePlugin: public QObject, NodeInterface{
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID "Emergence.Plugin")
 	Q_INTERFACES(NodeInterface)

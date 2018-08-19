@@ -11,6 +11,7 @@ public:
 	~BitmapNode();
 	void setBMP(const std::string &filename);
 	std::string path;
+	static Node* makeNode(void*);
 private:
 	QPixmap *bmp;
 	int bmpWidth, bmpHeight;

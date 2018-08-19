@@ -1,8 +1,15 @@
-#include "nodes/BitmapNode.h"
+#include "BitmapNode.h"
 
 BitmapNode::BitmapNode(const std::string& filename):
-	Node(BITMAP_G,70,70,Qt::lightGray,2),path(filename){
+	Node("img",70,70,Qt::lightGray,2),path(filename){
 	setBMP(filename);
+}
+
+Node* BitmapNode::makeNode(void* arg){
+	if(arg) return new BitmapNode(*(std::string*)arg);
+	QString filename = QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
+	if(filename.isNull()) return nullptr;
+	return new BitmapNode(filename.toStdString());
 }
 
 BitmapNode::~BitmapNode(){

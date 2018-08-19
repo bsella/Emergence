@@ -3,7 +3,7 @@
 void ColorPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
 	QMenu* colorMenu = new QMenu("Color",insertMenu);
 	insertMenu->addAction(colorMenu->menuAction());
-	QAction* colorAction= new QAction("Color");
+	QAction* colorAction= new QAction(QIcon(":/color.png"),"Color");
 	QAction* rgbAction= new QAction("RGB");
 	QAction* hsvAction= new QAction("HSV");
 

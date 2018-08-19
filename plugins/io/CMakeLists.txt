@@ -20,5 +20,5 @@ add_library(lib_io
 	InputNode.h
 	OutputNode.h)
 
-target_link_libraries(IO lib_io lib_data_t)
+target_link_libraries(IO lib_io lib_data_t ${QRC})
 add_dependencies(IO io_qrc)

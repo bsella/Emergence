@@ -14,7 +14,7 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fPIC")
 
 include_directories(${MAIN_SRC_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
-add_library(lib_data_t data_t.cpp data_t.h)
+add_library(data_t data_t.cpp data_t.h)
 
 add_library(core
 	mainwindow.cpp
@@ -28,6 +28,7 @@ add_library(core
 	signalManager.h
 	${UI_HEADERS})
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ..)
 add_executable(${PROJECT_NAME} main.cpp ${QRC})
 
-target_link_libraries(${PROJECT_NAME} lib_data_t core Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} data_t core Qt5::Widgets)

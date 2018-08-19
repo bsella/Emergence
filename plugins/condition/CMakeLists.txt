@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(Condition)
+project(ConditionPlugin)
 
 find_package(Qt5Widgets REQUIRED)
 
@@ -13,10 +13,10 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH})
 
 include_directories(${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
-add_library(Condition SHARED ConditionPlugin.cpp ConditionPlugin.h)
-add_library(lib_cond
+add_library(${PROJECT_NAME} SHARED ConditionPlugin.cpp ConditionPlugin.h)
+add_library(cond
 	IfNode.cpp
 	IfNode.h)
 
-target_link_libraries(Condition lib_cond lib_data_t ${QRC})
-add_dependencies(Condition cond_qrc)
+target_link_libraries(${PROJECT_NAME} cond data_t ${QRC})
+add_dependencies(${PROJECT_NAME} cond_qrc)

@@ -139,7 +139,7 @@ void MainWindow::on_actionExit_triggered(){
 
 bool MainWindow::loadPlugins(){
 	QDir dir(qApp->applicationDirPath());
-	dir.cd("../lib");
+	dir.cd("lib");
 	bool success=false;
 	for(const auto& fileName: dir.entryList(QDir::Files)){
 		QPluginLoader pluginLoader(dir.absoluteFilePath(dir.absoluteFilePath(fileName)));

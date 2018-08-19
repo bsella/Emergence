@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(Logic)
+project(LogicPlugin)
 
 find_package(Qt5Widgets REQUIRED)
 
@@ -13,8 +13,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH})
 
 include_directories(${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
-add_library(Logic SHARED LogicPlugin.cpp LogicPlugin.h)
-add_library(lib_logic LogicNode.cpp LogicPlugin.h)
+add_library(${PROJECT_NAME} SHARED LogicPlugin.cpp LogicPlugin.h)
+add_library(logic LogicNode.cpp LogicPlugin.h)
 
-target_link_libraries(Logic lib_logic lib_data_t ${QRC})
-add_dependencies(Logic logic_qrc)
+target_link_libraries(${PROJECT_NAME} logic data_t ${QRC})
+add_dependencies(${PROJECT_NAME} logic_qrc)

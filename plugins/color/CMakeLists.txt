@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(Color)
+project(ColorPlugin)
 
 find_package(Qt5Widgets REQUIRED)
 
@@ -13,10 +13,10 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH})
 
 include_directories(${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
-add_library(Color SHARED ColorPlugin.cpp ColorPlugin.h)
-add_library(lib_color
+add_library(${PROJECT_NAME} SHARED ColorPlugin.cpp ColorPlugin.h)
+add_library(color
 	ColorNode.cpp
 	ColorNode.h)
 
-target_link_libraries(Color lib_color lib_data_t ${QRC})
-add_dependencies(Color color_qrc)
+target_link_libraries(${PROJECT_NAME} color data_t ${QRC})
+add_dependencies(${PROJECT_NAME} color_qrc)

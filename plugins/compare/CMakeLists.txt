@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(Compare)
+project(ComparePlugin)
 
 find_package(Qt5Widgets REQUIRED)
 
@@ -13,10 +13,10 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH})
 
 include_directories(${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
-add_library(Compare SHARED ComparePlugin.cpp ComparePlugin.h)
-add_library(lib_compare
+add_library(${PROJECT_NAME} SHARED ComparePlugin.cpp ComparePlugin.h)
+add_library(compare
 	CompNode.cpp
 	CompNode.h)
 
-target_link_libraries(Compare lib_compare lib_data_t ${QRC})
-add_dependencies(Compare compare_qrc)
+target_link_libraries(${PROJECT_NAME} compare data_t ${QRC})
+add_dependencies(${PROJECT_NAME} compare_qrc)

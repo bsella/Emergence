@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(IO)
+project(IOPlugin)
 
 find_package(Qt5Widgets REQUIRED)
 
@@ -13,12 +13,12 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH})
 
 include_directories(${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
-add_library(IO SHARED IoPlugin.cpp IoPlugin.h)
-add_library(lib_io
+add_library(${PROJECT_NAME} SHARED IoPlugin.cpp IoPlugin.h)
+add_library(io
 	InputNode.cpp
 	OutputNode.cpp
 	InputNode.h
 	OutputNode.h)
 
-target_link_libraries(IO lib_io lib_data_t ${QRC})
-add_dependencies(IO io_qrc)
+target_link_libraries(${PROJECT_NAME} io data_t ${QRC})
+add_dependencies(${PROJECT_NAME} io_qrc)

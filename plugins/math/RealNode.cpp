@@ -26,7 +26,7 @@ void RealNode::changeNumber(){
 	if(ok){
 		cache=d;
 		updateVal();
-//		emit sm.updateOutputs();
+		emit sm.updateOutputs();
 		update();
 	}
 }

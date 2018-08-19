@@ -24,7 +24,7 @@ void ColorNode::changeColor(){
 		cache=c.rgba();
 		color=c;
 		updateVal();
-//		emit sm.updateOutputs();
+		emit sm.updateOutputs();
 		update();
 	}
 }

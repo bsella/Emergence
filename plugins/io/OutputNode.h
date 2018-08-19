@@ -1,11 +1,10 @@
-#ifndef RENDERNODE_H
-#define RENDERNODE_H
+#ifndef OutputNODE_H
+#define OutputNODE_H
 
 #include "Node.h"
 #include "InputNode.h"
 #include <QDockWidget>
 
-/*
  class OutputNode : public Node{
 public:
 	OutputNode();
@@ -35,5 +34,4 @@ private:
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
 	friend class ExportImageDialog;
 };
-*/
 #endif // RENDERNODE_H

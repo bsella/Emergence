@@ -1,12 +1,12 @@
 #include "IoPlugin.h"
 
 void IoPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
-	QMenu* ioMenu = new QMenu("Io",insertMenu);
+	QMenu* ioMenu = new QMenu("Input/Output",insertMenu);
 	insertMenu->addAction(ioMenu->menuAction());
-	QAction* xAction= new QAction("X");
-	QAction* yAction= new QAction("Y");
+	QAction* xAction= new QAction(QIcon(":/x.png"),"X");
+	QAction* yAction= new QAction(QIcon(":/y.png"),"Y");
 	QAction* ratioAction= new QAction("Ratio");
-	QAction* outAction= new QAction("Render");
+	QAction* outAction= new QAction(QIcon(":/output.png"),"Output");
 
 	connect(xAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("x"));});
 	connect(yAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("y"));});
@@ -20,9 +20,8 @@ void IoPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
 }
 
 void IoPlugin::addNodes()const{
-	QApplication::beep();
 	Node::makeNodeMethods["x"] = &XNode::makeNode;
-//	Node::makeNodeMethods["y"] = &YNode::makeNode;
-//	Node::makeNodeMethods["ratio"]= &RatioNode::makeNode;
-//	Node::makeNodeMethods["out"]= &OutputNode::makeNode;
+	Node::makeNodeMethods["y"] = &YNode::makeNode;
+	Node::makeNodeMethods["ratio"]= &RatioNode::makeNode;
+	Node::makeNodeMethods["out"]= &OutputNode::makeNode;
 }

@@ -1,5 +1,8 @@
 #include "InputNode.h"
 
+double InputNode::input_x;
+double InputNode::input_y;
+double RatioNode::ratio;
 InputNode::InputNode(const QString& type):Node(type,70,50,Qt::lightGray){}
 XNode::XNode():InputNode("x"){}
 YNode::YNode():InputNode("y"){}

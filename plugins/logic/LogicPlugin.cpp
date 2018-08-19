@@ -3,10 +3,10 @@
 void LogicPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
 	QMenu* logicMenu = new QMenu("Logic",insertMenu);
 	insertMenu->addAction(logicMenu->menuAction());
-	QAction* andAction= new QAction("And");
-	QAction* orAction= new QAction("Or");
-	QAction* xorAction= new QAction("Xor");
-	QAction* notAction= new QAction("Not");
+	QAction* andAction= new QAction(QIcon(":/and.png"), "And");
+	QAction* orAction= new QAction(QIcon(":/or.png"), "Or");
+	QAction* xorAction= new QAction(QIcon(":/xor.png"), "Xor");
+	QAction* notAction= new QAction(QIcon(":/not.png"), "Not");
 
 	connect(andAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("and"));});
 	connect(orAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("or"));});

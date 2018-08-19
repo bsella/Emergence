@@ -12,11 +12,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH})
 include_directories(${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
 add_library(Color SHARED ColorPlugin.cpp ColorPlugin.h)
-add_library(color_lib
+add_library(lib_color
 	ColorNode.cpp
-	ColorNode.h
-	${MAIN_SRC_DIR}/data_t.cpp
-	${MAIN_SRC_DIR}/data_t.h
-	)
+	ColorNode.h)
 
-target_link_libraries(Color color_lib)
+target_link_libraries(Color lib_color lib_data_t)

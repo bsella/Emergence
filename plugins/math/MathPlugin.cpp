@@ -3,21 +3,21 @@
 void MathPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
 	QMenu* mathMenu = new QMenu("Math",insertMenu);
 	insertMenu->addAction(mathMenu->menuAction());
-	QAction* addAction= new QAction("Add");
-	QAction* subAction= new QAction("Subtract");
-	QAction* mulAction= new QAction("Multiply");
-	QAction* divAction= new QAction("Divide");
-	QAction* realAction= new QAction("Real");
-	QAction* complexAction= new QAction("Complex");
-	QAction* sqrtAction= new QAction("Square Root");
+	QAction* addAction= new QAction(QIcon(":/add.png"),"Add");
+	QAction* subAction= new QAction(QIcon(":/subtract.png"),"Subtract");
+	QAction* mulAction= new QAction(QIcon(":/multiply.png"),"Multiply");
+	QAction* divAction= new QAction(QIcon(":/divide.png"),"Divide");
+	QAction* realAction= new QAction(QIcon(":/real.png"),"Real");
+	QAction* complexAction= new QAction(QIcon(":/complex.png"),"Complex");
+	QAction* sqrtAction= new QAction(QIcon(":/sqrt.png"),"Square Root");
 	QAction* absAction= new QAction("Absolute Value");
-	QAction* negAction= new QAction("Neg");
+	QAction* negAction= new QAction(QIcon(":/neg.png"),"Neg");
 	QAction* minAction= new QAction("Min");
 	QAction* maxAction= new QAction("Max");
 	QAction* powAction= new QAction("Power");
 	QAction* logAction= new QAction("Logarithm");
-	QAction* sinAction= new QAction("Sin");
-	QAction* cosAction= new QAction("Cos");
+	QAction* sinAction= new QAction(QIcon(":/sin.png"),"Sin");
+	QAction* cosAction= new QAction(QIcon(":/cos.png"),"Cos");
 	QAction* lerpAction= new QAction("Linear Interpolation");
 	QAction* clampAction= new QAction("Clamp");
 

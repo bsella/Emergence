@@ -76,7 +76,7 @@ void Node::Socket::connectToNode(Node* n){
 		setEnabled(false);
 		visible=false;
 		parent->updateConstant();
-//		emit sm.updateOutputs();
+		emit sm.updateOutputs();
 	}
 }
 
@@ -93,7 +93,7 @@ void Node::Socket::disconnectNode(){
 		parent->iNodes[rank]=nullptr;
 		reset();
 		parent->updateConstant();
-//		emit sm.updateOutputs();
+		emit sm.updateOutputs();
 	}
 }
 
@@ -113,7 +113,7 @@ void Node::Socket::reset(){
 }
 
 Node* Node::Socket::hover;
-//SignalManager Node::sm;
+SignalManager Node::sm;
 
 ulong Node::pixelID;
 uint Node::widthByHeight;

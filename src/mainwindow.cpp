@@ -39,10 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(&zoomOUT,SIGNAL(triggered(bool)),this,SLOT(zoomOut()));
 	addAction(&zoomIN);
 	addAction(&zoomOUT);
-	if(loadPlugins()){
-//		std::cout << "plugin loaded" << std::endl;
-	}
-	else{
+	if(!loadPlugins()){
 		ui->menuInsert->setEnabled(false);
 		delete ui->toolboxDock;
 	}

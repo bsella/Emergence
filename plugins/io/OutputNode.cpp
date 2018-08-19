@@ -1,5 +1,5 @@
 #include "OutputNode.h"
-/*
+
 OutputNode::RenderArea::RenderArea(OutputNode *node, QWidget *parent):QDockWidget(parent){
 	start=node;
 	setFeatures(0);
@@ -83,4 +83,3 @@ void OutputNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *){
 	inside=!inside;
 	update();
 }
-*/

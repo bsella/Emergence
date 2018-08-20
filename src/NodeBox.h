@@ -12,16 +12,25 @@
 
 class NodeTool : public QFrame{
 public:
-	NodeTool(int id,const QString &text="", const QString &iconPath=":/icons/no_icon.png");
+	NodeTool(const std::string& id,
+			 const QString &text,
+			 const QIcon&icon);
 private:
-	int nodeID;
-	QString icon;
+	std::string id;
+	QIcon icon;
 	void mouseMoveEvent(QMouseEvent *event);
 };
 
 class NodeBox : public QToolBox{
 public:
 	NodeBox(QWidget* parent=0);
+	void addTool(const std::string &id,
+				 const QString &text,
+				 const QIcon&icon=QIcon(":/no_icon.png"),
+				 const QString &category="Miscellaneous");
+	void addTool(const std::string &id,
+				 const QString &text,
+				 const QString &category);
 };
 
 #endif // NODEBOX_H

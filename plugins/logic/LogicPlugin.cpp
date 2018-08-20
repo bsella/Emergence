@@ -1,6 +1,6 @@
 #include "LogicPlugin.h"
 
-void LogicPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
+void LogicPlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
 	QMenu* logicMenu = new QMenu("Logic",insertMenu);
 	insertMenu->addAction(logicMenu->menuAction());
 	QAction* andAction= new QAction(QIcon(":/and.png"), "And");
@@ -17,6 +17,11 @@ void LogicPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
 	logicMenu->addAction(orAction);
 	logicMenu->addAction(xorAction);
 	logicMenu->addAction(notAction);
+
+	box->addTool("and","And",QIcon(":/and.png"),"Logic");
+	box->addTool("or","Or",QIcon(":/or.png"),"Logic");
+	box->addTool("xor","Xor",QIcon(":/xor.png"),"Logic");
+	box->addTool("not","Not",QIcon(":/not.png"),"Logic");
 }
 
 void LogicPlugin::addNodes()const{

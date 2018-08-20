@@ -6,7 +6,7 @@
 
 class MathNode:public Node{
 protected:
-	MathNode(const QString& type, unsigned n, unsigned w=50, unsigned h=50);
+	MathNode(const std::string &type, unsigned n, unsigned w=50, unsigned h=50);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;
 };
 

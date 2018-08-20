@@ -15,7 +15,7 @@
 class Node: public QGraphicsObject{
 	Q_OBJECT
 public:
-	Node(const QString& type, unsigned w=50, unsigned h=50, QColor c=Qt::white, uint n=0, bool spec=false);
+	Node(const std::string& type, unsigned w=50, unsigned h=50, QColor c=Qt::white, uint n=0, bool spec=false);
 	~Node();
 	unsigned width, height;
 	virtual data_t eval();
@@ -36,7 +36,7 @@ private:
 	friend class DisconnectNodeCommand;
 	friend class MoveNodeCommand;
 	friend class Function;
-	const QString _type;
+	const std::string _type;
 	bool special;
 	QPointF initialPos;
 	static QPointF tmpPos;
@@ -100,6 +100,5 @@ signals:
 	void disconnected(Node::Socket* s);
 	void moved();
 };
-
 
 #endif

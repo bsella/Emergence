@@ -1,6 +1,6 @@
 #include "LogicNode.h"
 
-LogicNode::LogicNode(const QString &type, unsigned n):Node(type,50,50,QColor(255,180,180),n){}
+LogicNode::LogicNode(const std::string &type, unsigned n):Node(type,50,50,QColor(255,180,180),n){}
 
 ORNode::ORNode():LogicNode("or",2){}
 ANDNode::ANDNode():LogicNode("and",2){}

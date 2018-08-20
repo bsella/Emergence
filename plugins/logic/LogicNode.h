@@ -5,7 +5,7 @@
 
 class LogicNode:public Node{
 protected:
-	LogicNode(const QString& type, unsigned n);
+	LogicNode(const std::string &type, unsigned n);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)=0;
 	static Node* makeNode(void*);
 };

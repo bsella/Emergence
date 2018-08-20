@@ -1,6 +1,6 @@
 #include "ColorPlugin.h"
 
-void ColorPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
+void ColorPlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
 	QMenu* colorMenu = new QMenu("Color",insertMenu);
 	insertMenu->addAction(colorMenu->menuAction());
 	QAction* colorAction= new QAction(QIcon(":/color.png"),"Color");
@@ -14,6 +14,10 @@ void ColorPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
 	colorMenu->addAction(colorAction);
 	colorMenu->addAction(rgbAction);
 	colorMenu->addAction(hsvAction);
+
+	box->addTool("color","Color",QIcon(":/color.png"),"Color");
+	box->addTool("rgb","RGB","Color");
+	box->addTool("hsv","HSV","Color");
 }
 
 void ColorPlugin::addNodes()const{

@@ -5,7 +5,7 @@
 
 class CompNode:public Node{
 protected:
-	CompNode(const QString& type);
+	CompNode(const std::string &type);
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem*option, QWidget*widget)=0;
 };
 

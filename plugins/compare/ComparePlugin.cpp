@@ -1,6 +1,6 @@
 #include "ComparePlugin.h"
 
-void ComparePlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
+void ComparePlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
 	QMenu* compMenu = new QMenu("Compare",insertMenu);
 	insertMenu->addAction(compMenu->menuAction());
 	QAction* gtAction= new QAction(QIcon(":/gt.png"), "Greater Than");
@@ -17,6 +17,11 @@ void ComparePlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
 	compMenu->addAction(ltAction);
 	compMenu->addAction(eqAction);
 	compMenu->addAction(neAction);
+
+	box->addTool("gt","Greater Than",QIcon(":/gt.png"),"Compare");
+	box->addTool("lt","Less Than",QIcon(":/lt.png"),"Compare");
+	box->addTool("eq","Equal",QIcon(":/eq.png"),"Compare");
+	box->addTool("ne","Not Equal",QIcon(":/ne.png"),"Compare");
 }
 
 void ComparePlugin::addNodes()const{

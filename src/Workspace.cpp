@@ -8,8 +8,7 @@ void Workspace::dragEnterEvent(QGraphicsSceneDragDropEvent *event){
 }
 
 void Workspace::dropEvent(QGraphicsSceneDragDropEvent *event){
-	addNode(Node::nodeMalloc(
-				Node::knownTypes.at(event->mimeData()->data("type").toInt())),
+	addNode(Node::nodeMalloc(event->mimeData()->data("type")),
 			event->scenePos());
 }
 

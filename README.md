@@ -9,7 +9,17 @@ For more information check out the [wiki](https://github.com/elirovi/Emergence/w
 
 ---
 
-Compile using `qmake` then `make`.
+# Building Emergence
+For now, Emergence is supported only on the GNU/Linux system. To build it you will need `cmake` and the `Qt5Widgets` library.
+
+It's highly recommended to build out of the source directory. For example, type the following commands:
+
+    $ mkdir build
+	$ cd build
+	$ cmake ..
+	$ make
+
+---
 
 Feel free to send your feedback to `karim.salama@univ-tlse3.fr`
 
@@ -45,3 +55,4 @@ TODO:
 - [ ] Options
 - [ ] Command line
 - [ ] Documentation
+- [x] Modularity (Plugin system)

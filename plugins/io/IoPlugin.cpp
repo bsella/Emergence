@@ -1,6 +1,6 @@
 #include "IoPlugin.h"
 
-void IoPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
+void IoPlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
 	QMenu* ioMenu = new QMenu("Input/Output",insertMenu);
 	insertMenu->addAction(ioMenu->menuAction());
 	QAction* xAction= new QAction(QIcon(":/x.png"),"X");
@@ -17,6 +17,11 @@ void IoPlugin::updateUI(QMenu* insertMenu, NodeBox*, Workspace*ws) const{
 	ioMenu->addAction(yAction);
 	ioMenu->addAction(ratioAction);
 	ioMenu->addAction(outAction);
+
+	box->addTool("x","X",QIcon(":/x.png"));
+	box->addTool("y","Y",QIcon(":/y.png"));
+	box->addTool("ratio","Width/Height");
+	box->addTool("out","Output",QIcon(":/output.png"));
 }
 
 void IoPlugin::addNodes()const{

@@ -1,6 +1,6 @@
 #include "MathNode.h"
 
-MathNode::MathNode(const QString &type, unsigned n, unsigned w, unsigned h):Node(type,w,h,QColor(180,255,180),n){}
+MathNode::MathNode(const std::string &type, unsigned n, unsigned w, unsigned h):Node(type,w,h,QColor(180,255,180),n){}
 
 ADDNode::ADDNode():MathNode("add",2){}
 SUBNode::SUBNode():MathNode("sub",2){}

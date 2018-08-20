@@ -118,7 +118,7 @@ SignalManager Node::sm;
 ulong Node::pixelID;
 uint Node::widthByHeight;
 
-Node::Node(const QString& type, unsigned w, unsigned h, QColor c, uint n, bool spec):
+Node::Node(const std::string &type, unsigned w, unsigned h, QColor c, uint n, bool spec):
 	width(w),height(h),_type(type),special(spec),color(c),pen(QPen(Qt::black,1)),nbArgs(n){
 	setCursor(Qt::OpenHandCursor);
 	if(!spec)setData(0,"node");
@@ -254,36 +254,6 @@ Node* Node::nodeMalloc(const QString& type, void* arg){
 	if(makeNodeMethods.find(type)!= makeNodeMethods.end())
 		return makeNodeMethods[type](arg);
 	return nullptr;
-//	case Node::DOUBLE_G:{
-//		if(arg) return new ConstNode(*(double*)arg);
-//		bool ok;
-//		double d =QInputDialog::getDouble(0,"Choose Number","",0,-2147483647,2147483647,3,&ok);
-//		if(!ok) return nullptr;
-//		return new ConstNode(d);
-//	}
-//	case Node::COLOR_G:{
-//		if(arg) return new ConstNode(*(data_t::color*)arg);
-//		QColor c=QColorDialog::getColor(Qt::white);
-//		if(!c.isValid()) return nullptr;
-//		return new ConstNode(c.rgba());
-//	}
-//	case Node::PALETTE_G:{
-//		///TODO : Implement dialog for palette
-//		Palette p;
-//		p.add(0xffff0000,0);
-//		p.add(0xff0000ff,.5);
-//		p.add(0xff00ff00,1);
-//		return new LUTNode(p);
-//	}
-//	case Node::BITMAP_G:{
-//		std::string f;
-//		if(arg) f=*(std::string*)arg;
-//		else{
-//			f= QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)").toStdString();
-//			if(QString::fromStdString(f).isNull())return nullptr;
-//		}
-//		return new BitmapNode(f);
-//	}
 //	case Node::FUNC_G:{
 ////		Function *f;
 //		if(arg) return new FunctionNode((Function*)arg);
@@ -293,33 +263,6 @@ Node* Node::nodeMalloc(const QString& type, void* arg){
 ////			if(!f)return nullptr;
 ////		}
 //	}
-//	case Node::IF_G:		return new IfNode;
-//	case Node::GT_G:		return new GTNode;
-//	case Node::LT_G:		return new LTNode;
-//	case Node::EQ_G:		return new EQNode;
-//	case Node::NE_G:		return new NENode;
-//	case Node::ADD_G:		return new ADDNode;
-//	case Node::SUB_G:		return new SUBNode;
-//	case Node::MUL_G:		return new MULNode;
-//	case Node::DIV_G:		return new DIVNode;
-//	case Node::NEG_G:		return new NEGNode;
-//	case Node::SQRT_G:		return new SQRTNode;
-//	case Node::ABS_G:		return new ABSNode;
-//	case Node::LERP_G:		return new LERPNode;
-//	case Node::CLAMP_G:		return new CLAMPNode;
-//	case Node::SIN_G:		return new SINNode;
-//	case Node::COS_G:		return new COSNode;
-//	case Node::MIN_G:		return new MINNode;
-//	case Node::MAX_G:		return new MAXNode;
-//	case Node::RGB_G:		return new RGBNode;
-//	case Node::HSV_G:		return new HSVNode;
-//	case Node::CPLX_G:		return new ComplexNode;
-//	case Node::X_G:			return new PixelXNode;
-//	case Node::Y_G:			return new PixelYNode;
-//	case Node::RENDER_G:	return new RenderNode;
-//	case Node::RATIO_G:		return new RatioNode;
-//	case Node::POW_G:		return new POWNode;
-//	case Node::LOG_G:		return new LOGNode;
 //	case Node::OUTPUT_G:	return new Function::OutputNode;
 //	case Node::INPUT_G:		return new Function::InputNode(*(uint*)arg);
 }
@@ -344,14 +287,14 @@ data_t Node::eval(){
 void Node::toBin(std::ostream&)const{}
 void Node::fromBin(std::istream &, void*)const{}
 
-std::ostream& operator<<(std::ostream& out, const Node& n){
-	out << Node::knownTypes.indexOf(n._type);
-	float tmp=n.scenePos().x();
-	out.write(reinterpret_cast<char*>(&tmp),4);
-	tmp=n.scenePos().y();
-	out.write(reinterpret_cast<char*>(&tmp),4);
+std::ostream& operator<<(std::ostream& out, const Node&){
+//	out << Node::knownTypes.indexOf(n._type);
+//	float tmp=n.scenePos().x();
+//	out.write(reinterpret_cast<char*>(&tmp),4);
+//	tmp=n.scenePos().y();
+//	out.write(reinterpret_cast<char*>(&tmp),4);
 
-	n.toBin(out);
+//	n.toBin(out);
 //	case Node::DOUBLE_G:
 //		out << n.cache.d << '\n';
 //		break;

@@ -1,6 +1,6 @@
 #include "CompNode.h"
 
-CompNode::CompNode(const QString &type):Node(type,50,50,QColor(255,180,180),2){}
+CompNode::CompNode(const std::string &type):Node(type,50,50,QColor(255,180,180),2){}
 
 GTNode::GTNode():CompNode("gt"){}
 LTNode::LTNode():CompNode("lt"){}

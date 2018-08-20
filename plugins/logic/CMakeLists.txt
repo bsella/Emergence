@@ -14,7 +14,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH})
 include_directories(${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} SHARED LogicPlugin.cpp LogicPlugin.h)
-add_library(logic LogicNode.cpp LogicPlugin.h)
+add_library(logic LogicNode.cpp LogicNode.h)
 
 target_link_libraries(${PROJECT_NAME} logic data_t ${QRC})
 add_dependencies(${PROJECT_NAME} logic_qrc)

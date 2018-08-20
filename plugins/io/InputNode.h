@@ -5,7 +5,7 @@
 
 class InputNode:public Node{
 protected:
-	InputNode(const QString&);
+	InputNode(const std::string &);
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
 	static double input_x, input_y;
 	friend class OutputNode;

@@ -12,10 +12,10 @@
 
 class MathPlugin: public QObject, NodeInterface{
 	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "Emergence.Plugin")
+	Q_PLUGIN_METADATA(IID "Emergence.Node.Plugin")
 	Q_INTERFACES(NodeInterface)
 public:
-	void updateUI(QMenu*, NodeBox*, Workspace*)const override;
+	void updateUI(Ui::MainWindow*)const override;
 	void addNodes()const override;
 };
 

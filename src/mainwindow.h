@@ -9,7 +9,7 @@
 #include <QPluginLoader>
 #include <QFileDialog>
 #include "Workspace.h"
-#include "NodeInterface.h"
+#include "PluginManager.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,14 +21,13 @@ class MainWindow : public QMainWindow{
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
+	Ui::MainWindow *ui;
 private:
 	static const int _magic_number=0xa1b2affd;
 	static const int _version=4;
-	Ui::MainWindow *ui;
 	Workspace* scene;
-//	FunctionManager fm;
+	PluginManager *pluginManager;
 	QAction zoomIN, zoomOUT;
-	bool loadPlugins();
 
 private slots:
 	void save()const;

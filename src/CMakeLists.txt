@@ -12,7 +12,7 @@ qt5_add_resources(QRC src.qrc)
 
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fPIC")
 
-include_directories(${MAIN_SRC_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${Qt5Widgets_INCLUDE_DIRS})
+include_directories(${MAIN_SRC_DIR} ${BIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
 add_library(data_t data_t.cpp data_t.h)
 
@@ -21,6 +21,7 @@ add_library(core
 	Node.cpp
 	NodeBox.cpp
 	Workspace.cpp
+	PluginManager.cpp
 	mainwindow.h
 	Node.h
 	NodeBox.h

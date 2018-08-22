@@ -1,13 +1,14 @@
 #include "LUTPlugin.h"
 
-void LUTPlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
+void LUTPlugin::updateUI(Ui::MainWindow* ui) const{
 	QAction* lutAction= new QAction("LUT");
 
+	Workspace* ws=(Workspace*)ui->workspace->scene();
 	connect(lutAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("lut"));});
 
-	insertMenu->addAction(lutAction);
+	ui->menuInsert->addAction(lutAction);
 
-	box->addTool("lut","LUT","Color");
+	ui->toolBox->addTool("lut","LUT","Color");
 }
 
 void LUTPlugin::addNodes()const{

@@ -1,13 +1,14 @@
 #include "ComparePlugin.h"
 
-void ComparePlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
-	QMenu* compMenu = new QMenu("Compare",insertMenu);
-	insertMenu->addAction(compMenu->menuAction());
+void ComparePlugin::updateUI(Ui::MainWindow*ui) const{
+	QMenu* compMenu = new QMenu("Compare",ui->menuInsert);
+	ui->menuInsert->addAction(compMenu->menuAction());
 	QAction* gtAction= new QAction(QIcon(":/gt.png"), "Greater Than");
 	QAction* ltAction= new QAction(QIcon(":/lt.png"), "Less Than");
 	QAction* eqAction= new QAction(QIcon(":/eq.png"), "Equal");
 	QAction* neAction= new QAction(QIcon(":/ne.png"), "Not Equal");
 
+	Workspace* ws= (Workspace*)ui->workspace->scene();
 	connect(gtAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("gt"));});
 	connect(ltAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("lt"));});
 	connect(eqAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("eq"));});
@@ -18,10 +19,10 @@ void ComparePlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const
 	compMenu->addAction(eqAction);
 	compMenu->addAction(neAction);
 
-	box->addTool("gt","Greater Than",QIcon(":/gt.png"),"Compare");
-	box->addTool("lt","Less Than",QIcon(":/lt.png"),"Compare");
-	box->addTool("eq","Equal",QIcon(":/eq.png"),"Compare");
-	box->addTool("ne","Not Equal",QIcon(":/ne.png"),"Compare");
+	ui->toolBox->addTool("gt","Greater Than",QIcon(":/gt.png"),"Compare");
+	ui->toolBox->addTool("lt","Less Than",QIcon(":/lt.png"),"Compare");
+	ui->toolBox->addTool("eq","Equal",QIcon(":/eq.png"),"Compare");
+	ui->toolBox->addTool("ne","Not Equal",QIcon(":/ne.png"),"Compare");
 }
 
 void ComparePlugin::addNodes()const{

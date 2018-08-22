@@ -1,8 +1,8 @@
 #include "MathPlugin.h"
 
-void MathPlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
-	QMenu* mathMenu = new QMenu("Math",insertMenu);
-	insertMenu->addAction(mathMenu->menuAction());
+void MathPlugin::updateUI(Ui::MainWindow* ui) const{
+	QMenu* mathMenu = new QMenu("Math",ui->menuInsert);
+	ui->menuInsert->addAction(mathMenu->menuAction());
 	QAction* addAction= new QAction(QIcon(":/add.png"),"Add");
 	QAction* subAction= new QAction(QIcon(":/subtract.png"),"Subtract");
 	QAction* mulAction= new QAction(QIcon(":/multiply.png"),"Multiply");
@@ -21,6 +21,7 @@ void MathPlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
 	QAction* lerpAction= new QAction("Linear Interpolation");
 	QAction* clampAction= new QAction("Clamp");
 
+	Workspace* ws=(Workspace*)ui->workspace->scene();
 	connect(addAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("add"));});
 	connect(subAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("sub"));});
 	connect(mulAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("mul"));});
@@ -57,23 +58,23 @@ void MathPlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
 	mathMenu->addAction(lerpAction);
 	mathMenu->addAction(clampAction);
 
-	box->addTool("add","Add",QIcon(":/add.png"),"Math");
-	box->addTool("sub","Subtract",QIcon(":/subtract.png"),"Math");
-	box->addTool("mul","Multiply",QIcon(":/multiply.png"),"Math");
-	box->addTool("div","Divide",QIcon(":/divide.png"),"Math");
-	box->addTool("real","Real",QIcon(":/real.png"),"Math");
-	box->addTool("cplx","Complex",QIcon(":/complex.png"),"Math");
-	box->addTool("sqrt","Square Root",QIcon(":/sqrt.png"),"Math");
-	box->addTool("abs","Absolute Value","Math");
-	box->addTool("neg","Negative",QIcon(":/neg.png"),"Math");
-	box->addTool("min","Min","Math");
-	box->addTool("max","Max","Math");
-	box->addTool("pow","Power","Math");
-	box->addTool("log","Logarithm","Math");
-	box->addTool("sin","Sin",QIcon(":/sin.png"),"Math");
-	box->addTool("cos","Cos",QIcon(":/cos.png"),"Math");
-	box->addTool("lerp","Linear Interpolation","Math");
-	box->addTool("clamp","Clamp","Math");
+	ui->toolBox->addTool("add","Add",QIcon(":/add.png"),"Math");
+	ui->toolBox->addTool("sub","Subtract",QIcon(":/subtract.png"),"Math");
+	ui->toolBox->addTool("mul","Multiply",QIcon(":/multiply.png"),"Math");
+	ui->toolBox->addTool("div","Divide",QIcon(":/divide.png"),"Math");
+	ui->toolBox->addTool("real","Real",QIcon(":/real.png"),"Math");
+	ui->toolBox->addTool("cplx","Complex",QIcon(":/complex.png"),"Math");
+	ui->toolBox->addTool("sqrt","Square Root",QIcon(":/sqrt.png"),"Math");
+	ui->toolBox->addTool("abs","Absolute Value","Math");
+	ui->toolBox->addTool("neg","Negative",QIcon(":/neg.png"),"Math");
+	ui->toolBox->addTool("min","Min","Math");
+	ui->toolBox->addTool("max","Max","Math");
+	ui->toolBox->addTool("pow","Power","Math");
+	ui->toolBox->addTool("log","Logarithm","Math");
+	ui->toolBox->addTool("sin","Sin",QIcon(":/sin.png"),"Math");
+	ui->toolBox->addTool("cos","Cos",QIcon(":/cos.png"),"Math");
+	ui->toolBox->addTool("lerp","Linear Interpolation","Math");
+	ui->toolBox->addTool("clamp","Clamp","Math");
 }
 
 void MathPlugin::addNodes()const{

@@ -11,7 +11,7 @@ add_custom_target(io_qrc DEPENDS ${QRC})
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PLUGIN_OUTPUT_PATH})
 
-include_directories(${MAIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
+include_directories(${MAIN_SRC_DIR} ${BIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} SHARED IoPlugin.cpp IoPlugin.h)
 add_library(io

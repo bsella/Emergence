@@ -39,7 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(&zoomOUT,SIGNAL(triggered(bool)),this,SLOT(zoomOut()));
 	addAction(&zoomIN);
 	addAction(&zoomOUT);
-	if(!loadPlugins()){
+	pluginManager= new PluginManager(ui);
+	if(!pluginManager->loadPlugins()){
 		ui->menuInsert->setEnabled(false);
 		delete ui->toolboxDock;
 	}
@@ -69,6 +70,8 @@ void MainWindow::save()const{
 	for(int i=0; i<tmp;i++)
 		ofs<<*FunctionManager::functionAt(i);
 #endif
+	pluginManager->save(ofs);
+
 	ofs << *scene;
 	ofs.close();
 }
@@ -97,6 +100,8 @@ void MainWindow::load(){
 	for(int i=0;i<tmp;i++)
 		ifs >> fm;
 #endif
+	pluginManager->load(ifs);
+
 	scene->select_all();
 	scene->undoStack.beginMacro("load");
 	scene->delete_selected();
@@ -136,21 +141,3 @@ void MainWindow::on_actionExit_triggered(){
 //	Function* f= FunctionManager::getFunction();
 //	if(f) scene->addNode(Node::nodeMalloc(Node::FUNC_G,f));
 //}
-
-bool MainWindow::loadPlugins(){
-	QDir dir(qApp->applicationDirPath());
-	dir.cd("lib");
-	bool success=false;
-	for(const auto& fileName: dir.entryList(QDir::Files)){
-		QPluginLoader pluginLoader(dir.absoluteFilePath(dir.absoluteFilePath(fileName)));
-		if (auto plugin = pluginLoader.instance()){
-			NodeInterface* nInterface= qobject_cast<NodeInterface *>(plugin);
-			if (nInterface){
-				nInterface->updateUI(ui->menuInsert,ui->toolBox,(Workspace*)ui->workspace->scene());
-				nInterface->addNodes();
-				success= true;
-			}
-		}
-	}
-	return success;
-}

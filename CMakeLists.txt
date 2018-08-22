@@ -8,6 +8,7 @@ endif()
 
 set(PLUGIN_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(MAIN_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(BIN_SRC_DIR ${CMAKE_CURRENT_BINARY_DIR}/src)
 
 add_subdirectory(src)
 add_subdirectory(plugins)

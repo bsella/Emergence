@@ -13,7 +13,7 @@ class LUTPlugin: public QObject, NodeInterface{
 	Q_PLUGIN_METADATA(IID "Emergence.Plugin")
 	Q_INTERFACES(NodeInterface)
 public:
-	void updateUI(QMenu*, NodeBox*, Workspace*)const override;
+	void updateUI(Ui::MainWindow*)const override;
 	void addNodes()const override;
 };
 

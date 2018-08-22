@@ -1,13 +1,14 @@
 #include "ImagePlugin.h"
 
-void ImagePlugin::updateUI(QMenu* insertMenu, NodeBox*box, Workspace*ws) const{
+void ImagePlugin::updateUI(Ui::MainWindow* ui) const{
 	QAction* imageAction= new QAction(QIcon(":/image.png"),"Image");
 
+	Workspace* ws= (Workspace*)ui->workspace->scene();
 	connect(imageAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("img"));});
 
-	insertMenu->addAction(imageAction);
+	ui->menuInsert->addAction(imageAction);
 
-	box->addTool("img","Image",QIcon(":/image.png"));
+	ui->toolBox->addTool("img","Image",QIcon(":/image.png"));
 }
 
 void ImagePlugin::addNodes()const{

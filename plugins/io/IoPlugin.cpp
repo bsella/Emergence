@@ -23,9 +23,12 @@ void IoPlugin::updateUI(Ui::MainWindow* ui) const{
 	ui->toolBox->addTool("y","Y",QIcon(":/y.png"));
 	ui->toolBox->addTool("ratio","Width/Height");
 	ui->toolBox->addTool("out","Output",QIcon(":/output.png"));
+
+	QAction* exportAction= new QAction("Export");
+	ui->menuFile->insertAction(ui->actionSave_as,exportAction);
 }
 
-void IoPlugin::addNodes()const{
+void IoPlugin::init()const{
 	Node::makeNodeMethods["x"] = &XNode::makeNode;
 	Node::makeNodeMethods["y"] = &YNode::makeNode;
 	Node::makeNodeMethods["ratio"]= &RatioNode::makeNode;

@@ -25,14 +25,9 @@ void LogicPlugin::updateUI(Ui::MainWindow* ui) const{
 	ui->toolBox->addTool("not","Not",QIcon(":/not.png"),"Logic");
 }
 
-void LogicPlugin::addNodes()const{
+void LogicPlugin::init()const{
 	Node::makeNodeMethods["and"] = &ANDNode::makeNode;
 	Node::makeNodeMethods["or"] = &ORNode::makeNode;
 	Node::makeNodeMethods["xor"] = &XORNode::makeNode;
 	Node::makeNodeMethods["not"] = &NOTNode::makeNode;
-
-//	Node::knownTypes.append("and");
-//	Node::knownTypes.append("or");
-//	Node::knownTypes.append("xor");
-//	Node::knownTypes.append("not");
 }

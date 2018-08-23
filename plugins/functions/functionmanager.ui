@@ -119,7 +119,7 @@
   <customwidget>
    <class>NodeBox</class>
    <extends>QToolBox</extends>
-   <header>headers/NodeBox.h</header>
+   <header>NodeBox.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

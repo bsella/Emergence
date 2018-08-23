@@ -25,7 +25,7 @@ void ComparePlugin::updateUI(Ui::MainWindow*ui) const{
 	ui->toolBox->addTool("ne","Not Equal",QIcon(":/ne.png"),"Compare");
 }
 
-void ComparePlugin::addNodes()const{
+void ComparePlugin::init()const{
 	Node::makeNodeMethods["gt"] = &GTNode::makeNode;
 	Node::makeNodeMethods["lt"] = &LTNode::makeNode;
 	Node::makeNodeMethods["eq"] = &EQNode::makeNode;

@@ -5,7 +5,8 @@
 
 class PluginManager{
 public:
-	PluginManager(Ui::MainWindow*);
+	explicit PluginManager(Ui::MainWindow*);
+	static PluginManager* singleton;
 	Ui::MainWindow *ui;
 	bool loadPlugins();
 	void save(std::ostream&)const;

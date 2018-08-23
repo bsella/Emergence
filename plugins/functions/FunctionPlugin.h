@@ -1,13 +1,13 @@
-#ifndef LUTPLUGIN_H
-#define LUTPLUGIN_H
+#ifndef FUNCPLUGIN_H
+#define FUNCPLUGIN_H
 
 #include <QObject>
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "PaletteNode.h"
+#include "FunctionNode.h"
 
-class LUTPlugin: public QObject, NodeInterface{
+class FunctionPlugin: public QObject, NodeInterface{
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID "Emergence.Plugin")
 	Q_INTERFACES(NodeInterface)

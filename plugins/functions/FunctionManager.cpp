@@ -1,12 +1,15 @@
-#include "headers/FunctionManager.h"
+#include "FunctionManager.h"
 #include "ui_functionmanager.h"
 
-FunctionManager* FunctionManager::singleton;
-
+FunctionManager* FunctionManager::singleton=0;
+FunctionManager* FunctionManager::instance(){
+	if(singleton==0)
+		singleton= new FunctionManager;
+	return singleton;
+}
 FunctionManager::FunctionManager(QWidget *parent):
 	QDialog(parent), ui(new Ui::FunctionManager){
 	ui->setupUi(this);
-	singleton=this;
 	ui->workspace->setAcceptDrops(true);
 	ui->workspace->setDragMode(QGraphicsView::DragMode::RubberBandDrag);
 	ui->removeFunctionButton->setEnabled(false);
@@ -53,13 +56,13 @@ FunctionManager::~FunctionManager(){
 }
 
 Function* FunctionManager::functionAt(int i){
-	return (Function*)singleton->ui->listWidget->item(i);
+	return (Function*)instance()->ui->listWidget->item(i);
 }
 int FunctionManager::indexOf(Function *f){
-	return singleton->ui->listWidget->row(f);
+	return instance()->ui->listWidget->row(f);
 }
 int FunctionManager::count(){
-	return singleton->ui->listWidget->count();
+	return instance()->ui->listWidget->count();
 }
 
 void FunctionManager::on_addFunctionButton_clicked(){
@@ -77,9 +80,9 @@ void FunctionManager::renameFunction(QListWidgetItem *item){
 }
 
 Function* FunctionManager::getFunction(FunctionNode *node){
-	if(node) singleton->ui->listWidget->setCurrentItem(node->func);
-	if(singleton->exec())
-		return (Function*)singleton->ui->listWidget->currentItem();
+	if(node) instance()->ui->listWidget->setCurrentItem(node->func);
+	if(instance()->exec())
+		return (Function*)instance()->ui->listWidget->currentItem();
 	return nullptr;
 }
 
@@ -140,19 +143,19 @@ void ChangeNbArgsCommand::undo(){
 		}
 	else
 		for(int i=_to; i<_from; i++){
-			func->iNodes.push_back(new Function::InputNode(i));
+			func->iNodes.push_back(new Function::FunctionInputNode(i));
 			func->scene->addItem(func->iNodes[i]);
 		}
 	func->nbArgs=_from;
 	FunctionManager::userIntented=false;
-	FunctionManager::singleton->ui->spinBox->setValue(_from);
+	FunctionManager::instance()->ui->spinBox->setValue(_from);
 	FunctionManager::userIntented=true;
 	func->scene->update();
 }
 void ChangeNbArgsCommand::redo(){
 	if(_to>_from)
 		for(int i=_from; i<_to; i++){
-			func->iNodes.push_back(new Function::InputNode(i));
+			func->iNodes.push_back(new Function::FunctionInputNode(i));
 			func->scene->addItem(func->iNodes[i]);
 		}
 	else
@@ -163,7 +166,7 @@ void ChangeNbArgsCommand::redo(){
 		}
 	func->nbArgs=_to;
 	FunctionManager::userIntented=false;
-	FunctionManager::singleton->ui->spinBox->setValue(_to);
+	FunctionManager::instance()->ui->spinBox->setValue(_to);
 	FunctionManager::userIntented=true;
 	func->scene->update();
 }
@@ -180,11 +183,11 @@ void AddFunctionCommand::undo(){
 		QObject::disconnect(n,SIGNAL(disconnected(Node::Socket*)),func->scene,SLOT(disconnectNode(Node::Socket*)));
 	}
 	delete func;
-	FunctionManager::singleton->ui->removeFunctionButton->setEnabled(
-				FunctionManager::singleton->ui->listWidget->count()>1);
+	FunctionManager::instance()->ui->removeFunctionButton->setEnabled(
+				FunctionManager::instance()->ui->listWidget->count()>1);
 }
 void AddFunctionCommand::redo(){
-	FunctionManager::singleton->ui->listWidget->addItem(func);
+	FunctionManager::instance()->ui->listWidget->addItem(func);
 
 	QObject::connect(func->start,SIGNAL(connected(Node::Socket*,Node*)),func->scene,SLOT(connectNode(Node::Socket*,Node*)));
 	QObject::connect(func->start,SIGNAL(disconnected(Node::Socket*)),func->scene,SLOT(disconnectNode(Node::Socket*)));
@@ -192,21 +195,21 @@ void AddFunctionCommand::redo(){
 		QObject::connect(n,SIGNAL(connected(Node::Socket*,Node*)),func->scene,SLOT(connectNode(Node::Socket*,Node*)));
 		QObject::connect(n,SIGNAL(disconnected(Node::Socket*)),func->scene,SLOT(disconnectNode(Node::Socket*)));
 	}
-	FunctionManager::singleton->ui->removeFunctionButton->setEnabled(true);
+	FunctionManager::instance()->ui->removeFunctionButton->setEnabled(true);
 }
 
 RemoveFunctionCommand::RemoveFunctionCommand(QUndoCommand *parent)
 	:QUndoCommand(parent){
-	_rank=FunctionManager::singleton->ui->listWidget->currentRow();
+	_rank=FunctionManager::instance()->ui->listWidget->currentRow();
 }
 void RemoveFunctionCommand::undo(){
-	FunctionManager::singleton->ui->listWidget->insertItem(_rank,func);
-	FunctionManager::singleton->ui->removeFunctionButton->setEnabled(true);
+	FunctionManager::instance()->ui->listWidget->insertItem(_rank,func);
+	FunctionManager::instance()->ui->removeFunctionButton->setEnabled(true);
 }
 void RemoveFunctionCommand::redo(){
-	func=(Function*)FunctionManager::singleton->ui->listWidget->takeItem(_rank);
-	FunctionManager::singleton->ui->removeFunctionButton->setEnabled(
-				FunctionManager::singleton->ui->listWidget->count());
+	func=(Function*)FunctionManager::instance()->ui->listWidget->takeItem(_rank);
+	FunctionManager::instance()->ui->removeFunctionButton->setEnabled(
+				FunctionManager::instance()->ui->listWidget->count());
 }
 
 RenameFunctionCommand::RenameFunctionCommand(Function *f, const QString &to, QUndoCommand *parent)

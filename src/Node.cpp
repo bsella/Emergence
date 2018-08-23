@@ -269,18 +269,8 @@ Node* Node::nodeMalloc(const QString& type, void* arg){
 
 data_t Node::eval(){
 	if(constant) return cache;
-#ifdef FUNCTION_PLUGIN
-	if(FunctionNode::current){
-		if(pixelID+Node::widthByHeight*FunctionNode::current->nodeNumber==lastPixelID) return cache;
-		lastPixelID=pixelID+Node::widthByHeight*FunctionNode::current->nodeNumber;
-	}else{
-		if(pixelID==lastPixelID) return cache;
-		lastPixelID=pixelID;
-	}
-#else
 	if(pixelID==lastPixelID) return cache;
 	lastPixelID=pixelID;
-#endif
 	return cache=kernel();
 }
 

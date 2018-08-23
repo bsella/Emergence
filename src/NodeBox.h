@@ -21,6 +21,13 @@ private:
 	void mouseMoveEvent(QMouseEvent *event);
 };
 
+struct nodeToolData{
+	const std::string id;
+	const QString text;
+	const QIcon icon;
+	const QString category;
+};
+
 class NodeBox : public QToolBox{
 public:
 	NodeBox(QWidget* parent=0);
@@ -31,6 +38,10 @@ public:
 	void addTool(const std::string &id,
 				 const QString &text,
 				 const QString &category);
+private:
+	static std::vector<NodeBox*> nodeboxes;
+	static std::vector<nodeToolData> tools;
+	void addTool(const nodeToolData&);
 };
 
 #endif // NODEBOX_H

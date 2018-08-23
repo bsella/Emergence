@@ -1,7 +1,7 @@
 add_subdirectory(color)
 add_subdirectory(compare)
 add_subdirectory(condition)
-#add_subdirectory(functions)
+add_subdirectory(functions)
 add_subdirectory(image)
 add_subdirectory(logic)
 add_subdirectory(lut)

@@ -32,25 +32,36 @@ void NodeTool::mouseMoveEvent(QMouseEvent *event){
 	QWidget::mouseMoveEvent(event);
 }
 
-NodeBox::NodeBox(QWidget *parent):QToolBox(parent){}
-void NodeBox::addTool(const std::string &id, const QString &text, const QString &category){
-	addTool(id,text,QIcon(":/no_icon.png"),category);
+std::vector<NodeBox*> NodeBox::nodeboxes;
+std::vector<nodeToolData> NodeBox::tools;
+NodeBox::NodeBox(QWidget *parent):QToolBox(parent){
+	for(const auto& tool:tools)
+		addTool(tool);
+	nodeboxes.push_back(this);
 }
-void NodeBox::addTool(const std::string& id, const QString&text,
-					  const QIcon& icon, const QString &category){
+void NodeBox::addTool(const nodeToolData &tool){
 	int i=0;
-	while(itemText(i)!=category && itemText(i)!="") i++;
+	while(itemText(i)!=tool.category && itemText(i)!="") i++;
 	QVBoxLayout *vbl;
 	if(i==count()){ //The Widget-container(page) was not found
 		QWidget* page = new QWidget;
 		vbl= new QVBoxLayout(page);
 		vbl->setSpacing(1);
 		vbl->setMargin(0);
-		vbl->addWidget(new NodeTool(id,text,icon));
+		vbl->addWidget(new NodeTool(tool.id,tool.text,tool.icon));
 		vbl->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));
-		addItem(page,category);
+		addItem(page,tool.category);
 	}else{
 		vbl = (QVBoxLayout*)widget(i)->layout();
-		vbl->insertWidget(vbl->count()-1,new NodeTool(id,text,icon));
+		vbl->insertWidget(vbl->count()-1,new NodeTool(tool.id,tool.text,tool.icon));
 	}
+}
+void NodeBox::addTool(const std::string &id, const QString &text, const QString &category){
+	addTool(id,text,QIcon(":/no_icon.png"),category);
+}
+void NodeBox::addTool(const std::string& id, const QString&text,
+					  const QIcon& icon, const QString &category){
+	tools.push_back({id,text,icon,category});
+	for(auto nb:nodeboxes)
+		nb->addTool(tools.back());
 }

@@ -11,6 +11,6 @@ void LUTPlugin::updateUI(Ui::MainWindow* ui) const{
 	ui->toolBox->addTool("lut","LUT","Color");
 }
 
-void LUTPlugin::addNodes()const{
+void LUTPlugin::init()const{
 	Node::makeNodeMethods["lut"] = &LUTNode::makeNode;
 }

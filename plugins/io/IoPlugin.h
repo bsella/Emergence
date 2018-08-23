@@ -15,7 +15,7 @@ class IoPlugin: public QObject, NodeInterface{
 	Q_INTERFACES(NodeInterface)
 public:
 	void updateUI(Ui::MainWindow*)const override;
-	void addNodes()const override;
+	void init()const override;
 };
 
 #endif

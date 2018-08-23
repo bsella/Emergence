@@ -3,7 +3,10 @@
 #include <QDir>
 #include <QPluginLoader>
 
-PluginManager::PluginManager(Ui::MainWindow *mw):ui(mw){}
+PluginManager* PluginManager::singleton=0;
+PluginManager::PluginManager(Ui::MainWindow *mw):ui(mw){
+	singleton=this;
+}
 
 bool PluginManager::loadPlugins(){
 	QDir dir(qApp->applicationDirPath());
@@ -14,8 +17,8 @@ bool PluginManager::loadPlugins(){
 		if (auto plugin = pluginLoader.instance()){
 			NodeInterface* interface= qobject_cast<NodeInterface *>(plugin);
 			if (interface){
+				interface->init();
 				interface->updateUI(ui);
-				interface->addNodes();
 				success= true;
 				if(interface->redefineSaveLoad())
 					plugins.push_back(interface);

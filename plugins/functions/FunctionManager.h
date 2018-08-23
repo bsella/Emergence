@@ -7,7 +7,7 @@
 #include <QDialogButtonBox>
 #include <QUndoCommand>
 #include "Function.h"
-#include "nodes/FunctionNode.h"
+#include "FunctionNode.h"
 
 namespace Ui {
 class FunctionManager;
@@ -16,16 +16,17 @@ class FunctionManager;
 class FunctionManager : public QDialog{
 	Q_OBJECT
 public:
-	explicit FunctionManager(QWidget *parent = 0);
-	~FunctionManager();
+	static FunctionManager* instance();
 	static Function* getFunction(FunctionNode* node=0);
-	static FunctionManager* singleton;
 	static Function* functionAt(int);
 	static int indexOf(Function*);
 	static int count();
 	void clear();
 	friend std::istream& operator>>(std::istream&, FunctionManager&);
 private:
+	explicit FunctionManager(QWidget *parent = 0);
+	~FunctionManager();
+	static FunctionManager* singleton;
 	static bool userIntented;
 	Ui::FunctionManager *ui;
 	QAction del,copy,cut,paste,undo,redo,select_all;

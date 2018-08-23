@@ -77,7 +77,7 @@ void MathPlugin::updateUI(Ui::MainWindow* ui) const{
 	ui->toolBox->addTool("clamp","Clamp","Math");
 }
 
-void MathPlugin::addNodes()const{
+void MathPlugin::init()const{
 	Node::makeNodeMethods["add"] = &ADDNode::makeNode;
 	Node::makeNodeMethods["sub"] = &SUBNode::makeNode;
 	Node::makeNodeMethods["mul"] = &MULNode::makeNode;

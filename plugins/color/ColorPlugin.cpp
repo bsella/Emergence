@@ -21,7 +21,7 @@ void ColorPlugin::updateUI(Ui::MainWindow *ui) const{
 	ui->toolBox->addTool("hsv","HSV","Color");
 }
 
-void ColorPlugin::addNodes()const{
+void ColorPlugin::init()const{
 	Node::makeNodeMethods["color"] = &ColorNode::makeNode;
 	Node::makeNodeMethods["rgb"] = &RGBNode::makeNode;
 	Node::makeNodeMethods["hsv"] = &HSVNode::makeNode;

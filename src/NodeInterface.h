@@ -8,7 +8,7 @@
 class NodeInterface{
 public:
 	virtual void updateUI(Ui::MainWindow*)const{}
-	virtual void addNodes()const{}
+	virtual void init()const{}
 	inline bool redefineSaveLoad()const{return false;}
 	static void save(std::ostream&){}
 	static void load(std::istream&){}

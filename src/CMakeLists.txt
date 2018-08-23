@@ -26,6 +26,7 @@ add_library(core
 	Node.h
 	NodeBox.h
 	Workspace.h
+	PluginManager.h
 	signalManager.h
 	${UI_HEADERS})
 

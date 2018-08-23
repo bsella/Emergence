@@ -1,13 +1,13 @@
-#include "nodes/FunctionNode.h"
+#include "FunctionNode.h"
 
 #include "FunctionManager.h"
 
 uint FunctionNode::nbNodes=0;
 
 FunctionNode::FunctionNode(Function* f)
-	:Node(FUNC_G,60,50+10*f->nbArgs,Qt::lightGray,f->nbArgs),
+	:Node("fun",60,50+10*f->nbArgs,Qt::lightGray,f->nbArgs),
 	func(f),nodeNumber(nbNodes++){}
-FunctionNode::FunctionNode():Node(FUNC_G,60,50,Qt::lightGray),nodeNumber(nbNodes++){}
+FunctionNode::FunctionNode():Node("fun",60,50,Qt::lightGray),nodeNumber(nbNodes++){}
 FunctionNode::~FunctionNode(){
 	nbNodes--;
 }
@@ -58,9 +58,22 @@ FunctionNode* FunctionNode::current;
 data_t FunctionNode::eval(){
 	if(constant) return cache;
 	if(pixelID==lastPixelID) return cache;
-	lastPixelID=pixelID;
+
 	current=this;
+	pixelID+=nodeNumber+1;
+
 	cache=kernel();
+
+/// I have no idea why the next line causes a segfault
+/// when using the same function more than once
+//	pixelID-=nodeNumber+1;
 	current=nullptr;
+
+	lastPixelID=pixelID;
 	return cache;
+}
+
+Node* FunctionNode::makeNode(void* arg){
+	if(arg) return new FunctionNode((Function*)arg);
+	return new FunctionNode;
 }

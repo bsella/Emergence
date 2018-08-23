@@ -11,6 +11,6 @@ void ImagePlugin::updateUI(Ui::MainWindow* ui) const{
 	ui->toolBox->addTool("img","Image",QIcon(":/image.png"));
 }
 
-void ImagePlugin::addNodes()const{
+void ImagePlugin::init()const{
 	Node::makeNodeMethods["img"] = &BitmapNode::makeNode;
 }

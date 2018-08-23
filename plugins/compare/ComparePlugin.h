@@ -13,7 +13,7 @@ class ComparePlugin: public QObject, NodeInterface{
 	Q_INTERFACES(NodeInterface)
 public:
 	void updateUI(Ui::MainWindow*)const override;
-	void addNodes()const;
+	void init()const;
 };
 
 #endif

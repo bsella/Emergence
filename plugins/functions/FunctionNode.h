@@ -10,6 +10,7 @@ public:
 	FunctionNode();
 	~FunctionNode();
 	data_t eval();
+	static Node* makeNode(void*);
 	static FunctionNode* current;
 	Function* func;
 	const uint nodeNumber;

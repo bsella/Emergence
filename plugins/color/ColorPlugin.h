@@ -5,7 +5,6 @@
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "ColorNode.h"
 
 class ColorPlugin: public QObject, NodeInterface{
 	Q_OBJECT

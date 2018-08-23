@@ -1,4 +1,7 @@
 #include "MathPlugin.h"
+#include "MathNode.h"
+#include "RealNode.h"
+#include "ComplexNode.h"
 
 void MathPlugin::updateUI(Ui::MainWindow* ui) const{
 	QMenu* mathMenu = new QMenu("Math",ui->menuInsert);
@@ -57,24 +60,6 @@ void MathPlugin::updateUI(Ui::MainWindow* ui) const{
 	mathMenu->addAction(cosAction);
 	mathMenu->addAction(lerpAction);
 	mathMenu->addAction(clampAction);
-
-	ui->toolBox->addTool("add","Add",QIcon(":/add.png"),"Math");
-	ui->toolBox->addTool("sub","Subtract",QIcon(":/subtract.png"),"Math");
-	ui->toolBox->addTool("mul","Multiply",QIcon(":/multiply.png"),"Math");
-	ui->toolBox->addTool("div","Divide",QIcon(":/divide.png"),"Math");
-	ui->toolBox->addTool("real","Real",QIcon(":/real.png"),"Math");
-	ui->toolBox->addTool("cplx","Complex",QIcon(":/complex.png"),"Math");
-	ui->toolBox->addTool("sqrt","Square Root",QIcon(":/sqrt.png"),"Math");
-	ui->toolBox->addTool("abs","Absolute Value","Math");
-	ui->toolBox->addTool("neg","Negative",QIcon(":/neg.png"),"Math");
-	ui->toolBox->addTool("min","Min","Math");
-	ui->toolBox->addTool("max","Max","Math");
-	ui->toolBox->addTool("pow","Power","Math");
-	ui->toolBox->addTool("log","Logarithm","Math");
-	ui->toolBox->addTool("sin","Sin",QIcon(":/sin.png"),"Math");
-	ui->toolBox->addTool("cos","Cos",QIcon(":/cos.png"),"Math");
-	ui->toolBox->addTool("lerp","Linear Interpolation","Math");
-	ui->toolBox->addTool("clamp","Clamp","Math");
 }
 
 void MathPlugin::init()const{
@@ -95,4 +80,22 @@ void MathPlugin::init()const{
 	Node::makeNodeMethods["cos"] = &COSNode::makeNode;
 	Node::makeNodeMethods["lerp"] = &LERPNode::makeNode;
 	Node::makeNodeMethods["clamp"] = &CLAMPNode::makeNode;
+
+	NodeBox::addTool("add","Add",QIcon(":/add.png"),"Math");
+	NodeBox::addTool("sub","Subtract",QIcon(":/subtract.png"),"Math");
+	NodeBox::addTool("mul","Multiply",QIcon(":/multiply.png"),"Math");
+	NodeBox::addTool("div","Divide",QIcon(":/divide.png"),"Math");
+	NodeBox::addTool("real","Real",QIcon(":/real.png"),"Math");
+	NodeBox::addTool("cplx","Complex",QIcon(":/complex.png"),"Math");
+	NodeBox::addTool("sqrt","Square Root",QIcon(":/sqrt.png"),"Math");
+	NodeBox::addTool("abs","Absolute Value","Math");
+	NodeBox::addTool("neg","Negative",QIcon(":/neg.png"),"Math");
+	NodeBox::addTool("min","Min","Math");
+	NodeBox::addTool("max","Max","Math");
+	NodeBox::addTool("pow","Power","Math");
+	NodeBox::addTool("log","Logarithm","Math");
+	NodeBox::addTool("sin","Sin",QIcon(":/sin.png"),"Math");
+	NodeBox::addTool("cos","Cos",QIcon(":/cos.png"),"Math");
+	NodeBox::addTool("lerp","Linear Interpolation","Math");
+	NodeBox::addTool("clamp","Clamp","Math");
 }

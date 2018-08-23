@@ -5,7 +5,6 @@
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "BitmapNode.h"
 
 class ImagePlugin: public QObject, NodeInterface{
 	Q_OBJECT

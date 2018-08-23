@@ -131,15 +131,3 @@ void MainWindow::on_actionExit_triggered(){
 //	ui->actionCopy->setEnabled(someNodeIsSelected);
 //	ui->actionDelete->setEnabled(someNodeIsSelected);
 //}
-//void MainWindow::on_actionExport_triggered(){
-//	for(const auto& n: scene->selectedItems())
-//		if(((Node*)n)->id==Node::RENDER_G && *((RenderNode*)n))
-//			ExportImageDialog::exportBMP((RenderNode*)n);
-//}
-//void MainWindow::on_actionFunction_Manager_triggered(){
-//	fm.exec();
-//}
-//void MainWindow::on_actionFunction_triggered(){
-//	Function* f= FunctionManager::getFunction();
-//	if(f) scene->addNode(Node::nodeMalloc(Node::FUNC_G,f));
-//}

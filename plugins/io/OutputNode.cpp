@@ -13,7 +13,7 @@ QImage OutputNode::RenderArea::renderImage(int w, int h){
 	emit sm.updateRatio();
 	for(int i=0;i<w;i++)
 		for(int j=0;j<h;j++){
-			Node::pixelID= (i+1)*(j+1);
+			Node::pixelID= i+(j*w)+1;
 			InputNode::input_x=(double)i/w;
 			InputNode::input_y=(double)j/h;
 			image.setPixel(i,j,start->eval());

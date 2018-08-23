@@ -74,6 +74,9 @@ data_t FunctionNode::eval(){
 }
 
 Node* FunctionNode::makeNode(void* arg){
-	if(arg) return new FunctionNode((Function*)arg);
-	return new FunctionNode;
+	Function *f;
+	if(arg) f=(Function*)arg;
+	else f= FunctionManager::getFunction();
+	if(!f) return nullptr;
+	return new FunctionNode(f);
 }

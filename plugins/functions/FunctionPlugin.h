@@ -5,7 +5,6 @@
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "FunctionNode.h"
 
 class FunctionPlugin: public QObject, NodeInterface{
 	Q_OBJECT

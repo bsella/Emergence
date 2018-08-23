@@ -5,7 +5,6 @@
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "CompNode.h"
 
 class ComparePlugin: public QObject, NodeInterface{
 	Q_OBJECT

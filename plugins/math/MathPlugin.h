@@ -5,10 +5,6 @@
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "Node.h"
-#include "MathNode.h"
-#include "RealNode.h"
-#include "ComplexNode.h"
 
 class MathPlugin: public QObject, NodeInterface{
 	Q_OBJECT

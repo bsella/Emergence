@@ -5,7 +5,6 @@
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "PaletteNode.h"
 
 class LUTPlugin: public QObject, NodeInterface{
 	Q_OBJECT

@@ -5,7 +5,6 @@
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "IfNode.h"
 
 class ConditionPlugin: public QObject, NodeInterface{
 	Q_OBJECT

@@ -5,9 +5,6 @@
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "Node.h"
-#include "InputNode.h"
-#include "OutputNode.h"
 
 class IoPlugin: public QObject, NodeInterface{
 	Q_OBJECT

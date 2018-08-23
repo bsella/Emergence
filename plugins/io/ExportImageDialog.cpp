@@ -11,7 +11,7 @@ ExportImageDialog::~ExportImageDialog(){
 	delete ui;
 }
 
-void ExportImageDialog::exportBMP(RenderNode *node){
+void ExportImageDialog::exportBMP(OutputNode *node){
 	QString f= QFileDialog::getSaveFileName(0,"Export Image",".","Images (*.bmp)");
 	if(f.isNull()) return;
 	if(!f.endsWith(".bmp"))

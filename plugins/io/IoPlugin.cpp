@@ -1,4 +1,8 @@
 #include "IoPlugin.h"
+#include "Node.h"
+#include "InputNode.h"
+#include "OutputNode.h"
+#include "ExportImageDialog.h"
 
 void IoPlugin::updateUI(Ui::MainWindow* ui) const{
 	QMenu* ioMenu = new QMenu("Input/Output",ui->menuInsert);
@@ -19,12 +23,14 @@ void IoPlugin::updateUI(Ui::MainWindow* ui) const{
 	ioMenu->addAction(ratioAction);
 	ioMenu->addAction(outAction);
 
-	ui->toolBox->addTool("x","X",QIcon(":/x.png"));
-	ui->toolBox->addTool("y","Y",QIcon(":/y.png"));
-	ui->toolBox->addTool("ratio","Width/Height");
-	ui->toolBox->addTool("out","Output",QIcon(":/output.png"));
-
 	QAction* exportAction= new QAction("Export");
+	connect(exportAction,&QAction::triggered,ws,[=]{
+		for(const auto& node: ws->selectedItems()){
+			OutputNode* out = (OutputNode*)node;
+			if(out->_type=="out" && *out)
+				ExportImageDialog::exportBMP(out);
+		}
+	});
 	ui->menuFile->insertAction(ui->actionSave_as,exportAction);
 }
 
@@ -33,4 +39,9 @@ void IoPlugin::init()const{
 	Node::makeNodeMethods["y"] = &YNode::makeNode;
 	Node::makeNodeMethods["ratio"]= &RatioNode::makeNode;
 	Node::makeNodeMethods["out"]= &OutputNode::makeNode;
+
+	NodeBox::addTool("x","X",QIcon(":/x.png"));
+	NodeBox::addTool("y","Y",QIcon(":/y.png"));
+	NodeBox::addTool("ratio","Width/Height");
+	NodeBox::addTool("out","Output",QIcon(":/output.png"));
 }

@@ -1,4 +1,5 @@
 #include "ColorPlugin.h"
+#include "ColorNode.h"
 
 void ColorPlugin::updateUI(Ui::MainWindow *ui) const{
 	QMenu* colorMenu = new QMenu("Color",ui->menuInsert);
@@ -16,13 +17,14 @@ void ColorPlugin::updateUI(Ui::MainWindow *ui) const{
 	colorMenu->addAction(rgbAction);
 	colorMenu->addAction(hsvAction);
 
-	ui->toolBox->addTool("color","Color",QIcon(":/color.png"),"Color");
-	ui->toolBox->addTool("rgb","RGB","Color");
-	ui->toolBox->addTool("hsv","HSV","Color");
 }
 
 void ColorPlugin::init()const{
 	Node::makeNodeMethods["color"] = &ColorNode::makeNode;
 	Node::makeNodeMethods["rgb"] = &RGBNode::makeNode;
 	Node::makeNodeMethods["hsv"] = &HSVNode::makeNode;
+
+	NodeBox::addTool("color","Color",QIcon(":/color.png"),"Color");
+	NodeBox::addTool("rgb","RGB","Color");
+	NodeBox::addTool("hsv","HSV","Color");
 }

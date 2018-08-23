@@ -31,11 +31,11 @@ struct nodeToolData{
 class NodeBox : public QToolBox{
 public:
 	NodeBox(QWidget* parent=0);
-	void addTool(const std::string &id,
+	static void addTool(const std::string &id,
 				 const QString &text,
 				 const QIcon&icon=QIcon(":/no_icon.png"),
 				 const QString &category="Miscellaneous");
-	void addTool(const std::string &id,
+	static void addTool(const std::string &id,
 				 const QString &text,
 				 const QString &category);
 private:

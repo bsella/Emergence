@@ -1,4 +1,5 @@
 #include "ImagePlugin.h"
+#include "BitmapNode.h"
 
 void ImagePlugin::updateUI(Ui::MainWindow* ui) const{
 	QAction* imageAction= new QAction(QIcon(":/image.png"),"Image");
@@ -8,9 +9,9 @@ void ImagePlugin::updateUI(Ui::MainWindow* ui) const{
 
 	ui->menuInsert->addAction(imageAction);
 
-	ui->toolBox->addTool("img","Image",QIcon(":/image.png"));
 }
 
 void ImagePlugin::init()const{
 	Node::makeNodeMethods["img"] = &BitmapNode::makeNode;
+	NodeBox::addTool("img","Image",QIcon(":/image.png"));
 }

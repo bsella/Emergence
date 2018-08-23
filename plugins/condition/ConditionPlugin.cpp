@@ -1,4 +1,5 @@
 #include "ConditionPlugin.h"
+#include "IfNode.h"
 
 void ConditionPlugin::updateUI(Ui::MainWindow*ui) const{
 	QAction* ifAction= new QAction(QIcon(":/if.png"),"Condition");
@@ -7,10 +8,10 @@ void ConditionPlugin::updateUI(Ui::MainWindow*ui) const{
 	connect(ifAction,&QAction::triggered,ws,[=]{ws->addNode(Node::nodeMalloc("if"));});
 
 	ui->menuInsert->addAction(ifAction);
-
-	ui->toolBox->addTool("if","Condition",QIcon(":/if.png"));
 }
 
 void ConditionPlugin::addNodes()const{
 	Node::makeNodeMethods["if"] = &IfNode::makeNode;
+
+	NodeBox::addTool("if","Condition",QIcon(":/if.png"));
 }

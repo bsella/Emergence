@@ -1,4 +1,5 @@
 #include "ComparePlugin.h"
+#include "CompNode.h"
 
 void ComparePlugin::updateUI(Ui::MainWindow*ui) const{
 	QMenu* compMenu = new QMenu("Compare",ui->menuInsert);
@@ -19,10 +20,6 @@ void ComparePlugin::updateUI(Ui::MainWindow*ui) const{
 	compMenu->addAction(eqAction);
 	compMenu->addAction(neAction);
 
-	ui->toolBox->addTool("gt","Greater Than",QIcon(":/gt.png"),"Compare");
-	ui->toolBox->addTool("lt","Less Than",QIcon(":/lt.png"),"Compare");
-	ui->toolBox->addTool("eq","Equal",QIcon(":/eq.png"),"Compare");
-	ui->toolBox->addTool("ne","Not Equal",QIcon(":/ne.png"),"Compare");
 }
 
 void ComparePlugin::init()const{
@@ -30,4 +27,9 @@ void ComparePlugin::init()const{
 	Node::makeNodeMethods["lt"] = &LTNode::makeNode;
 	Node::makeNodeMethods["eq"] = &EQNode::makeNode;
 	Node::makeNodeMethods["ne"] = &NENode::makeNode;
+
+	NodeBox::addTool("gt","Greater Than",QIcon(":/gt.png"),"Compare");
+	NodeBox::addTool("lt","Less Than",QIcon(":/lt.png"),"Compare");
+	NodeBox::addTool("eq","Equal",QIcon(":/eq.png"),"Compare");
+	NodeBox::addTool("ne","Not Equal",QIcon(":/ne.png"),"Compare");
 }

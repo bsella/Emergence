@@ -1,5 +1,6 @@
 #include "FunctionPlugin.h"
 
+#include "FunctionNode.h"
 #include "FunctionManager.h"
 
 void FunctionPlugin::updateUI(Ui::MainWindow* ui) const{
@@ -13,8 +14,6 @@ void FunctionPlugin::updateUI(Ui::MainWindow* ui) const{
 
 	ui->menuInsert->addAction(funcAction);
 
-	ui->toolBox->addTool("fun","Function");
-
 	QAction* fmAction= new QAction("Function Manager");
 	connect(fmAction,SIGNAL(triggered(bool)),FunctionManager::instance(),SLOT(exec()));
 	ui->menuTools->addAction(fmAction);
@@ -22,4 +21,5 @@ void FunctionPlugin::updateUI(Ui::MainWindow* ui) const{
 
 void FunctionPlugin::init()const{
 	Node::makeNodeMethods["fun"] = &FunctionNode::makeNode;
+	NodeBox::addTool("fun","Function");
 }

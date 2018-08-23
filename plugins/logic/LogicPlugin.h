@@ -5,7 +5,6 @@
 #include <QtPlugin>
 
 #include "NodeInterface.h"
-#include "LogicNode.h"
 
 class LogicPlugin: public QObject, NodeInterface{
 	Q_OBJECT

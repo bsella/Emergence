@@ -18,6 +18,7 @@ public:
 	Node(const std::string& type, unsigned w=50, unsigned h=50, QColor c=Qt::white, uint n=0, bool spec=false);
 	~Node();
 	unsigned width, height;
+	const std::string _type;
 	virtual data_t eval();
 	static Node* nodeMalloc(const QString&, void* arg=nullptr);
 	QVector<Node*> iNodes;		//INPUT NODES
@@ -36,7 +37,6 @@ private:
 	friend class DisconnectNodeCommand;
 	friend class MoveNodeCommand;
 	friend class Function;
-	const std::string _type;
 	bool special;
 	QPointF initialPos;
 	static QPointF tmpPos;

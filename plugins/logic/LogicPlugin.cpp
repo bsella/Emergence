@@ -1,4 +1,5 @@
 #include "LogicPlugin.h"
+#include "LogicNode.h"
 
 void LogicPlugin::updateUI(Ui::MainWindow* ui) const{
 	QMenu* logicMenu = new QMenu("Logic",ui->menuInsert);
@@ -19,10 +20,6 @@ void LogicPlugin::updateUI(Ui::MainWindow* ui) const{
 	logicMenu->addAction(xorAction);
 	logicMenu->addAction(notAction);
 
-	ui->toolBox->addTool("and","And",QIcon(":/and.png"),"Logic");
-	ui->toolBox->addTool("or","Or",QIcon(":/or.png"),"Logic");
-	ui->toolBox->addTool("xor","Xor",QIcon(":/xor.png"),"Logic");
-	ui->toolBox->addTool("not","Not",QIcon(":/not.png"),"Logic");
 }
 
 void LogicPlugin::init()const{
@@ -30,4 +27,9 @@ void LogicPlugin::init()const{
 	Node::makeNodeMethods["or"] = &ORNode::makeNode;
 	Node::makeNodeMethods["xor"] = &XORNode::makeNode;
 	Node::makeNodeMethods["not"] = &NOTNode::makeNode;
+
+	NodeBox::addTool("and","And",QIcon(":/and.png"),"Logic");
+	NodeBox::addTool("or","Or",QIcon(":/or.png"),"Logic");
+	NodeBox::addTool("xor","Xor",QIcon(":/xor.png"),"Logic");
+	NodeBox::addTool("not","Not",QIcon(":/not.png"),"Logic");
 }

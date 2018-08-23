@@ -20,14 +20,15 @@ public:
 	unsigned width, height;
 	const std::string _type;
 	virtual data_t eval();
-	static Node* nodeMalloc(const QString&, void* arg=nullptr);
+	static Node* nodeMalloc(const std::string &);
+	static Node* nodeMalloc(const std::string &, std::istream &in);
 	QVector<Node*> iNodes;		//INPUT NODES
 	static SignalManager sm;
 	virtual operator bool()const;
-	static std::map<const QString, Node*(*)(void*)> makeNodeMethods;
-	static QList<const QString> knownTypes;
+	static std::map<const std::string, Node*(*)(std::istream&)> makeNodeMethods;
 	friend std::ostream& operator<<(std::ostream& out, const Node&);
 	friend std::ostream& operator<<(std::ostream& out, const QList<Node*>&);
+	friend std::istream& operator>>(std::istream& in , Node*);
 	friend std::istream& operator>>(std::istream& in , QList<Node*>&);
 private:
 	friend class MainWindow;
@@ -46,7 +47,6 @@ private:
 	bool isLooping(Node *n)const;
 	void updateConstant();
 	virtual void toBin(std::ostream&)const;
-	virtual void fromBin(std::istream&,void*)const;
 protected slots:
 	void updateLines()const;
 	void updateVal();

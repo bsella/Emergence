@@ -9,7 +9,7 @@
 class ColorNode : public Node{
 public:
 	ColorNode(const data_t::color& c= 0xff000000);
-	static Node* makeNode(void*);
+	static Node* makeNode(std::istream&);
 private:
 	inline data_t kernel()const{return cache;}
 	void paint(QPainter*,
@@ -18,12 +18,13 @@ private:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent*);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)override;
 	void changeColor();
+	void toBin(std::ostream&)const;
 };
 
 class RGBNode : public Node{
 public:
 	RGBNode();
-	inline static Node* makeNode(void*){return new RGBNode;}
+	inline static Node* makeNode(std::istream&){return new RGBNode;}
 private:
 	data_t kernel()const;
 	void paint(QPainter* painter,
@@ -34,7 +35,7 @@ private:
 class HSVNode : public Node{
 public:
 	HSVNode();
-	inline static Node* makeNode(void*){return new HSVNode;}
+	inline static Node* makeNode(std::istream&){return new HSVNode;}
 private:
 	data_t kernel()const;
 	void paint(QPainter* painter,

@@ -12,6 +12,9 @@ void Function::FunctionInputNode::paint(QPainter *p, const QStyleOptionGraphicsI
 data_t Function::FunctionInputNode::kernel()const{
 	return FunctionNode::current->iNodes[_rank]->eval();
 }
+void Function::FunctionInputNode::toBin(std::ostream&out)const{
+	out <<' '<< _rank << '\n';
+}
 
 Function::FunctionOutputNode::FunctionOutputNode():Node("fout",50,50,Qt::lightGray,1,true){
 	actionDelete->setEnabled(false);

@@ -14,7 +14,7 @@ protected:
 class XNode:public InputNode{
 public:
 	XNode();
-	inline static Node* makeNode(void*){return new XNode;}
+	inline static Node* makeNode(std::istream&){return new XNode;}
 private:
 	void paint(QPainter* painter,
 			   const QStyleOptionGraphicsItem* option,
@@ -23,13 +23,14 @@ private:
 };
 
 class YNode:public InputNode{
+public:
+	YNode();
+	inline static Node* makeNode(std::istream&){return new YNode;}
+private:
 	void paint(QPainter* painter,
 				const QStyleOptionGraphicsItem* option,
 				QWidget* widget);
 	inline data_t kernel()const{return input_y;}
-public:
-	YNode();
-	inline static Node* makeNode(void*){return new YNode;}
 };
 
 class RatioNode:public Node{
@@ -42,7 +43,7 @@ class RatioNode:public Node{
 public:
 	RatioNode();
 	~RatioNode();
-	inline static Node* makeNode(void*){return new RatioNode;}
+	inline static Node* makeNode(std::istream&){return new RatioNode;}
 };
 
 #endif

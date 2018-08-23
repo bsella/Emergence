@@ -8,8 +8,7 @@ void FunctionPlugin::updateUI(Ui::MainWindow* ui) const{
 
 	Workspace* ws=(Workspace*)ui->workspace->scene();
 	connect(funcAction,&QAction::triggered,ws,[=]{
-		Function *f = FunctionManager::getFunction();
-		if(f) ws->addNode(Node::nodeMalloc("fun",f));
+		ws->addNode(Node::nodeMalloc("fun"));
 	});
 
 	ui->menuInsert->addAction(funcAction);

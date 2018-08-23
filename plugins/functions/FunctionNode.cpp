@@ -73,10 +73,20 @@ data_t FunctionNode::eval(){
 	return cache;
 }
 
-Node* FunctionNode::makeNode(void* arg){
+Node* FunctionNode::makeNode(std::istream&in){
 	Function *f;
-	if(arg) f=(Function*)arg;
-	else f= FunctionManager::getFunction();
-	if(!f) return nullptr;
+	if(in.peek()!=EOF){
+		int i;
+		in >> i;
+		f=FunctionManager::functionAt(i);
+	}
+	else {
+		f= FunctionManager::getFunction();
+		if(!f) return nullptr;
+	}
 	return new FunctionNode(f);
+}
+
+void FunctionNode::toBin(std::ostream &out) const{
+	out <<' '<< FunctionManager::indexOf(func) << '\n';
 }

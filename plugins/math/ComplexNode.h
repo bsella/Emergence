@@ -6,7 +6,7 @@
 class ComplexNode : public Node{
 public:
 	ComplexNode();
-	inline static Node* makeNode(void*){return new ComplexNode;}
+	inline static Node* makeNode(std::istream&){return new ComplexNode;}
 private:
 	data_t kernel()const;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);

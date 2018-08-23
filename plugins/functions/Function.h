@@ -13,6 +13,7 @@ public:
 		const int _rank;
 		data_t kernel()const;
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+		void toBin(std::ostream &)const;
 	};
 	struct FunctionOutputNode: Node{
 		FunctionOutputNode();

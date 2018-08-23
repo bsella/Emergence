@@ -247,24 +247,16 @@ void Node::updateConstant(){
 		i.first->updateConstant();
 }
 
-QList<const QString> Node::knownTypes;
-std::map<const QString, Node*(*)(void*)> Node::makeNodeMethods;
+std::map<const std::string, Node*(*)(std::istream&)> Node::makeNodeMethods;
 
-Node* Node::nodeMalloc(const QString& type, void* arg){
+Node* Node::nodeMalloc(const std::string& type){
+	std::istringstream in;
+	return nodeMalloc(type,in);
+}
+Node* Node::nodeMalloc(const std::string& type, std::istream&in){
 	if(makeNodeMethods.find(type)!= makeNodeMethods.end())
-		return makeNodeMethods[type](arg);
+		return makeNodeMethods[type](in);
 	return nullptr;
-//	case Node::FUNC_G:{
-////		Function *f;
-//		if(arg) return new FunctionNode((Function*)arg);
-//		return new FunctionNode;
-////		else{
-////			f=FunctionManager::getFunction();
-////			if(!f)return nullptr;
-////		}
-//	}
-//	case Node::OUTPUT_G:	return new Function::OutputNode;
-//	case Node::INPUT_G:		return new Function::InputNode(*(uint*)arg);
 }
 
 data_t Node::eval(){
@@ -274,32 +266,12 @@ data_t Node::eval(){
 	return cache=kernel();
 }
 
-void Node::toBin(std::ostream&)const{}
-void Node::fromBin(std::istream &, void*)const{}
-
-std::ostream& operator<<(std::ostream& out, const Node&){
-//	out << Node::knownTypes.indexOf(n._type);
-//	float tmp=n.scenePos().x();
-//	out.write(reinterpret_cast<char*>(&tmp),4);
-//	tmp=n.scenePos().y();
-//	out.write(reinterpret_cast<char*>(&tmp),4);
-
-//	n.toBin(out);
-//	case Node::DOUBLE_G:
-//		out << n.cache.d << '\n';
-//		break;
-//	case Node::COLOR_G:
-//		out.write(reinterpret_cast<const char*>(&n.cache.clr),sizeof(data_t::color));
-//		break;
-//	case Node::FUNC_G:
-//		out << FunctionManager::indexOf(((FunctionNode*)&n)->func) << '\n';
-//		break;
-//	case Node::INPUT_G:
-//		out << ((Function::InputNode*)&n)->_rank<< '\n';
-//		break;
-//	case Node::BITMAP_G:
-//		out << ((BitmapNode*)&n)->path << "\n";
-//		break;
+void Node::toBin(std::ostream& out) const{
+	out <<'\n';
+}
+std::ostream& operator<<(std::ostream& out, const Node&n){
+	out << n._type <<' '<< n.scenePos().x() << ' '<< n.scenePos().y();
+	n.toBin(out);
 	return out;
 }
 std::ostream& operator<<(std::ostream& out,const QList<Node*>&nodes){
@@ -308,7 +280,7 @@ std::ostream& operator<<(std::ostream& out,const QList<Node*>&nodes){
 		out << *n;
 	for(const auto& n:nodes)
 		for(const auto& nn:n->iNodes)
-			out << nodes.indexOf(nn) << '\n';
+			out << nodes.indexOf(nn) << ' ';
 	return out;
 }
 
@@ -316,41 +288,16 @@ std::istream& operator>>(std::istream& in, QList<Node*>&nodes){
 	int tmp;
 	in>>tmp;
 	for(int i=0;i<tmp;i++){
+		std::string type;
+		int xx,yy;
+		in >> type >>xx >> yy;
 		Node* n;
-		int id;
-		in>>id;
-		float xx,yy;
-		in.read(reinterpret_cast<char*>(&xx),4);
-		in.read(reinterpret_cast<char*>(&yy),4);
-//		case Node::DOUBLE_G:
-//			in >> tmpD;
-//			n=Node::nodeMalloc((Node::Type)id,&tmpD);
-//			break;
-//		case Node::COLOR_G:
-//			in.read(reinterpret_cast<char*>(&tmpC),sizeof(data_t::color));
-//			n=Node::nodeMalloc((Node::Type)id,&tmpC);
-//			break;
-//		case Node::FUNC_G:
-//			in >> tmpI;
-//			n=Node::nodeMalloc((Node::Type)id,FunctionManager::functionAt(tmpI));
-//			break;
-//		case Node::INPUT_G:
-//			in >> tmpI;
-//			n=Node::nodeMalloc((Node::Type)id,&tmpI);
-//			break;
-//		case Node::BITMAP_G:
-//			in >> tmpS;
-//			n=Node::nodeMalloc((Node::Type)id,&tmpS);
-//			break;
-		void* arg=0;
-		n->fromBin(in,arg);
-		n=Node::nodeMalloc(Node::knownTypes.at(id),arg);
+		n= Node::makeNodeMethods[type](in);
 		n->setPos(xx,yy);
 		nodes.push_back(n);
 	}
 	for(const auto& n:nodes)
 		for(uint i=0; i<n->nbArgs; i++){
-			int tmp;
 			in>>tmp;
 			if(tmp>=0)
 				n->sockets[i]->connectToNode(nodes.at(tmp));

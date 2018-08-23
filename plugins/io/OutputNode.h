@@ -19,7 +19,7 @@ public:
 		void resizeEvent(QResizeEvent*);
 		void paintEvent(QPaintEvent*);
 	};
-	inline static Node* makeNode(void*){return new OutputNode;}
+	inline static Node* makeNode(std::istream&){return new OutputNode;}
 private slots:
 	void updateOutput();
 private:

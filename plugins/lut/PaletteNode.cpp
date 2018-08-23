@@ -14,7 +14,7 @@ void LUTNode::paint(QPainter *painter, const QStyleOptionGraphicsItem* option, Q
 	}
 }
 
-Node* LUTNode::makeNode(void *){
+Node* LUTNode::makeNode(std::istream&){
 	Palette p;
 	p.add(0xffff0000,0);
 	p.add(0xff0000ff,.5);

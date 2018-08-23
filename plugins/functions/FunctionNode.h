@@ -10,7 +10,7 @@ public:
 	FunctionNode();
 	~FunctionNode();
 	data_t eval();
-	static Node* makeNode(void*);
+	static Node* makeNode(std::istream &);
 	static FunctionNode* current;
 	Function* func;
 	const uint nodeNumber;
@@ -21,6 +21,7 @@ private:
 	void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
 	operator bool()const;
 	void changeNbArgs(uint args);
+	void toBin(std::ostream&)const;
 };
 
 #endif // FUNCTIONNODE_H

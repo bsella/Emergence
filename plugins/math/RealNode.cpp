@@ -31,7 +31,15 @@ void RealNode::changeNumber(){
 	}
 }
 
-Node* RealNode::makeNode(void *arg){
-	if(!arg) return new RealNode;
-	return new RealNode(*(double*)arg);
+Node* RealNode::makeNode(std::istream &in){
+	if(in.peek()!=EOF){
+		double d;
+		in>>d;
+		return new RealNode(d);
+	}
+	return new RealNode;
+}
+
+void RealNode::toBin(std::ostream &out) const{
+	out <<' '<< cache.d << '\n';
 }

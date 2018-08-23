@@ -29,8 +29,12 @@ void ColorNode::changeColor(){
 	}
 }
 
-Node* ColorNode::makeNode(void *arg){
-	if(arg) return new ColorNode(*(data_t::color*)arg);
+Node* ColorNode::makeNode(std::istream& in){
+	if(in.peek()!=EOF){
+		data_t::color clr;
+		in.read(reinterpret_cast<char*>(&clr),sizeof(data_t::color));
+		return new ColorNode(clr);
+	}
 	QColor c= QColorDialog::getColor(Qt::white);
 	if(c.isValid())
 		return new ColorNode(c.rgba());
@@ -72,4 +76,8 @@ data_t HSVNode::kernel()const{
 	s=qMax(s,0); s= qMin(s,255);
 	v=qMax(v,0); v= qMin(v,255);
 	return QColor::fromHsv(h,s,v).rgb();
+}
+
+void ColorNode::toBin(std::ostream &out) const{
+	out.write(reinterpret_cast<const char*>(&cache.clr),sizeof(data_t::color));
 }

@@ -6,7 +6,7 @@
 class IfNode:public Node{
 public:
 	IfNode();
-	inline static Node* makeNode(void*){return new IfNode;}
+	inline static Node* makeNode(std::istream&){return new IfNode;}
 private:
 	data_t kernel()const;
 	void paint(QPainter* painter,

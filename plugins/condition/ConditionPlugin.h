@@ -4,15 +4,15 @@
 #include <QObject>
 #include <QtPlugin>
 
-#include "NodeInterface.h"
+#include "EmergenceInterface.h"
 
-class ConditionPlugin: public QObject, NodeInterface{
+class ConditionPlugin: public QObject, EmergenceInterface{
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID "Emergence.Plugin")
-	Q_INTERFACES(NodeInterface)
+	Q_INTERFACES(EmergenceInterface)
 public:
 	void updateUI(Ui::MainWindow*)const override;
-	void addNodes()const;
+	void init()const;
 };
 
 #endif

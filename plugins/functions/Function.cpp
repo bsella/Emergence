@@ -1,7 +1,7 @@
 #include "Function.h"
 #include "FunctionNode.h"
 
-Function::FunctionInputNode::FunctionInputNode(uint rank):Node("fin",40,40,Qt::lightGray),_rank(rank){
+Function::FunctionInputNode::FunctionInputNode(int rank):Node("fin",40,40,Qt::lightGray),_rank(rank){
 	actionDelete->setEnabled(false);
 }
 void Function::FunctionInputNode::paint(QPainter *p, const QStyleOptionGraphicsItem *o, QWidget *w){
@@ -14,6 +14,11 @@ data_t Function::FunctionInputNode::kernel()const{
 }
 void Function::FunctionInputNode::toBin(std::ostream&out)const{
 	out <<' '<< _rank << '\n';
+}
+Node* Function::FunctionInputNode::makeNode(std::istream &in){
+	int r;
+	in >>r;
+	return new FunctionInputNode(r);
 }
 
 Function::FunctionOutputNode::FunctionOutputNode():Node("fout",50,50,Qt::lightGray,1,true){

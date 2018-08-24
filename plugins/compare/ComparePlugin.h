@@ -4,12 +4,12 @@
 #include <QObject>
 #include <QtPlugin>
 
-#include "NodeInterface.h"
+#include "EmergenceInterface.h"
 
-class ComparePlugin: public QObject, NodeInterface{
+class ComparePlugin: public QObject, EmergenceInterface{
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID "Emergence.Plugin")
-	Q_INTERFACES(NodeInterface)
+	Q_INTERFACES(EmergenceInterface)
 public:
 	void updateUI(Ui::MainWindow*)const override;
 	void init()const;

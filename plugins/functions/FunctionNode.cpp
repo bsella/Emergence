@@ -74,17 +74,12 @@ data_t FunctionNode::eval(){
 }
 
 Node* FunctionNode::makeNode(std::istream&in){
-	Function *f;
 	if(in.peek()!=EOF){
 		int i;
 		in >> i;
-		f=FunctionManager::functionAt(i);
+		return new FunctionNode(FunctionManager::functionAt(i));
 	}
-	else {
-		f= FunctionManager::getFunction();
-		if(!f) return nullptr;
-	}
-	return new FunctionNode(f);
+	return new FunctionNode;
 }
 
 void FunctionNode::toBin(std::ostream &out) const{

@@ -9,15 +9,17 @@
 class Function: public QListWidgetItem{
 public:
 	struct FunctionInputNode: public Node{
-		FunctionInputNode(uint rank);
+		FunctionInputNode(int rank);
 		const int _rank;
 		data_t kernel()const;
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 		void toBin(std::ostream &)const;
+		static Node* makeNode(std::istream&);
 	};
 	struct FunctionOutputNode: Node{
 		FunctionOutputNode();
 		inline data_t kernel()const{return iNodes[0]->eval();}
+		inline static Node* makeNode(std::istream&){return new FunctionOutputNode;}
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 	};
 	Function(int,const QString&);

@@ -32,7 +32,7 @@ void ColorNode::changeColor(){
 Node* ColorNode::makeNode(std::istream& in){
 	if(in.peek()!=EOF){
 		data_t::color clr;
-		in.read(reinterpret_cast<char*>(&clr),sizeof(data_t::color));
+		in>>clr;
 		return new ColorNode(clr);
 	}
 	QColor c= QColorDialog::getColor(Qt::white);
@@ -79,5 +79,5 @@ data_t HSVNode::kernel()const{
 }
 
 void ColorNode::toBin(std::ostream &out) const{
-	out.write(reinterpret_cast<const char*>(&cache.clr),sizeof(data_t::color));
+	out <<' '<<cache.clr<<'\n';
 }

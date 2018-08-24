@@ -226,11 +226,11 @@ void RenameFunctionCommand::redo(){
 }
 
 void FunctionManager::clear(){
-	ui->workspace->setScene(0);
-	while(ui->listWidget->count())
-		delete ui->listWidget->takeItem(0);
-	ui->removeFunctionButton->setEnabled(false);
-	ui->spinBox->setEnabled(false);
+	instance()->ui->workspace->setScene(0);
+	while(instance()->ui->listWidget->count())
+		delete instance()->ui->listWidget->takeItem(0);
+	instance()->ui->removeFunctionButton->setEnabled(false);
+	instance()->ui->spinBox->setEnabled(false);
 }
 
 std::istream& operator>>(std::istream& in , FunctionManager&fm){

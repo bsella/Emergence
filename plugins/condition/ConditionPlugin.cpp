@@ -10,7 +10,7 @@ void ConditionPlugin::updateUI(Ui::MainWindow*ui) const{
 	ui->menuInsert->addAction(ifAction);
 }
 
-void ConditionPlugin::addNodes()const{
+void ConditionPlugin::init()const{
 	Node::makeNodeMethods["if"] = &IfNode::makeNode;
 
 	NodeBox::addTool("if","Condition",QIcon(":/if.png"));

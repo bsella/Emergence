@@ -24,7 +24,7 @@ public:
 	Ui::MainWindow *ui;
 private:
 	static const int _magic_number=0xa1b2affd;
-	static const int _version=4;
+	static const int _version=5;
 	Workspace* scene;
 	PluginManager *pluginManager;
 	QAction zoomIN, zoomOUT;

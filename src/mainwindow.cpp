@@ -63,15 +63,10 @@ void MainWindow::save()const{
 	if(!fileName.endsWith(".emrg"))
 		fileName.append(".emrg");
 	std::ofstream ofs(fileName.toStdString());
-//	QMessageBox::information(ui->workspace,"Unable to open file",file.errorString());
+
 	ofs.write(reinterpret_cast<const char*>(&_magic_number),4);
 	ofs.write(reinterpret_cast<const char*>(&_version),4);
-#ifdef FUNCTION_PLUGIN
-	int tmp= FunctionManager::count();
-	ofs << tmp << '\n';
-	for(int i=0; i<tmp;i++)
-		ofs<<*FunctionManager::functionAt(i);
-#endif
+
 	pluginManager->save(ofs);
 
 	ofs << *scene;
@@ -96,12 +91,6 @@ void MainWindow::load(){
 		ifs.close();
 		return;
 	}
-#ifdef FUNCTION_PLUGIN
-	fm.clear();
-	ifs>>tmp;
-	for(int i=0;i<tmp;i++)
-		ifs >> fm;
-#endif
 	pluginManager->load(ifs);
 
 	scene->select_all();

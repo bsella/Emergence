@@ -21,7 +21,7 @@ public:
 	static Function* functionAt(int);
 	static int indexOf(Function*);
 	static int count();
-	void clear();
+	static void clear();
 	friend std::istream& operator>>(std::istream&, FunctionManager&);
 private:
 	explicit FunctionManager(QWidget *parent = 0);

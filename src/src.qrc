@@ -1,5 +1,16 @@
 <RCC>
     <qresource prefix="/">
         <file>emgc.ico</file>
+        <file>icons/copy.png</file>
+        <file>icons/cut.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/exit.png</file>
+        <file>icons/export.png</file>
+        <file>icons/no_icon.png</file>
+        <file>icons/open.png</file>
+        <file>icons/paste.png</file>
+        <file>icons/redo.png</file>
+        <file>icons/save.png</file>
+        <file>icons/undo.png</file>
     </qresource>
 </RCC>

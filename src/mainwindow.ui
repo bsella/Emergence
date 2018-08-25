@@ -38,6 +38,7 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
@@ -116,7 +117,7 @@
   </widget>
   <action name="actionExit">
    <property name="icon">
-    <iconset>
+    <iconset resource="src.qrc">
      <normaloff>:/icons/exit.png</normaloff>:/icons/exit.png</iconset>
    </property>
    <property name="text">
@@ -127,10 +128,6 @@
    </property>
   </action>
   <action name="actionSave_as">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
-   </property>
    <property name="text">
     <string>Save As...</string>
    </property>
@@ -140,7 +137,7 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset>
+    <iconset resource="src.qrc">
      <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
    </property>
    <property name="text">
@@ -152,7 +149,7 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset>
+    <iconset resource="src.qrc">
      <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
    </property>
    <property name="text">
@@ -164,7 +161,7 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset>
+    <iconset resource="src.qrc">
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
    </property>
    <property name="text">
@@ -176,7 +173,7 @@
   </action>
   <action name="actionCut">
    <property name="icon">
-    <iconset>
+    <iconset resource="src.qrc">
      <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
    </property>
    <property name="text">
@@ -188,7 +185,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset>
+    <iconset resource="src.qrc">
      <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
    </property>
    <property name="text">
@@ -200,7 +197,7 @@
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset>
+    <iconset resource="src.qrc">
      <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
    </property>
    <property name="text">
@@ -212,7 +209,7 @@
   </action>
   <action name="actionDelete">
    <property name="icon">
-    <iconset>
+    <iconset resource="src.qrc">
      <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png</iconset>
    </property>
    <property name="text">
@@ -231,11 +228,23 @@
    </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>
@@ -251,6 +260,8 @@
  <tabstops>
   <tabstop>workspace</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="src.qrc"/>
+ </resources>
  <connections/>
 </ui>

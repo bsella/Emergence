@@ -31,15 +31,17 @@ private:
 	QString _filePath="<untitled>";
 	bool fileModified=false;
 	void closeEvent(QCloseEvent*)override;
+	int areYouSure();
 private slots:
-	bool save();
-	bool saveAs();
-	void load();
 //	void updateActions();
 	void zoomIn()const;
 	void zoomOut()const;
 	void updateModified();
 
+	void on_actionNew_triggered();
+	void on_actionOpen_triggered();
+	bool on_actionSave_triggered();
+	bool on_actionSave_as_triggered();
 	void on_actionExit_triggered();
 };
 

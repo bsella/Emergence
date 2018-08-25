@@ -22,10 +22,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionDelete,SIGNAL(triggered(bool)),scene,SLOT(delete_selected()));
 	connect(ui->actionSelect_all,SIGNAL(triggered(bool)),scene,SLOT(select_all()));
 
-	connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(save()));
-	connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(saveAs()));
-	connect(ui->actionOpen,SIGNAL(triggered(bool)),this,SLOT(load()));
-
 	connect(ui->actionUndo,SIGNAL(triggered(bool)),&scene->undoStack,SLOT(undo()));
 	connect(ui->actionRedo,SIGNAL(triggered(bool)),&scene->undoStack,SLOT(redo()));
 	ui->actionUndo->setEnabled(false); ui->actionRedo->setEnabled(false);
@@ -61,9 +57,9 @@ void MainWindow::zoomOut()const{
 	ui->workspace->scale(1/Workspace::scaleFactor,1/Workspace::scaleFactor);
 }
 
-bool MainWindow::save(){
+bool MainWindow::on_actionSave_triggered(){
 	if(_filePath=="<untitled>")
-		return saveAs();
+		return on_actionSave_as_triggered();
 	std::ofstream ofs(_filePath.toStdString());
 
 	ofs.write(reinterpret_cast<const char*>(&_magic_number),4);
@@ -76,17 +72,26 @@ bool MainWindow::save(){
 	scene->undoStack.setClean();
 	return true;
 }
-bool MainWindow::saveAs(){
+bool MainWindow::on_actionSave_as_triggered(){
 	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
 	if(fileName.isEmpty()) return false;
 	if(!fileName.endsWith(".emrg"))
 		fileName.append(".emrg");
 	_filePath=fileName;
-	return save();
+	return on_actionSave_triggered();
 }
-void MainWindow::load(){
+void MainWindow::on_actionOpen_triggered(){
 	QString fileName= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
 	if(fileName.isNull()) return;
+
+	switch (areYouSure()) {
+		case QMessageBox::Yes:
+			if(!on_actionSave_triggered()) return;
+			break;
+		case QMessageBox::No:break;
+		case QMessageBox::Cancel:return;
+		default:break;
+	}
 
 	std::ifstream ifs(fileName.toStdString());
 	int tmp;
@@ -125,26 +130,44 @@ void MainWindow::updateModified(){
 	setWindowTitle(title);
 }
 
+void MainWindow::on_actionNew_triggered(){
+	switch (areYouSure()) {
+		case QMessageBox::Yes:
+			if(!on_actionSave_triggered()) return;
+			break;
+		case QMessageBox::No:break;
+		case QMessageBox::Cancel:return;
+		default:break;
+	}
+	scene->undoStack.clear();
+	scene->undoStack.setClean();
+	_filePath="<untitled>";
+	updateModified();
+}
+
 void MainWindow::on_actionExit_triggered(){
 	close();
 }
-
-void MainWindow::closeEvent(QCloseEvent*event){
+int MainWindow::areYouSure(){
 	if(fileModified){
-		switch(QMessageBox::question(this,"Save changes",
+		return QMessageBox::question(this,"Save changes",
 			"Save changes to "+_filePath+" before closing?",
-			(QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel))){
+			(QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel));
+	}
+	return QMessageBox::No;
+}
+void MainWindow::closeEvent(QCloseEvent*event){
+	switch (areYouSure()){
 		case QMessageBox::Yes:
-			if(!save())
+			if(!on_actionSave_triggered())
 				event->ignore();
 			break;
-		case QMessageBox::No:
-			break;
+		case QMessageBox::No:break;
 		case QMessageBox::Cancel:
 			event->ignore();
 			break;
-		default:break;
-		}
+		default:
+			break;
 	}
 }
 //void MainWindow::updateActions(){

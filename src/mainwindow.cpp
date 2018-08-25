@@ -22,7 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionDelete,SIGNAL(triggered(bool)),scene,SLOT(delete_selected()));
 	connect(ui->actionSelect_all,SIGNAL(triggered(bool)),scene,SLOT(select_all()));
 
-	connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(save()));
+	connect(ui->actionSave,SIGNAL(triggered(bool)),this,SLOT(save()));
+	connect(ui->actionSave_as,SIGNAL(triggered(bool)),this,SLOT(saveAs()));
 	connect(ui->actionOpen,SIGNAL(triggered(bool)),this,SLOT(load()));
 
 	connect(ui->actionUndo,SIGNAL(triggered(bool)),&scene->undoStack,SLOT(undo()));
@@ -46,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
 		ui->menuInsert->setEnabled(false);
 		delete ui->toolboxDock;
 	}
+	connect(&scene->undoStack,SIGNAL(indexChanged(int)),this,SLOT(updateModified()));
+	connect(&scene->undoStack,SIGNAL(cleanChanged(bool)),this,SLOT(updateModified()));
 }
 
 MainWindow::~MainWindow(){
@@ -57,12 +60,11 @@ void MainWindow::zoomIn()const{
 void MainWindow::zoomOut()const{
 	ui->workspace->scale(1/Workspace::scaleFactor,1/Workspace::scaleFactor);
 }
-void MainWindow::save()const{
-	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
-	if(fileName.isEmpty()) return;
-	if(!fileName.endsWith(".emrg"))
-		fileName.append(".emrg");
-	std::ofstream ofs(fileName.toStdString());
+
+bool MainWindow::save(){
+	if(_filePath=="<untitled>")
+		return saveAs();
+	std::ofstream ofs(_filePath.toStdString());
 
 	ofs.write(reinterpret_cast<const char*>(&_magic_number),4);
 	ofs.write(reinterpret_cast<const char*>(&_version),4);
@@ -71,13 +73,22 @@ void MainWindow::save()const{
 
 	ofs << *scene;
 	ofs.close();
+	scene->undoStack.setClean();
+	return true;
 }
-
+bool MainWindow::saveAs(){
+	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
+	if(fileName.isEmpty()) return false;
+	if(!fileName.endsWith(".emrg"))
+		fileName.append(".emrg");
+	_filePath=fileName;
+	return save();
+}
 void MainWindow::load(){
-	QString filename= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
-	if(filename.isNull()) return;
+	QString fileName= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
+	if(fileName.isNull()) return;
 
-	std::ifstream ifs(filename.toStdString());
+	std::ifstream ifs(fileName.toStdString());
 	int tmp;
 	ifs.read(reinterpret_cast<char*>(&tmp),4);
 	if(tmp!=_magic_number){
@@ -100,10 +111,41 @@ void MainWindow::load(){
 	scene->undoStack.endMacro();
 	scene->clearSelection();
 	ifs.close();
+	_filePath=fileName;
+	scene->undoStack.setClean();
+}
+
+void MainWindow::updateModified(){
+	fileModified=!scene->undoStack.isClean();
+	QString title = "Emergence";
+	if(_filePath!="<untitled>")
+		title+=" - "+_filePath.split('/').back();
+	if(fileModified)
+		title+="*";
+	setWindowTitle(title);
 }
 
 void MainWindow::on_actionExit_triggered(){
 	close();
+}
+
+void MainWindow::closeEvent(QCloseEvent*event){
+	if(fileModified){
+		switch(QMessageBox::question(this,"Save changes",
+			"Save changes to "+_filePath+" before closing?",
+			(QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel))){
+		case QMessageBox::Yes:
+			if(!save())
+				event->ignore();
+			break;
+		case QMessageBox::No:
+			break;
+		case QMessageBox::Cancel:
+			event->ignore();
+			break;
+		default:break;
+		}
+	}
 }
 //void MainWindow::updateActions(){
 //	ui->actionExport->setEnabled(false);

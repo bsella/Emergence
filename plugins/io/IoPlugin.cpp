@@ -24,6 +24,7 @@ void IoPlugin::updateUI(Ui::MainWindow* ui) const{
 	ioMenu->addAction(outAction);
 
 	QAction* exportAction= new QAction("Export");
+	exportAction->setShortcut(QKeySequence("Ctrl+E"));
 	connect(exportAction,&QAction::triggered,ws,[=]{
 		for(const auto& node: ws->selectedItems()){
 			OutputNode* out = (OutputNode*)node;
@@ -31,7 +32,7 @@ void IoPlugin::updateUI(Ui::MainWindow* ui) const{
 				ExportImageDialog::exportBMP(out);
 		}
 	});
-	ui->menuFile->insertAction(ui->actionSave_as,exportAction);
+	ui->menuFile->insertAction(ui->actionOpen,exportAction);
 }
 
 void IoPlugin::init()const{

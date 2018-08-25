@@ -29,7 +29,7 @@ TODO:
 - [ ] Navigate/Zoom
   - [x] Zoom
   - [ ] Navigate
-- [ ] File oriented
+- [x] File oriented
 - [x] Clipboard
 - [x] Undo/Redo
   - [x] Add

@@ -2,9 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QMessageBox>
-
-#include <fstream>
 
 #include "Workspace.h"
 #include "PluginManager.h"

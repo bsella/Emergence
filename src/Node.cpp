@@ -1,5 +1,9 @@
 #include "Node.h"
 
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsScene>
+#include <QPainter>
+
 Node::Socket::Socket(unsigned i, double y, Node *parent):QGraphicsObject(parent)
 	,line(headSize,0,headSize,0),rank(i),iy(y),parent(parent){
 	setZValue(parent->zValue()+1);

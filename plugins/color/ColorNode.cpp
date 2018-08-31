@@ -1,5 +1,8 @@
 #include "ColorNode.h"
 
+#include <QPainter>
+#include <QColorDialog>
+
 ColorNode::ColorNode(const data_t::color& c):Node("color",50,50,c){
 	cache=c;
 	constant=true;

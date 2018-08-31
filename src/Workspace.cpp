@@ -2,6 +2,8 @@
 
 #include <QClipboard>
 #include <QMimeData>
+#include <QApplication>
+#include <QGraphicsSceneDragDropEvent>
 
 #include "NodeBox.h"
 

@@ -3,6 +3,8 @@
 
 #include <QCloseEvent>
 #include <QFileDialog>
+#include <QMessageBox>
+#include <fstream>
 
 const int MainWindow::_magic_number;
 const int MainWindow::_version;

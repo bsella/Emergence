@@ -2,10 +2,6 @@
 #define EXPORTIMAGEDIALOG_H
 
 #include <QDialog>
-#include <QFileDialog>
-#include <QImage>
-#include <QPixmap>
-#include <QPainter>
 #include "OutputNode.h"
 
 namespace Ui {

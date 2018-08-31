@@ -1,5 +1,7 @@
 #include "IfNode.h"
 
+#include <QPainter>
+
 IfNode::IfNode():Node("if",50,100,QColor(180,180,255),3){}
 
 void IfNode::paint(QPainter* painter,

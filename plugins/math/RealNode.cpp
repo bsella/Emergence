@@ -1,5 +1,8 @@
 #include "RealNode.h"
 
+#include <QPainter>
+#include <QInputDialog>
+
 RealNode::RealNode(double v):Node("real",50,50,QColor(255,255,180)){
 	cache=v;
 	constant=true;

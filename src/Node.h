@@ -3,10 +3,6 @@
 
 #include <QGraphicsObject>
 #include <QPen>
-#include <QPainter>
-#include <QGraphicsSceneMouseEvent>
-#include <QApplication>
-#include <QGraphicsScene>
 #include <QMenu>
 
 #include "data_t.h"

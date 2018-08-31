@@ -2,7 +2,6 @@
 #define REALNODE_H
 
 #include "Node.h"
-#include <QInputDialog>
 
 class RealNode:public Node{
 public:

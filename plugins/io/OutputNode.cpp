@@ -1,5 +1,8 @@
 #include "OutputNode.h"
 
+#include <QPainter>
+#include "InputNode.h"
+
 OutputNode::RenderArea::RenderArea(OutputNode *node, QWidget *parent):QDockWidget(parent){
 	start=node;
 	setFeatures(0);

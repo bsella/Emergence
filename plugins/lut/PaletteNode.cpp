@@ -1,5 +1,7 @@
 #include "PaletteNode.h"
 
+#include <QPainter>
+
 LUTNode::LUTNode(const Palette& p): Node("lut",140,70,Qt::white,1), plt(p){}
 
 data_t LUTNode::kernel()const{

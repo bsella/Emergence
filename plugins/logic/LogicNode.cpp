@@ -1,5 +1,7 @@
 #include "LogicNode.h"
 
+#include <QPainter>
+
 LogicNode::LogicNode(const std::string &type, unsigned n):Node(type,50,50,QColor(255,180,180),n){}
 
 ORNode::ORNode():LogicNode("or",2){}

@@ -1,9 +1,9 @@
 #include "FunctionNode.h"
 
+#include <QPainter>
 #include "FunctionManager.h"
 
 uint FunctionNode::nbNodes=0;
-
 FunctionNode::FunctionNode(Function* f)
 	:Node("fun",60,50+10*f->nbArgs,Qt::lightGray,f->nbArgs),
 	func(f),nodeNumber(nbNodes++){}

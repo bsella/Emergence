@@ -1,5 +1,8 @@
 #include "MathNode.h"
 
+#include <QPainter>
+#include <QtMath>
+
 MathNode::MathNode(const std::string &type, unsigned n, unsigned w, unsigned h):Node(type,w,h,QColor(180,255,180),n){}
 
 ADDNode::ADDNode():MathNode("add",2){}

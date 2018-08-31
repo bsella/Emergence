@@ -1,8 +1,6 @@
 #ifndef BITMAPNODE_H
 #define BITMAPNODE_H
 
-#include <QPixmap>
-#include <QFileDialog>
 #include "Node.h"
 
 class BitmapNode : public Node{

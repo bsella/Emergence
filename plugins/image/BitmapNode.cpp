@@ -1,5 +1,9 @@
 #include "BitmapNode.h"
 
+#include <QPixmap>
+#include <QFileDialog>
+#include <QPainter>
+
 BitmapNode::BitmapNode(const std::string& filename):
 	Node("img",70,70,Qt::lightGray,2),path(filename){
 	setBMP(filename);

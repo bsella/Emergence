@@ -1,6 +1,8 @@
 #include "ExportImageDialog.h"
 #include "ui_exportimagedialog.h"
 
+#include <QFileDialog>
+
 ExportImageDialog::ExportImageDialog(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::ExportImageDialog){

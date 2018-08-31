@@ -4,8 +4,6 @@
 #include "Node.h"
 #include "data_t.h"
 
-#include <QColorDialog>
-
 class ColorNode : public Node{
 public:
 	ColorNode(const data_t::color& c= 0xff000000);

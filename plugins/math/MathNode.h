@@ -1,7 +1,6 @@
 #ifndef MATHNODE_H
 #define MATHNODE_H
 
-#include <QtMath>
 #include "Node.h"
 
 class MathNode:public Node{

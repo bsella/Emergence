@@ -1,6 +1,8 @@
 #include "Function.h"
 #include "FunctionNode.h"
 
+#include <QPainter>
+
 Function::FunctionInputNode::FunctionInputNode(int rank):Node("fin",40,40,Qt::lightGray),_rank(rank){
 	actionDelete->setEnabled(false);
 }

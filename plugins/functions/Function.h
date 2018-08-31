@@ -2,7 +2,6 @@
 #define FUNCTION_H
 
 #include "Node.h"
-#include <QGraphicsScene>
 #include <QListWidgetItem>
 #include "Workspace.h"
 

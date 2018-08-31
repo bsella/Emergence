@@ -2,6 +2,7 @@
 #define WORKSPACE_H
 
 #include <QUndoStack>
+#include <QGraphicsScene>
 #include "Node.h"
 
 class Workspace : public QGraphicsScene{

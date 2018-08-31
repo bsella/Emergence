@@ -2,7 +2,6 @@
 #define OutputNODE_H
 
 #include "Node.h"
-#include "InputNode.h"
 #include <QDockWidget>
 
  class OutputNode : public Node{

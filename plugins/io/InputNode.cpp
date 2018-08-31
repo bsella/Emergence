@@ -1,5 +1,7 @@
 #include "InputNode.h"
 
+#include <QPainter>
+
 double InputNode::input_x;
 double InputNode::input_y;
 double RatioNode::ratio;

@@ -1,5 +1,10 @@
 #include "Workspace.h"
 
+#include <QClipboard>
+#include <QMimeData>
+
+#include "NodeBox.h"
+
 Workspace::Workspace(QWidget *parent):QGraphicsScene(parent){}
 
 void Workspace::dragEnterEvent(QGraphicsSceneDragDropEvent *event){
@@ -8,9 +13,8 @@ void Workspace::dragEnterEvent(QGraphicsSceneDragDropEvent *event){
 }
 
 void Workspace::dropEvent(QGraphicsSceneDragDropEvent *event){
-	addNode(Node::nodeMalloc(
-				event->mimeData()->data("type").toStdString()),
-			event->scenePos());
+	NodeTool::workspace=this;
+	NodeTool::point=event->scenePos();
 }
 
 void Workspace::dragMoveEvent(QGraphicsSceneDragDropEvent*event){

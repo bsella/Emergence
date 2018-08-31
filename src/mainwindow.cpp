@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QCloseEvent>
+#include <QFileDialog>
+
 const int MainWindow::_magic_number;
 const int MainWindow::_version;
 MainWindow::MainWindow(QWidget *parent) :

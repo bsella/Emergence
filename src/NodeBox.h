@@ -2,13 +2,7 @@
 #define NODEBOX_H
 
 #include<QToolBox>
-#include<QLabel>
-#include<QLayout>
-#include<QPushButton>
-#include<QSpacerItem>
-#include<QAction>
-#include<QDrag>
-#include<QMimeData>
+#include "Workspace.h"
 
 class NodeTool : public QFrame{
 public:
@@ -16,9 +10,12 @@ public:
 			 const QString &text,
 			 const QIcon&icon);
 private:
+	static Workspace* workspace;
+	static QPointF point;
 	std::string id;
 	QIcon icon;
 	void mouseMoveEvent(QMouseEvent *event);
+	friend class Workspace;
 };
 
 struct nodeToolData{

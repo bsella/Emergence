@@ -6,8 +6,6 @@
 
 #include <fstream>
 
-#include <QPluginLoader>
-#include <QFileDialog>
 #include "Workspace.h"
 #include "PluginManager.h"
 

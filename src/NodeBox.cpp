@@ -1,5 +1,15 @@
 #include "NodeBox.h"
 
+#include<QLabel>
+#include<QLayout>
+#include<QPushButton>
+#include<QSpacerItem>
+#include<QAction>
+#include<QDrag>
+#include<QMimeData>
+
+Workspace* NodeTool::workspace;
+QPointF NodeTool::point;
 NodeTool::NodeTool(const std::string& id,const QString& text, const QIcon& icon)
 	:id(id),icon(icon){
 	setMinimumHeight(30);
@@ -22,13 +32,12 @@ NodeTool::NodeTool(const std::string& id,const QString& text, const QIcon& icon)
 
 void NodeTool::mouseMoveEvent(QMouseEvent *event){
 	QDrag* drag= new QDrag(this);
-	QMimeData* mime = new QMimeData;
-	drag->setMimeData(mime);
-	mime->setText("nodeTool");
-	mime->setData("type",QByteArray(id.c_str()));
 	drag->setPixmap(icon.pixmap(24,24));
-	mime->setParent(drag);
+	drag->setMimeData(new QMimeData);
+	workspace=nullptr;
 	drag->exec();
+	if(workspace)
+		workspace->addNode(Node::nodeMalloc(id),point);
 	QWidget::mouseMoveEvent(event);
 }
 

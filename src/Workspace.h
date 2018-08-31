@@ -1,10 +1,7 @@
 #ifndef WORKSPACE_H
 #define WORKSPACE_H
 
-#include <QDropEvent>
-#include <QMimeData>
 #include <QUndoStack>
-#include <QClipboard>
 #include "Node.h"
 
 class Workspace : public QGraphicsScene{

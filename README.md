@@ -38,6 +38,8 @@ TODO:
   - [x] Disconnect
   - [x] Move
   - [ ] Change Constant
+  - [ ] Change Image
+  - [ ] Change/rename Function
 - [x] Multiple outputs
 - [x] Destructors
 - [ ] Transparancy support

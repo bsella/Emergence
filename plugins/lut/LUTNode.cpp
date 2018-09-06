@@ -1,5 +1,6 @@
-#include "PaletteNode.h"
+#include "LUTNode.h"
 
+#include "dialog/lut_dialog.h"
 #include <QPainter>
 
 LUTNode::LUTNode(const Palette& p): Node("lut",140,70,Qt::white,1), plt(p){}
@@ -17,9 +18,15 @@ void LUTNode::paint(QPainter *painter, const QStyleOptionGraphicsItem* option, Q
 }
 
 Node* LUTNode::makeNode(std::istream&){
+//	Palette *p= LutDialog::getPalette();
+//	if(p)return  new LUTNode(*p);
+//	return nullptr;
+
 	Palette p;
 	p.add(0xffff0000,0);
+	Palette::color* c=
 	p.add(0xff0000ff,.5);
 	p.add(0xff00ff00,1);
+	p.remove(c);
 	return new LUTNode(p);
 }

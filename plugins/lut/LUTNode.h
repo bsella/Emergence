@@ -1,5 +1,5 @@
-#ifndef PALETTENODE_H
-#define PALETTENODE_H
+#ifndef LUTNODE_H
+#define LUTNODE_H
 
 #include "Palette.h"
 #include "Node.h"

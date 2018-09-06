@@ -20,37 +20,38 @@ unsigned makeRGB(uint8_t r, uint8_t g, uint8_t b){
 
 Palette::Palette(){}
 
-Palette::color::color(unsigned c, double a): clr(c), alpha(a){}
+Palette::color::color(Palette *p, unsigned c, double a): p(p),clr(c), alpha(a){}
 
 bool Palette::empty()const{
 	return colors.empty();
 }
 
-void Palette::add(unsigned color, double alpha){
+Palette::color *Palette::add(unsigned color, double alpha){
 	if(alpha<0)alpha=0;
 	if(alpha>1)alpha=1;
-	Palette::color n(color, alpha);
+	Palette::color* n= new Palette::color(this,color, alpha);
 	if(empty())
 		colors.push_back(n);
 	else{
-		if(colors.front().getAlpha() > alpha)
+		if(colors.front()->alpha > alpha)
 			colors.push_front(n);
 		else{
 			for(auto it =colors.begin(); it !=colors.end(); ++it)
-				if(it->getAlpha() >= alpha){
+				if((*it)->alpha >= alpha){
 					colors.insert(it,n);
-					return;
+					return n;
 				}
 			colors.push_back(n);
 		}
 	}
+	return n;
 }
 
 unsigned Palette::average(color c1, color c2, double i)const{
-	i=(i-c1.getAlpha())/(c2.getAlpha()-c1.getAlpha());
+	i=(i-c1.alpha)/(c2.alpha-c1.alpha);
 	uint8_t r1,g1,b1, r2,g2,b2;
-	getRGB(c1.getClr(), r1, g1, b1);
-	getRGB(c2.getClr(), r2, g2, b2);
+	getRGB(c1.clr, r1, g1, b1);
+	getRGB(c2.clr, r2, g2, b2);
 
 	return makeRGB(r2*i+(1.0-i)*r1
 					,g2*i+(1.0-i)*g1
@@ -59,11 +60,16 @@ unsigned Palette::average(color c1, color c2, double i)const{
 
 unsigned Palette::operator[](double alpha)const{
 	if(empty()) return 0xff000000;
-	if(alpha<0) return colors.front().getClr();
-	if(alpha<colors.front().getAlpha()) return colors.front().getClr();
-	for(auto it= colors.cbegin(); it != colors.cend(); ++it){
-		if(std::next(it)->getAlpha()>=alpha)
-			return average(*it, *std::next(it), alpha);
+	if(alpha<0) return colors.front()->clr;
+	if(alpha<colors.front()->alpha) return colors.front()->clr;
+	for(auto it= colors.cbegin(); std::next(it) != colors.cend(); ++it){
+		if((*std::next(it))->alpha>=alpha)
+			return average(**it, **std::next(it), alpha);
 	}
-	return colors.back().getClr();
+	return colors.back()->clr;
+}
+
+void Palette::remove(color *c){
+	colors.remove(c);
+	delete c;
 }

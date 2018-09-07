@@ -68,6 +68,7 @@ void LutView::dragMoveEvent(QDragMoveEvent *event){
 }
 void LutView::dragLeaveEvent(QDragLeaveEvent *){
 	_scene->removeItem(curs);
+	plt.remove(curs->c);
 	delete curs;
 }
 
@@ -93,7 +94,7 @@ QVariant LutCursor::itemChange(GraphicsItemChange change, const QVariant &v){
 	if(change==ItemPositionChange){
 		QPointF p= v.toPointF();
 		p.setY(height/2);
-		c->alpha=x()/width;
+		c->updateAlpha(x()/width);
 		return p;
 	}
 	return QGraphicsItem::itemChange(change, v);
@@ -101,10 +102,6 @@ QVariant LutCursor::itemChange(GraphicsItemChange change, const QVariant &v){
 
 void LutCursor::mouseReleaseEvent(QGraphicsSceneMouseEvent*){
 	setCursor(Qt::ArrowCursor);
-	if(scenePos().x()<0 || scenePos().x()>scene()->width()){
-		scene()->removeItem(this);
-		delete this;
-	}
 }
 void LutCursor::mouseMoveEvent(QGraphicsSceneMouseEvent*event){
 	setCursor(Qt::SizeHorCursor);

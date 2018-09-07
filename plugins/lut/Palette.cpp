@@ -19,11 +19,69 @@ unsigned makeRGB(uint8_t r, uint8_t g, uint8_t b){
 }
 
 Palette::Palette(){}
+Palette::Palette(const Palette &p){
+	if(!p.empty()){
+		first= new color(p.first);
+		color* tmp= first;
+		for(color*tmpOther=p.first->next;tmpOther;tmpOther=tmpOther->next){
+			tmp->next= new color(tmpOther);
+			tmp->next->prev=tmp;
+			tmp->next->plt=this;
+			tmp=tmp->next;
+		}
+		last=tmp;
+	}
+}
 
-Palette::color::color(Palette *p, unsigned c, double a): p(p),clr(c), alpha(a){}
+Palette::color::color(Palette*p,unsigned c, double a):plt(p),clr(c), alpha(a){}
+Palette::color::color(color *c):clr(c->clr),alpha(c->alpha){}
+void Palette::color::updateAlpha(double newAlpha){
+	if(next && newAlpha>next->alpha){
+		if(this==plt->first)
+			plt->first=next;
+		else prev->next=next;
+		next->prev=prev;
+
+		color* tmp= next->next;
+		while(tmp&&newAlpha>tmp->alpha)
+			tmp=tmp->next;
+		if(tmp){
+			prev=tmp->prev;
+			tmp->prev=this;
+			prev->next=this;
+			next=tmp;
+		}else{
+			prev=plt->last;
+			prev->next=this;
+			plt->last=this;
+			next=nullptr;
+		}
+	}else if(prev && newAlpha<prev->alpha){
+		if(this==plt->last)
+			plt->last=prev;
+		else next->prev=prev;
+		prev->next=next;
+
+		color* tmp= prev->prev;
+		while(tmp&&newAlpha<tmp->alpha)
+			tmp=tmp->prev;
+		if(tmp){
+			next=tmp->next;
+			tmp->next=this;
+			next->prev=this;
+			prev=tmp;
+		}else{
+			next=plt->first;
+			next->prev=this;
+			plt->first=this;
+			prev=nullptr;
+		}
+	}
+	alpha=newAlpha;
+}
 
 bool Palette::empty()const{
-	return colors.empty();
+	return first==nullptr;
 }
 
 Palette::color *Palette::add(unsigned color, double alpha){
@@ -31,23 +89,32 @@ Palette::color *Palette::add(unsigned color, double alpha){
 	if(alpha>1)alpha=1;
 	Palette::color* n= new Palette::color(this,color, alpha);
 	if(empty())
-		colors.push_back(n);
+		first=last=n;
 	else{
-		if(colors.front()->alpha > alpha)
-			colors.push_front(n);
+		if(first->alpha > alpha){
+			n->next=first;
+			first->prev=n;
+			first=n;
+		}
 		else{
-			for(auto it =colors.begin(); it !=colors.end(); ++it)
-				if((*it)->alpha >= alpha){
-					colors.insert(it,n);
+			for(auto it =first; it !=nullptr; it=it->next)
+				if(it->alpha >= alpha){
+					struct color* before= it->prev;
+					it->prev=n;
+					before->next=n;
+					n->prev=before;
+					n->next=it;
 					return n;
 				}
-			colors.push_back(n);
+			last->next=n;
+			n->prev=last;
+			last=n;
 		}
 	}
 	return n;
 }
 
-unsigned Palette::average(color c1, color c2, double i)const{
+unsigned Palette::average(color c1, color c2, double i){
 	i=(i-c1.alpha)/(c2.alpha-c1.alpha);
 	uint8_t r1,g1,b1, r2,g2,b2;
 	getRGB(c1.clr, r1, g1, b1);
@@ -60,16 +127,23 @@ unsigned Palette::average(color c1, color c2, double i)const{
 
 unsigned Palette::operator[](double alpha)const{
 	if(empty()) return 0xff000000;
-	if(alpha<0) return colors.front()->clr;
-	if(alpha<colors.front()->alpha) return colors.front()->clr;
-	for(auto it= colors.cbegin(); std::next(it) != colors.cend(); ++it){
-		if((*std::next(it))->alpha>=alpha)
-			return average(**it, **std::next(it), alpha);
+	if(alpha<0) return first->clr;
+	if(alpha<first->alpha) return first->clr;
+	for(auto it= first->next; it!= nullptr; it=it->next){
+		if(alpha<it->alpha)
+			return average(*it->prev, *it, alpha);
 	}
-	return colors.back()->clr;
+	return last->clr;
 }
 
 void Palette::remove(color *c){
-	colors.remove(c);
+	if(!c)return;
+	if(c==first) first=c->next;
+	else c->prev->next=c->next;
+	if(c==last) last=c->prev;
+	else c->next->prev=c->prev;
 	delete c;
+}
+Palette::~Palette(){
+	while (!empty()) remove(first);
 }

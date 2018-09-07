@@ -5,7 +5,7 @@ Generate bitmaps using nodes.
 ![lol.emerg](https://i.imgur.com/dY8D2aa.png)
 ![mandelbrot.emrg](https://i.imgur.com/1fQAxWw.png)
 
-For more information check out the [wiki](https://github.com/elirovi/Emergence/wiki).
+For more information check out the [wiki](https://github.com/bsella/Emergence/wiki).
 
 ---
 

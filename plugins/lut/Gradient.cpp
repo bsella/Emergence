@@ -147,3 +147,14 @@ void Gradient::remove(color *c){
 Gradient::~Gradient(){
 	while (!empty()) remove(first);
 }
+std::ostream& operator<<(std::ostream& out,const Gradient&grd){
+	uint n=0;
+	for(auto it=grd.first; it;it=it->next)
+		n++;
+	out << n <<' ';
+	for(auto it= grd.first; it; it=it->next){
+		out << it->clr <<' '<< it->alpha;
+		if(it->next) out<<' ';
+	}
+	return out;
+}

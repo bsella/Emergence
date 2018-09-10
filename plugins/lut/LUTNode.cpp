@@ -17,8 +17,25 @@ void LUTNode::paint(QPainter *painter, const QStyleOptionGraphicsItem* option, Q
 	}
 }
 
-Node* LUTNode::makeNode(std::istream&){
-	Gradient *g= LutDialog::getGradient();
+Node* LUTNode::makeNode(std::istream&in){
+	Gradient *g;
+	if(in.peek()!=EOF){
+		g= new Gradient;
+		int n;
+		in>>n;
+		double alpha;
+		uint color;
+		for(int i=0;i<n;i++){
+			in >> color;
+			in >> alpha;
+			g->add(color,alpha);
+		}
+	}
+	else g= LutDialog::getGradient();
 	if(g)return new LUTNode(*g);
 	return nullptr;
+}
+
+void LUTNode::toBin(std::ostream &out)const{
+	out<< ' '<< gradient <<'\n';
 }

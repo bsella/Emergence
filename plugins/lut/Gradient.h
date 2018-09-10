@@ -1,6 +1,8 @@
 #ifndef GRADIENT_H
 #define GRADIENT_H
 
+#include <ostream>
+
 class Gradient{
 private:
 	struct color{
@@ -19,6 +21,7 @@ private:
 	struct color*last=nullptr;
 	friend class LutCursor;
 	friend class LutView;
+	friend std::ostream& operator<<(std::ostream&,const Gradient&);
 public:
 	Gradient();
 	Gradient(const Gradient&);

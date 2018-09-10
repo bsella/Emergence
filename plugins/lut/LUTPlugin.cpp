@@ -1,5 +1,5 @@
 #include "LUTPlugin.h"
-#include "PaletteNode.h"
+#include "LUTNode.h"
 
 void LUTPlugin::updateUI(Ui::MainWindow* ui) const{
 	QAction* lutAction= new QAction("LUT");

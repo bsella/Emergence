@@ -41,7 +41,7 @@ TODO:
   - [ ] Change Image
   - [ ] Change/rename Function
 - [x] Multiple outputs
-- [x] Destructors
+- [x] LUT interface (dialog)
 - [ ] Transparancy support
 - [x] Functions
   - [x] Function Manager

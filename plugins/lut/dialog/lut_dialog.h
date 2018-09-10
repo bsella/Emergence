@@ -4,7 +4,17 @@
 #include <QDialog>
 #include <QGraphicsView>
 #include <QGraphicsItem>
-#include "../Palette.h"
+#include "../Gradient.h"
+
+class LutBackground:public QGraphicsItem{
+public:
+	LutBackground(Gradient*);
+	int width,height;
+private:
+	const Gradient*grd;
+	void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+	QRectF boundingRect()const;
+};
 
 class LutCursor:public QGraphicsItem{
 public:
@@ -14,7 +24,7 @@ private:
 	static int height;
 	static int width;
 	const QColor color;
-	Palette::color* c;
+	Gradient::color* c;
 	QRectF boundingRect()const;
 	static const int cursorRadius=5;
 	QVariant itemChange(GraphicsItemChange, const QVariant &);
@@ -32,7 +42,8 @@ public:
 private:
 	QGraphicsScene* _scene;
 	static LutCursor* curs;
-	Palette plt;
+	Gradient grd;
+	LutBackground* background;
 	void dragEnterEvent(QDragEnterEvent*);
 	void dragLeaveEvent(QDragLeaveEvent*);
 	void dragMoveEvent(QDragMoveEvent*);
@@ -43,7 +54,7 @@ class LutDialog : public QDialog{
 	Q_OBJECT
 public:
 	explicit LutDialog(QWidget *parent = 0);
-	static Palette* getPalette();
+	static Gradient *getGradient();
 private:
 	LutView* view;
 	~LutDialog();

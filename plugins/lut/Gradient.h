@@ -1,12 +1,12 @@
-#ifndef PALETTE_H
-#define PALETTE_H
+#ifndef GRADIENT_H
+#define GRADIENT_H
 
-class Palette{
+class Gradient{
 private:
 	struct color{
-		color(Palette* p,unsigned c, double a);
+		color(Gradient* p,unsigned c, double a);
 		color(color*);
-		Palette* plt;
+		Gradient* gr;
 		struct color* next=nullptr;
 		struct color* prev=nullptr;
 		const unsigned clr;
@@ -20,9 +20,9 @@ private:
 	friend class LutCursor;
 	friend class LutView;
 public:
-	Palette();
-	Palette(const Palette&);
-	~Palette();
+	Gradient();
+	Gradient(const Gradient&);
+	~Gradient();
 	color* add(unsigned color, double alpha);
 	unsigned operator[](double alpha)const;
 	bool empty()const;

@@ -1,4 +1,4 @@
-#include "Palette.h"
+#include "Gradient.h"
 #include <cstdint>
 /*Uint32 = [.ALPHA..][...RED..][.GREEN..][..BLUE..]*/
 
@@ -18,27 +18,27 @@ unsigned makeRGB(uint8_t r, uint8_t g, uint8_t b){
 	return c;
 }
 
-Palette::Palette(){}
-Palette::Palette(const Palette &p){
+Gradient::Gradient(){}
+Gradient::Gradient(const Gradient &p){
 	if(!p.empty()){
 		first= new color(p.first);
 		color* tmp= first;
 		for(color*tmpOther=p.first->next;tmpOther;tmpOther=tmpOther->next){
 			tmp->next= new color(tmpOther);
 			tmp->next->prev=tmp;
-			tmp->next->plt=this;
+			tmp->next->gr=this;
 			tmp=tmp->next;
 		}
 		last=tmp;
 	}
 }
 
-Palette::color::color(Palette*p,unsigned c, double a):plt(p),clr(c), alpha(a){}
-Palette::color::color(color *c):clr(c->clr),alpha(c->alpha){}
-void Palette::color::updateAlpha(double newAlpha){
+Gradient::color::color(Gradient*g,unsigned c, double a):gr(g),clr(c), alpha(a){}
+Gradient::color::color(color *c):clr(c->clr),alpha(c->alpha){}
+void Gradient::color::updateAlpha(double newAlpha){
 	if(next && newAlpha>next->alpha){
-		if(this==plt->first)
-			plt->first=next;
+		if(this==gr->first)
+			gr->first=next;
 		else prev->next=next;
 		next->prev=prev;
 
@@ -51,14 +51,14 @@ void Palette::color::updateAlpha(double newAlpha){
 			prev->next=this;
 			next=tmp;
 		}else{
-			prev=plt->last;
+			prev=gr->last;
 			prev->next=this;
-			plt->last=this;
+			gr->last=this;
 			next=nullptr;
 		}
 	}else if(prev && newAlpha<prev->alpha){
-		if(this==plt->last)
-			plt->last=prev;
+		if(this==gr->last)
+			gr->last=prev;
 		else next->prev=prev;
 		prev->next=next;
 
@@ -71,23 +71,23 @@ void Palette::color::updateAlpha(double newAlpha){
 			next->prev=this;
 			prev=tmp;
 		}else{
-			next=plt->first;
+			next=gr->first;
 			next->prev=this;
-			plt->first=this;
+			gr->first=this;
 			prev=nullptr;
 		}
 	}
 	alpha=newAlpha;
 }
 
-bool Palette::empty()const{
+bool Gradient::empty()const{
 	return first==nullptr;
 }
 
-Palette::color *Palette::add(unsigned color, double alpha){
+Gradient::color *Gradient::add(unsigned color, double alpha){
 	if(alpha<0)alpha=0;
 	if(alpha>1)alpha=1;
-	Palette::color* n= new Palette::color(this,color, alpha);
+	Gradient::color* n= new Gradient::color(this,color, alpha);
 	if(empty())
 		first=last=n;
 	else{
@@ -114,7 +114,7 @@ Palette::color *Palette::add(unsigned color, double alpha){
 	return n;
 }
 
-unsigned Palette::average(color c1, color c2, double i){
+unsigned Gradient::average(color c1, color c2, double i){
 	i=(i-c1.alpha)/(c2.alpha-c1.alpha);
 	uint8_t r1,g1,b1, r2,g2,b2;
 	getRGB(c1.clr, r1, g1, b1);
@@ -125,7 +125,7 @@ unsigned Palette::average(color c1, color c2, double i){
 					,b2*i+(1.0-i)*b1);
 }
 
-unsigned Palette::operator[](double alpha)const{
+unsigned Gradient::operator[](double alpha)const{
 	if(empty()) return 0xff000000;
 	if(alpha<0) return first->clr;
 	if(alpha<first->alpha) return first->clr;
@@ -136,7 +136,7 @@ unsigned Palette::operator[](double alpha)const{
 	return last->clr;
 }
 
-void Palette::remove(color *c){
+void Gradient::remove(color *c){
 	if(!c)return;
 	if(c==first) first=c->next;
 	else c->prev->next=c->next;
@@ -144,6 +144,6 @@ void Palette::remove(color *c){
 	else c->next->prev=c->prev;
 	delete c;
 }
-Palette::~Palette(){
+Gradient::~Gradient(){
 	while (!empty()) remove(first);
 }

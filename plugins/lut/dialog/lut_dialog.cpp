@@ -30,10 +30,10 @@ LutDialog::LutDialog(QWidget *parent) :
 	connect(colorDialog,SIGNAL(rejected()),this,SLOT(reject()));
 	setFixedSize(minimumSize());
 }
-Palette* LutDialog::getPalette(){
+Gradient* LutDialog::getGradient(){
 	LutDialog dial;
 	if(dial.exec())
-		return new Palette(dial.view->plt);
+		return new Gradient(dial.view->grd);
 	return nullptr;
 }
 
@@ -47,29 +47,36 @@ LutView::LutView(QWidget* parent):QGraphicsView(parent){
 	setAcceptDrops(true);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	background= new LutBackground(&grd);
+	_scene->addItem(background);
 }
 LutView::~LutView(){
+	delete background;
 	delete _scene;
 }
-#include <iostream>
 void LutView::dragEnterEvent(QDragEnterEvent *event){
 	_scene->setSceneRect(rect());
 	LutCursor::setDim(width(),height());
+	background->width=width();
+	background->height=height();
 	if(event->mimeData()->hasColor()){
 		event->setAccepted(true);
 		curs= new LutCursor(event->mimeData()->colorData().value<QColor>());
-		curs->c=plt.add(event->mimeData()->colorData().value<QColor>().rgb(),event->posF().x()/width());
+		curs->c=grd.add(event->mimeData()->colorData().value<QColor>().rgb(),event->posF().x()/width());
 		curs->setPos(event->pos().x(),height()/2);
 		_scene->addItem(curs);
 	}
+	background->update();
 }
 void LutView::dragMoveEvent(QDragMoveEvent *event){
 	curs->setPos(event->pos().x(),height()/2);
+	background->update();
 }
 void LutView::dragLeaveEvent(QDragLeaveEvent *){
 	_scene->removeItem(curs);
-	plt.remove(curs->c);
+	grd.remove(curs->c);
 	delete curs;
+	background->update();
 }
 
 int LutCursor::height;
@@ -91,7 +98,7 @@ void LutCursor::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *){
 }
 
 QVariant LutCursor::itemChange(GraphicsItemChange change, const QVariant &v){
-	if(change==ItemPositionChange){
+	if(change==ItemPositionChange&&x()){
 		QPointF p= v.toPointF();
 		p.setY(height/2);
 		c->updateAlpha(x()/width);
@@ -102,9 +109,29 @@ QVariant LutCursor::itemChange(GraphicsItemChange change, const QVariant &v){
 
 void LutCursor::mouseReleaseEvent(QGraphicsSceneMouseEvent*){
 	setCursor(Qt::ArrowCursor);
+	if(scenePos().x()<0 || scenePos().x()>scene()->width()){
+		scene()->removeItem(this);
+		c->gr->remove(c);
+		delete this;
+	}
 }
 void LutCursor::mouseMoveEvent(QGraphicsSceneMouseEvent*event){
 	setCursor(Qt::SizeHorCursor);
 	setPos(event->scenePos());
 	QGraphicsItem::mouseMoveEvent(event);
+}
+
+LutBackground::LutBackground(Gradient *g):grd(g){
+	setZValue(INT_MIN);
+}
+void LutBackground::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *){
+	if(!grd->empty())
+	for(int x=0;x<width;x++){
+		p->setPen(QColor::fromRgb((*grd)[(double)x/width]));
+		p->drawLine(x,0,x,height);
+	}
+	scene()->update();
+}
+QRectF LutBackground::boundingRect()const{
+	return QRectF(0,0,width,height);
 }

@@ -1,0 +1,41 @@
+- [ ] Navigate/Zoom
+  - [x] Zoom
+  - [ ] Navigate
+- [x] File oriented
+- [x] Clipboard
+- [x] Undo/Redo
+  - [x] Add
+  - [x] Remove
+  - [x] Connect
+  - [x] Disconnect
+  - [x] Move
+  - [ ] Change Constant
+  - [ ] Change Image
+  - [ ] Change/rename Function
+- [x] Multiple outputs
+- [x] LUT interface (dialog)
+- [ ] Transparancy
+- [x] Functions
+  - [x] Function Manager
+  - [x] New save format
+  - [x] Adapt with latest optimisation (pixel ID)
+  - [x] Draw FunctionNodes
+- [ ] Recursive Functions (obsolete if using OpenGL)
+- [x] New save format
+- [ ] Data structures and lists
+- [x] Preventing cycles
+- [x] More icons
+- [ ] Auto-arrange
+- [ ] Options
+- [ ] Command line
+- [ ] Documentation
+- [x] Modularity (Plugin system)
+- [ ] Integrate with OpenGL
+- [ ] Binary and Text save protocol (*.ebin / *.e)
+- [ ] Tidy up the architecture
+- [ ] A more intuitive way to disconnect node
+- [ ] A more intuitive way to change constants
+- [ ] Zoom and navigate on render area
+- [ ] Time nodes => videos
+- [ ] Curvy connections
+- [ ] Themes

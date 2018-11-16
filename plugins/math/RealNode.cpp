@@ -44,5 +44,10 @@ Node* RealNode::makeNode(std::istream &in){
 }
 
 void RealNode::toBin(std::ostream &out) const{
-	out <<' '<< cache.d << '\n';
+	Node::toBin(out);
+	out.write(reinterpret_cast<const char*>(&cache.d),sizeof(double));
+}
+void RealNode::toText(std::ostream &out) const{
+	Node::toText(out);
+	out <<' '<< cache.d;
 }

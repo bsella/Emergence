@@ -233,17 +233,29 @@ void FunctionManager::clear(){
 	instance()->ui->spinBox->setEnabled(false);
 }
 
-std::istream& operator>>(std::istream& in , FunctionManager&fm){
+void FunctionManager::fromBin(std::istream& in)const{
 	Function *f= new Function;
 	std::string str;
 	in >> str;
 	f->setText(QString::fromStdString(str));
-	in >> *f->scene;
+	f->scene->fromBin(in);
 
 	f->start= f->getOutputFromScene();
 	in >> f->nbArgs;
 	for(int i=0; i<f->nbArgs;i++)
 		f->iNodes.push_back(f->getNthInputFromScene(i));
-	fm.ui->listWidget->addItem(f);
-	return in;
+	ui->listWidget->addItem(f);
+}
+void FunctionManager::fromText(std::istream& in)const{
+	Function *f= new Function;
+	std::string str;
+	in >> str;
+	f->setText(QString::fromStdString(str));
+	f->scene->fromText(in);
+
+	f->start= f->getOutputFromScene();
+	in >> f->nbArgs;
+	for(int i=0; i<f->nbArgs;i++)
+		f->iNodes.push_back(f->getNthInputFromScene(i));
+	ui->listWidget->addItem(f);
 }

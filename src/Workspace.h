@@ -14,8 +14,10 @@ public:
 	void addNode(Node*);
 	void addNode(Node*, const QPointF&);
 	void addNodes(const QList<Node *>&);
-	friend std::ostream& operator<<(std::ostream& out, const Workspace& w);
-	friend std::istream& operator>>(std::istream& in, Workspace& w);
+	void toBin(std::ostream&)const;
+	void toText(std::ostream&)const;
+	void fromBin(std::istream&);
+	void fromText(std::istream&);
 	int count()const;
 	Node* nodeAt(int)const;
 	int nodeIndex(Node*)const;

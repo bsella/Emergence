@@ -20,6 +20,7 @@ public:
 private:
 	static const int _magic_number=0xa1b2affd;
 	static const int _version=6;
+	static const int _bin_version=0;
 	Workspace* scene;
 	PluginManager *pluginManager;
 	QAction zoomIN, zoomOUT;

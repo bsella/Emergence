@@ -12,7 +12,8 @@ private:
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem*option, QWidget*widget);
 	data_t kernel()const;
 	Gradient gradient;
-	void toBin(std::ostream &)const;
+	void toBin(std::ostream &)const override;
+	void toText(std::ostream &)const override;
 };
 
 #endif

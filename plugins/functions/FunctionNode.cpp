@@ -87,5 +87,11 @@ Node* FunctionNode::makeNode(std::istream&in){
 }
 
 void FunctionNode::toBin(std::ostream &out) const{
-	out <<' '<< FunctionManager::indexOf(func) << '\n';
+	Node::toBin(out);
+	const int tmp= FunctionManager::indexOf(func);
+	out.write(reinterpret_cast<const char*>(&tmp),sizeof(int));
+}
+void FunctionNode::toText(std::ostream &out) const{
+	Node::toText(out);
+	out <<' '<< FunctionManager::indexOf(func);
 }

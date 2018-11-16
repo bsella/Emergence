@@ -16,7 +16,8 @@ private:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent*);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*)override;
 	void changeColor();
-	void toBin(std::ostream&)const;
+	void toBin(std::ostream&)const override;
+	void toText(std::ostream&)const override;
 };
 
 class RGBNode : public Node{

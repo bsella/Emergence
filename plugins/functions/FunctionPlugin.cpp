@@ -29,17 +29,29 @@ void FunctionPlugin::init()const{
 	NodeBox::addTool("fun","Function");
 }
 
-void FunctionPlugin::save(std::ostream &out)const{
+void FunctionPlugin::toBin(std::ostream &out)const{
+	int tmp= FunctionManager::count();
+	out.write(reinterpret_cast<const char*>(&tmp),sizeof(int));
+	for(int i=0; i<tmp;i++)
+		FunctionManager::functionAt(i)->toBin(out);
+}
+void FunctionPlugin::toText(std::ostream &out)const{
 	int tmp= FunctionManager::count();
 	out << tmp << '\n';
 	for(int i=0; i<tmp;i++)
-		out<<*FunctionManager::functionAt(i);
+		FunctionManager::functionAt(i)->toText(out);
 }
-
-void FunctionPlugin::load(std::istream &in) const{
+void FunctionPlugin::fromBin(std::istream &in) const{
+	FunctionManager::clear();
+	int tmp;
+	in.read(reinterpret_cast<char*>(&tmp),sizeof(int));
+	for(int i=0;i<tmp;i++)
+		FunctionManager::instance()->fromBin(in);
+}
+void FunctionPlugin::fromText(std::istream &in) const{
 	FunctionManager::clear();
 	int tmp;
 	in>>tmp;
 	for(int i=0;i<tmp;i++)
-		in >> *FunctionManager::instance();
+		FunctionManager::instance()->fromText(in);
 }

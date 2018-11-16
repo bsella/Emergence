@@ -21,7 +21,8 @@ private:
 	void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
 	operator bool()const;
 	void changeNbArgs(uint args);
-	void toBin(std::ostream&)const;
+	void toBin(std::ostream&)const override;
+	void toText(std::ostream&)const override;
 };
 
 #endif // FUNCTIONNODE_H

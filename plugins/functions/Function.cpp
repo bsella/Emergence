@@ -15,7 +15,12 @@ data_t Function::FunctionInputNode::kernel()const{
 	return FunctionNode::current->iNodes[_rank]->eval();
 }
 void Function::FunctionInputNode::toBin(std::ostream&out)const{
-	out <<' '<< _rank << '\n';
+	Node::toBin(out);
+	out.write(reinterpret_cast<const char*>(&_rank),sizeof(int));
+}
+void Function::FunctionInputNode::toText(std::ostream&out)const{
+	Node::toText(out);
+	out <<' '<< _rank;
 }
 Node* Function::FunctionInputNode::makeNode(std::istream &in){
 	int r;
@@ -63,9 +68,16 @@ Function::FunctionInputNode *Function::getNthInputFromScene(int n)const{
 	return nullptr;
 }
 
-std::ostream& operator<<(std::ostream& out, const Function&f){
-	out << f.text().toStdString()<<"\n";
-	out << *(f.scene);
-	out << f.nbArgs << '\n';
-	return out;
+void Function::toBin(std::ostream& out)const{
+	const std::string tmp= text().toStdString();
+	out.write(tmp.data(),sizeof(char)*tmp.size());
+	out << '\n';
+	scene->toBin(out);
+	out.write(reinterpret_cast<const char*>(&nbArgs),sizeof(int));
+}
+
+void Function::toText(std::ostream& out)const{
+	out << text().toStdString()<<"\n";
+	scene->toText(out);
+	out << nbArgs << '\n';
 }

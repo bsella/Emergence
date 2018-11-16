@@ -82,5 +82,11 @@ data_t HSVNode::kernel()const{
 }
 
 void ColorNode::toBin(std::ostream &out) const{
-	out <<' '<<cache.clr<<'\n';
+	Node::toBin(out);
+	out.write(reinterpret_cast<const char*>(&cache.clr),sizeof(data_t::color));
+}
+
+void ColorNode::toText(std::ostream &out) const{
+	Node::toText(out);
+	out <<' '<<cache.clr;
 }

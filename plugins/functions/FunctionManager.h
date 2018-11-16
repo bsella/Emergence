@@ -22,7 +22,8 @@ public:
 	static int indexOf(Function*);
 	static int count();
 	static void clear();
-	friend std::istream& operator>>(std::istream&, FunctionManager&);
+	void fromBin(std::istream&)const;
+	void fromText(std::istream&)const;
 private:
 	explicit FunctionManager(QWidget *parent = 0);
 	~FunctionManager();

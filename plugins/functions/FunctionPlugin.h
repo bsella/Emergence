@@ -13,8 +13,10 @@ class FunctionPlugin: public QObject, EmergenceInterface{
 public:
 	void updateUI(Ui::MainWindow*)const override;
 	void init()const override;
-	void save(std::ostream&)const override;
-	void load(std::istream&)const override;
+	void toBin(std::ostream&)const override;
+	void toText(std::ostream&)const override;
+	void fromBin(std::istream&)const override;
+	void fromText(std::istream&)const override;
 	inline bool redefineSaveLoad()const override{return true;}
 };
 

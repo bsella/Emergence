@@ -37,5 +37,12 @@ Node* LUTNode::makeNode(std::istream&in){
 }
 
 void LUTNode::toBin(std::ostream &out)const{
-	out<< ' '<< gradient <<'\n';
+	Node::toBin(out);
+	out<< ' ';
+	gradient.toBin(out);
+}
+void LUTNode::toText(std::ostream &out)const{
+	Node::toText(out);
+	out<< ' ';
+	gradient.toText(out);
 }

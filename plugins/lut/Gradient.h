@@ -29,6 +29,8 @@ public:
 	color* add(unsigned color, double alpha);
 	unsigned operator[](double alpha)const;
 	bool empty()const;
+	void toBin(std::ostream&)const;
+	void toText(std::ostream&)const;
 };
 
 #endif

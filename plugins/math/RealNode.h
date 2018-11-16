@@ -12,7 +12,8 @@ private:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget);
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
-	void toBin(std::ostream &)const;
+	void toBin(std::ostream &)const override;
+	void toText(std::ostream &)const override;
 private slots:
 	void changeNumber();
 };

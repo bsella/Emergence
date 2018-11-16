@@ -99,11 +99,19 @@ void Workspace::disconnectNode(Node::Socket* s){
 void Workspace::copy()const{
 	QMimeData * mime=new QMimeData;
 	mime->setText("Emergence_Nodes");
-	QList<Node*> nodes;
+	QList<Node*> selectedNodes;
 	for(const auto& i: selectedItems())
-		nodes.append((Node*)i);
+		selectedNodes.append((Node*)i);
 	std::ostringstream oss;
-	oss << nodes;
+	int tmp=selectedNodes.size();
+	oss.write(reinterpret_cast<const char*>(&tmp),sizeof(int));
+	for(const auto& n:selectedNodes)
+		n->toBin(oss);
+	for(const auto& n:selectedNodes)
+		for(const auto& nn:n->iNodes){
+			tmp= selectedNodes.indexOf(nn);
+			oss.write(reinterpret_cast<const char*>(&tmp),sizeof(int));
+		}
 	std::string str= oss.str();
 
 	QByteArray ba(str.c_str(),str.length());
@@ -132,17 +140,55 @@ Node* Workspace::nodeAt(int i) const{
 int Workspace::nodeIndex(Node* n) const{
 	return nodes().indexOf(n);
 }
-
-std::ostream& operator<<(std::ostream& out, const Workspace& w){
-	out << w.nodes();
-	return out;
+void Workspace::toBin(std::ostream& out) const{
+	int tmp=nodes().size();
+	out.write(reinterpret_cast<const char*>(&tmp),sizeof(int));
+	for(const auto& n:nodes())
+		n->toBin(out);
+	for(const auto& n:nodes())
+		for(const auto& nn:n->iNodes){
+			tmp= nodes().indexOf(nn);
+			out.write(reinterpret_cast<const char*>(&tmp),sizeof(int));
+		}
+}
+void Workspace::toText(std::ostream& out) const{
+	out << nodes().size()<< '\n';
+	for(const auto& n:nodes()){
+		n->toText(out);
+		out << '\n';
+	}
+	for(const auto& n:nodes())
+		for(const auto& nn:n->iNodes)
+			out << nodes().indexOf(nn) << ' ';
+	out << '\n';
 }
 
-std::istream& operator>>(std::istream& in, Workspace& w){
+void Workspace::fromBin(std::istream& in){
 	QList<Node*> nodes;
-	in>>nodes;
-	w.addNodes(nodes);
-	return in;
+	in >> nodes;
+	addNodes(nodes);
+}
+void Workspace::fromText(std::istream& in){
+	QList<Node*> nodes;
+	int tmp;
+	in>>tmp;
+
+	for(int i=0;i<tmp;i++){
+		std::string type;
+		int xx,yy;
+		in >> type >>xx >> yy;
+		Node* n;
+		n= Node::makeNodeMethods[type](in);
+		n->setPos(xx,yy);
+		nodes.push_back(n);
+	}
+	for(const auto& n:nodes)
+		for(uint i=0; i<n->nbArgs; i++){
+			in>>tmp;
+			if(tmp>=0)
+				n->sockets[i]->connectToNode(nodes.at(tmp));
+		}
+	addNodes(nodes);
 }
 
 AddNodeCommand::AddNodeCommand(Node* node, QGraphicsScene* scene,

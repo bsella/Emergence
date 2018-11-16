@@ -8,8 +8,10 @@ public:
 	explicit PluginManager(Ui::MainWindow*);
 	Ui::MainWindow *ui;
 	bool loadPlugins();
-	void save(std::ostream&)const;
-	void load(std::istream&)const;
+	void toBin(std::ostream&)const;
+	void toText(std::ostream&)const;
+	void fromBin(std::istream&)const;
+	void fromText(std::istream&)const;
 	std::vector<EmergenceInterface*> plugins;
 	std::vector<void(*)()> evalFunctions;
 };

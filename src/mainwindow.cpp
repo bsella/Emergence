@@ -8,6 +8,7 @@
 
 const int MainWindow::_magic_number;
 const int MainWindow::_version;
+const int MainWindow::_bin_version;
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow){
@@ -67,26 +68,32 @@ bool MainWindow::on_actionSave_triggered(){
 		return on_actionSave_as_triggered();
 	std::ofstream ofs(_filePath.toStdString());
 
-	ofs.write(reinterpret_cast<const char*>(&_magic_number),4);
-	ofs.write(reinterpret_cast<const char*>(&_version),4);
-
-	pluginManager->save(ofs);
-
-	ofs << *scene;
+	if(_filePath.endsWith(".ebin")){
+		ofs.write(reinterpret_cast<const char*>(&_magic_number),sizeof(uint));
+		ofs.write(reinterpret_cast<const char*>(&_bin_version),sizeof(uint));
+		pluginManager->toBin(ofs);
+		scene->toBin(ofs);
+	}else{
+		ofs << _version << '\n';
+		pluginManager->toText(ofs);
+		scene->toText(ofs);
+	}
 	ofs.close();
+
 	scene->undoStack.setClean();
 	return true;
 }
 bool MainWindow::on_actionSave_as_triggered(){
-	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Node Files (*.emrg)");
+	QString fileName= QFileDialog::getSaveFileName(ui->workspace,"Save as...",".","Emergence Files (*.e *.ebin)");
 	if(fileName.isEmpty()) return false;
-	if(!fileName.endsWith(".emrg"))
-		fileName.append(".emrg");
+	if(!fileName.endsWith(".e") && !fileName.endsWith(".ebin"))
+		fileName.append(".ebin");
 	_filePath=fileName;
 	return on_actionSave_triggered();
 }
+#include <iostream>
 void MainWindow::on_actionOpen_triggered(){
-	QString fileName= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Node Files (*.emrg)");
+	QString fileName= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Emergence Files (*.e *.ebin)");
 	if(fileName.isNull()) return;
 
 	switch (areYouSure()) {
@@ -98,26 +105,38 @@ void MainWindow::on_actionOpen_triggered(){
 		default:break;
 	}
 
-	std::ifstream ifs(fileName.toStdString());
-	int tmp;
-	ifs.read(reinterpret_cast<char*>(&tmp),4);
-	if(tmp!=_magic_number){
-		QMessageBox::warning(0,"Wrong format","Bad File Format");
-		ifs.close();
-		return;
-	}
-	ifs.read(reinterpret_cast<char*>(&tmp),4);
-	if(tmp<_version){
-		QMessageBox::warning(0,"Wrong version","Sorry, this save file is too old.");
-		ifs.close();
-		return;
-	}
-	pluginManager->load(ifs);
-
 	scene->select_all();
 	scene->undoStack.beginMacro("load");
 	scene->delete_selected();
-	ifs >> *scene;
+
+	std::ifstream ifs(fileName.toStdString());
+	int tmp;
+	if(fileName.endsWith(".e")){
+		ifs >> tmp;
+		if(tmp<_version){
+			QMessageBox::warning(0,"Wrong version","Sorry, this save file is too old.");
+			ifs.close();
+			return;
+		}
+		pluginManager->fromText(ifs);
+		scene->fromText(ifs);
+	}else{
+		ifs.read(reinterpret_cast<char*>(&tmp),sizeof(uint));
+		if(tmp!=_magic_number){
+			QMessageBox::warning(0,"Wrong format","Bad File Format");
+			ifs.close();
+			return;
+		}
+		ifs.read(reinterpret_cast<char*>(&tmp),sizeof(uint));
+		if(tmp<_bin_version){
+			QMessageBox::warning(0,"Wrong version","Sorry, this save file is too old.");
+			ifs.close();
+			return;
+		}
+		pluginManager->fromBin(ifs);
+		scene->fromBin(ifs);
+	}
+
 	scene->undoStack.endMacro();
 	scene->clearSelection();
 	ifs.close();

@@ -20,7 +20,8 @@ private:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*);
 	QImage scaleImage(uint w, uint h)const;
-	void toBin(std::ostream &)const;
+	void toBin(std::ostream &)const override;
+	void toText(std::ostream &)const override;
 private slots:
 	void changeBMP();
 };

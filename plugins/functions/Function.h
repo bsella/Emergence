@@ -13,6 +13,7 @@ public:
 		data_t kernel()const;
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 		void toBin(std::ostream &)const;
+		void toText(std::ostream &)const;
 		static Node* makeNode(std::istream&);
 	};
 	struct FunctionOutputNode: Node{
@@ -28,7 +29,8 @@ public:
 	FunctionOutputNode* start;
 	QVector<FunctionInputNode*> iNodes;
 	Workspace* scene;
-	friend std::ostream& operator<<(std::ostream& out, const Function&f);
+	void toBin(std::ostream& out)const;
+	void toText(std::ostream& out)const;
 	FunctionOutputNode* getOutputFromScene()const;
 	FunctionInputNode* getNthInputFromScene(int n)const;
 };

@@ -22,9 +22,8 @@ public:
 	static SignalManager sm;
 	virtual operator bool()const;
 	static std::map<const std::string, Node*(*)(std::istream&)> makeNodeMethods;
-	friend std::ostream& operator<<(std::ostream& out, const Node&);
-	friend std::ostream& operator<<(std::ostream& out, const QList<Node*>&);
-	friend std::istream& operator>>(std::istream& in , Node*);
+//	friend std::ostream& operator<<(std::ostream& out, const Node&);
+//	friend std::istream& operator>>(std::istream& in , Node*);
 	friend std::istream& operator>>(std::istream& in , QList<Node*>&);
 private:
 	friend class MainWindow;
@@ -42,7 +41,6 @@ private:
 	virtual data_t kernel()const=0;
 	bool isLooping(Node *n)const;
 	void updateConstant();
-	virtual void toBin(std::ostream&)const;
 protected slots:
 	void updateLines()const;
 	void updateVal();
@@ -86,6 +84,8 @@ protected:
 	QAction* actionDelete;
 
 	QRectF boundingRect()const;
+	virtual void toBin(std::ostream&)const;
+	virtual void toText(std::ostream&)const;
 	virtual void paint(QPainter* painter,
 			const QStyleOptionGraphicsItem* option,
 			QWidget* widget);

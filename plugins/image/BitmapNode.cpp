@@ -85,5 +85,10 @@ void BitmapNode::changeBMP(){
 }
 
 void BitmapNode::toBin(std::ostream &out) const{
-	out <<' '<< path << '\n';
+	Node::toBin(out);
+	out <<' '<< path << '\0';
+}
+void BitmapNode::toText(std::ostream &out) const{
+	Node::toText(out);
+	out <<' '<< path;
 }

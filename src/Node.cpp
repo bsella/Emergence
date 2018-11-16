@@ -271,38 +271,37 @@ data_t Node::eval(){
 }
 
 void Node::toBin(std::ostream& out) const{
-	out <<'\n';
+	out << _type<<'\n';
+	int fx,fy;
+	fx=scenePos().x();
+	fy=scenePos().y();
+	out.write(reinterpret_cast<const char*>(&fx),sizeof(int));
+	out.write(reinterpret_cast<const char*>(&fy),sizeof(int));
 }
-std::ostream& operator<<(std::ostream& out, const Node&n){
-	out << n._type <<' '<< n.scenePos().x() << ' '<< n.scenePos().y();
-	n.toBin(out);
-	return out;
+void Node::toText(std::ostream& out) const{
+	out << _type<<' ';
+	out << scenePos().x()<< ' ';
+	out << scenePos().y();
 }
-std::ostream& operator<<(std::ostream& out,const QList<Node*>&nodes){
-	out << nodes.size()<< '\n';
-	for(const auto& n:nodes)
-		out << *n;
-	for(const auto& n:nodes)
-		for(const auto& nn:n->iNodes)
-			out << nodes.indexOf(nn) << ' ';
-	return out;
-}
-
+//Reads the BINARY data from a stream and creates a list of nodes
 std::istream& operator>>(std::istream& in, QList<Node*>&nodes){
 	int tmp;
-	in>>tmp;
+	in.read(reinterpret_cast<char*>(&tmp),sizeof(int));
+
+	std::string type;
+	int xx,yy;
 	for(int i=0;i<tmp;i++){
-		std::string type;
-		int xx,yy;
-		in >> type >>xx >> yy;
-		Node* n;
-		n= Node::makeNodeMethods[type](in);
+		in >> type;
+		in.ignore(1);
+		in.read(reinterpret_cast<char*>(&xx),sizeof(int));
+		in.read(reinterpret_cast<char*>(&yy),sizeof(int));
+		Node* n= Node::makeNodeMethods[type](in);
 		n->setPos(xx,yy);
 		nodes.push_back(n);
 	}
 	for(const auto& n:nodes)
 		for(uint i=0; i<n->nbArgs; i++){
-			in>>tmp;
+			in.read(reinterpret_cast<char*>(&tmp),sizeof(int));
 			if(tmp>=0)
 				n->sockets[i]->connectToNode(nodes.at(tmp));
 		}

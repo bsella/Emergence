@@ -8,7 +8,8 @@ public:
 	BitmapNode(const std::string &filename);
 	~BitmapNode();
 	void setBMP(const std::string &filename);
-	static Node* makeNode(std::istream &);
+	static Node* makeFromBin(std::istream &);
+	static Node* makeFromText(std::istream &);
 private:
 	std::string path;
 	QPixmap *bmp;

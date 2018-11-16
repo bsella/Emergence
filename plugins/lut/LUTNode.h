@@ -6,8 +6,9 @@
 
 class LUTNode:public Node{
 public:
-	LUTNode(const Gradient& p);
-	static Node* makeNode(std::istream &);
+	explicit LUTNode(Gradient *p);
+	static Node* makeFromBin(std::istream&);
+	static Node* makeFromText(std::istream&);
 private:
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem*option, QWidget*widget);
 	data_t kernel()const;

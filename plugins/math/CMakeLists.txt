@@ -20,6 +20,7 @@ add_library(math
 	ComplexNode.cpp
 	MathNode.h
 	RealNode.h
+	fromToStream.cpp
 	ComplexNode.h)
 
 target_link_libraries(${PROJECT_NAME} math data_t ${QRC})

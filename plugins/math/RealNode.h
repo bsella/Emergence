@@ -6,7 +6,8 @@
 class RealNode:public Node{
 public:
 	RealNode(double v=0);
-	static Node* makeNode(std::istream&);
+	static Node* makeFromBin(std::istream&);
+	static Node* makeFromText(std::istream&);
 private:
 	inline data_t kernel()const{return cache;}
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*widget);

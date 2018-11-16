@@ -72,26 +72,3 @@ data_t FunctionNode::eval(){
 	lastPixelID=pixelID;
 	return cache;
 }
-
-Node* FunctionNode::makeNode(std::istream&in){
-	Function* f;
-	if(in.peek()!=EOF){
-		int i;
-		in >> i;
-		f=FunctionManager::functionAt(i);
-	}else{
-		f=FunctionManager::getFunction();
-		if(!f) return nullptr;
-	}
-	return new FunctionNode(f);
-}
-
-void FunctionNode::toBin(std::ostream &out) const{
-	Node::toBin(out);
-	const int tmp= FunctionManager::indexOf(func);
-	out.write(reinterpret_cast<const char*>(&tmp),sizeof(int));
-}
-void FunctionNode::toText(std::ostream &out) const{
-	Node::toText(out);
-	out <<' '<< FunctionManager::indexOf(func);
-}

@@ -63,23 +63,23 @@ void MathPlugin::updateUI(Ui::MainWindow* ui) const{
 }
 
 void MathPlugin::init()const{
-	Node::makeNodeMethods["add"] = &ADDNode::makeNode;
-	Node::makeNodeMethods["sub"] = &SUBNode::makeNode;
-	Node::makeNodeMethods["mul"] = &MULNode::makeNode;
-	Node::makeNodeMethods["div"] = &DIVNode::makeNode;
-	Node::makeNodeMethods["real"] = &RealNode::makeNode;
-	Node::makeNodeMethods["cplx"] = &ComplexNode::makeNode;
-	Node::makeNodeMethods["sqrt"] = &SQRTNode::makeNode;
-	Node::makeNodeMethods["abs"] = &ABSNode::makeNode;
-	Node::makeNodeMethods["neg"] = &NEGNode::makeNode;
-	Node::makeNodeMethods["min"] = &MINNode::makeNode;
-	Node::makeNodeMethods["max"] = &MAXNode::makeNode;
-	Node::makeNodeMethods["pow"] = &POWNode::makeNode;
-	Node::makeNodeMethods["log"] = &LOGNode::makeNode;
-	Node::makeNodeMethods["sin"] = &SINNode::makeNode;
-	Node::makeNodeMethods["cos"] = &COSNode::makeNode;
-	Node::makeNodeMethods["lerp"] = &LERPNode::makeNode;
-	Node::makeNodeMethods["clamp"] = &CLAMPNode::makeNode;
+	Node::makeNodeBinTextMethods["add"] =  {&ADDNode::makeNode,&ADDNode::makeNode};
+	Node::makeNodeBinTextMethods["sub"] =  {&SUBNode::makeNode,&SUBNode::makeNode};
+	Node::makeNodeBinTextMethods["mul"] =  {&MULNode::makeNode,&MULNode::makeNode};
+	Node::makeNodeBinTextMethods["div"] =  {&DIVNode::makeNode,&DIVNode::makeNode};
+	Node::makeNodeBinTextMethods["real"] = {&RealNode::makeFromBin,&RealNode::makeFromText};
+	Node::makeNodeBinTextMethods["cplx"] = {&ComplexNode::makeNode,&ComplexNode::makeNode};
+	Node::makeNodeBinTextMethods["sqrt"] = {&SQRTNode::makeNode,&SQRTNode::makeNode};
+	Node::makeNodeBinTextMethods["abs"] =  {&ABSNode::makeNode,&ABSNode::makeNode};
+	Node::makeNodeBinTextMethods["neg"] =  {&NEGNode::makeNode,&NEGNode::makeNode};
+	Node::makeNodeBinTextMethods["min"] =  {&MINNode::makeNode,&MINNode::makeNode};
+	Node::makeNodeBinTextMethods["max"] =  {&MAXNode::makeNode,&MAXNode::makeNode};
+	Node::makeNodeBinTextMethods["pow"] =  {&POWNode::makeNode,&POWNode::makeNode};
+	Node::makeNodeBinTextMethods["log"] =  {&LOGNode::makeNode,&LOGNode::makeNode};
+	Node::makeNodeBinTextMethods["sin"] =  {&SINNode::makeNode,&SINNode::makeNode};
+	Node::makeNodeBinTextMethods["cos"] =  {&COSNode::makeNode,&COSNode::makeNode};
+	Node::makeNodeBinTextMethods["lerp"] = {&LERPNode::makeNode,&LERPNode::makeNode};
+	Node::makeNodeBinTextMethods["clamp"]= {&CLAMPNode::makeNode,&CLAMPNode::makeNode};
 
 	NodeBox::addTool("add","Add",QIcon(":/add.png"),"Math");
 	NodeBox::addTool("sub","Subtract",QIcon(":/subtract.png"),"Math");

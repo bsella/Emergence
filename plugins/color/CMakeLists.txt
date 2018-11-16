@@ -15,6 +15,7 @@ include_directories(${MAIN_SRC_DIR} ${BIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} SHARED ColorPlugin.cpp ColorPlugin.h)
 add_library(color
+	fromToStream.cpp
 	ColorNode.cpp
 	ColorNode.h)
 

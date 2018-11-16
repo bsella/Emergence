@@ -36,10 +36,10 @@ void IoPlugin::updateUI(Ui::MainWindow* ui) const{
 }
 
 void IoPlugin::init()const{
-	Node::makeNodeMethods["x"] = &XNode::makeNode;
-	Node::makeNodeMethods["y"] = &YNode::makeNode;
-	Node::makeNodeMethods["ratio"]= &RatioNode::makeNode;
-	Node::makeNodeMethods["out"]= &OutputNode::makeNode;
+	Node::makeNodeBinTextMethods["x"] = {&XNode::makeNode,&XNode::makeNode};
+	Node::makeNodeBinTextMethods["y"] = {&YNode::makeNode,&YNode::makeNode};
+	Node::makeNodeBinTextMethods["ratio"]= {&RatioNode::makeNode,&RatioNode::makeNode};
+	Node::makeNodeBinTextMethods["out"]= {&OutputNode::makeNode,&OutputNode::makeNode};
 
 	NodeBox::addTool("x","X",QIcon(":/x.png"));
 	NodeBox::addTool("y","Y",QIcon(":/y.png"));

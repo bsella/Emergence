@@ -14,7 +14,8 @@ public:
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 		void toBin(std::ostream &)const;
 		void toText(std::ostream &)const;
-		static Node* makeNode(std::istream&);
+		static Node* makefromBin(std::istream&);
+		static Node* makefromText(std::istream&);
 	};
 	struct FunctionOutputNode: Node{
 		FunctionOutputNode();

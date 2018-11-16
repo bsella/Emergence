@@ -9,17 +9,6 @@ BitmapNode::BitmapNode(const std::string& filename):
 	setBMP(filename);
 }
 
-Node* BitmapNode::makeNode(std::istream&in){
-	if(in.peek()!=EOF){
-		std::string path;
-		in >> path;
-		return new BitmapNode(path);
-	}
-	QString filename = QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
-	if(filename.isNull()) return nullptr;
-	return new BitmapNode(filename.toStdString());
-}
-
 BitmapNode::~BitmapNode(){
 	delete bmp;
 }
@@ -82,13 +71,4 @@ void BitmapNode::changeBMP(){
 	updateVal();
 	emit sm.updateOutputs();
 	update();
-}
-
-void BitmapNode::toBin(std::ostream &out) const{
-	Node::toBin(out);
-	out <<' '<< path << '\0';
-}
-void BitmapNode::toText(std::ostream &out) const{
-	Node::toText(out);
-	out <<' '<< path;
 }

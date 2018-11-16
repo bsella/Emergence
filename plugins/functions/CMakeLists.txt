@@ -24,6 +24,7 @@ add_library(func
 	FunctionNode.h
 	Function.h
 	FunctionManager.h
+	fromToStream.cpp
 	${UI_HEADERS})
 
 target_link_libraries(${PROJECT_NAME} func data_t ${QRC})

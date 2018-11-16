@@ -232,16 +232,16 @@ void FunctionManager::clear(){
 	instance()->ui->removeFunctionButton->setEnabled(false);
 	instance()->ui->spinBox->setEnabled(false);
 }
-
 void FunctionManager::fromBin(std::istream& in)const{
 	Function *f= new Function;
 	std::string str;
 	in >> str;
+	in.ignore(1);
 	f->setText(QString::fromStdString(str));
 	f->scene->fromBin(in);
 
 	f->start= f->getOutputFromScene();
-	in >> f->nbArgs;
+	in.read(reinterpret_cast<char*>(&f->nbArgs),sizeof(int));
 	for(int i=0; i<f->nbArgs;i++)
 		f->iNodes.push_back(f->getNthInputFromScene(i));
 	ui->listWidget->addItem(f);

@@ -91,7 +91,6 @@ bool MainWindow::on_actionSave_as_triggered(){
 	_filePath=fileName;
 	return on_actionSave_triggered();
 }
-#include <iostream>
 void MainWindow::on_actionOpen_triggered(){
 	QString fileName= QFileDialog::getOpenFileName(parentWidget(),"Open File",".","Emergence Files (*.e *.ebin)");
 	if(fileName.isNull()) return;

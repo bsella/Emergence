@@ -11,7 +11,7 @@ void ConditionPlugin::updateUI(Ui::MainWindow*ui) const{
 }
 
 void ConditionPlugin::init()const{
-	Node::makeNodeMethods["if"] = &IfNode::makeNode;
+	Node::makeNodeBinTextMethods["if"] = {&IfNode::makeNode,&IfNode::makeNode};
 
 	NodeBox::addTool("if","Condition",QIcon(":/if.png"));
 }

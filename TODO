@@ -31,7 +31,7 @@
 - [ ] Documentation
 - [x] Modularity (Plugin system)
 - [ ] Integrate with OpenGL
-- [ ] Binary and Text save protocol (*.ebin / *.e)
+- [x] Binary and Text save protocol (*.ebin / *.e)
 - [ ] Tidy up the architecture
 - [ ] A more intuitive way to disconnect node
 - [ ] A more intuitive way to change constants

@@ -20,9 +20,9 @@ void ColorPlugin::updateUI(Ui::MainWindow *ui) const{
 }
 
 void ColorPlugin::init()const{
-	Node::makeNodeMethods["color"] = &ColorNode::makeNode;
-	Node::makeNodeMethods["rgb"] = &RGBNode::makeNode;
-	Node::makeNodeMethods["hsv"] = &HSVNode::makeNode;
+	Node::makeNodeBinTextMethods["color"] = {&ColorNode::makeFromBin, &ColorNode::makeFromText};
+	Node::makeNodeBinTextMethods["rgb"] = {&RGBNode::makeNode, &RGBNode::makeNode};
+	Node::makeNodeBinTextMethods["hsv"] = {&HSVNode::makeNode, &HSVNode::makeNode};
 
 	NodeBox::addTool("color","Color",QIcon(":/color.png"),"Color");
 	NodeBox::addTool("rgb","RGB","Color");

@@ -21,7 +21,9 @@ public:
 	QVector<Node*> iNodes;		//INPUT NODES
 	static SignalManager sm;
 	virtual operator bool()const;
-	static std::map<const std::string, Node*(*)(std::istream&)> makeNodeMethods;
+	static std::map<const std::string,
+		std::pair<Node*(*)(std::istream&),
+				  Node*(*)(std::istream&)>> makeNodeBinTextMethods;
 //	friend std::ostream& operator<<(std::ostream& out, const Node&);
 //	friend std::istream& operator>>(std::istream& in , Node*);
 	friend std::istream& operator>>(std::istream& in , QList<Node*>&);

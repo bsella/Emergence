@@ -251,15 +251,15 @@ void Node::updateConstant(){
 		i.first->updateConstant();
 }
 
-std::map<const std::string, Node*(*)(std::istream&)> Node::makeNodeMethods;
+std::map<const std::string, std::pair<Node*(*)(std::istream&),Node*(*)(std::istream&)>> Node::makeNodeBinTextMethods;
 
 Node* Node::nodeMalloc(const std::string& type){
 	std::istringstream in;
 	return nodeMalloc(type,in);
 }
 Node* Node::nodeMalloc(const std::string& type, std::istream&in){
-	if(makeNodeMethods.find(type)!= makeNodeMethods.end())
-		return makeNodeMethods[type](in);
+	if(makeNodeBinTextMethods.find(type)!= makeNodeBinTextMethods.end())
+		return makeNodeBinTextMethods[type].first(in);
 	return nullptr;
 }
 
@@ -295,7 +295,7 @@ std::istream& operator>>(std::istream& in, QList<Node*>&nodes){
 		in.ignore(1);
 		in.read(reinterpret_cast<char*>(&xx),sizeof(int));
 		in.read(reinterpret_cast<char*>(&yy),sizeof(int));
-		Node* n= Node::makeNodeMethods[type](in);
+		Node* n= Node::makeNodeBinTextMethods[type].first(in);
 		n->setPos(xx,yy);
 		nodes.push_back(n);
 	}

@@ -15,6 +15,7 @@ include_directories(${MAIN_SRC_DIR} ${BIN_SRC_DIR} ${Qt5Widgets_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} SHARED ImagePlugin.cpp ImagePlugin.h)
 add_library(image
+	fromToStream.cpp
 	BitmapNode.cpp
 	BitmapNode.h)
 

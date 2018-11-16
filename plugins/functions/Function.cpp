@@ -14,19 +14,6 @@ void Function::FunctionInputNode::paint(QPainter *p, const QStyleOptionGraphicsI
 data_t Function::FunctionInputNode::kernel()const{
 	return FunctionNode::current->iNodes[_rank]->eval();
 }
-void Function::FunctionInputNode::toBin(std::ostream&out)const{
-	Node::toBin(out);
-	out.write(reinterpret_cast<const char*>(&_rank),sizeof(int));
-}
-void Function::FunctionInputNode::toText(std::ostream&out)const{
-	Node::toText(out);
-	out <<' '<< _rank;
-}
-Node* Function::FunctionInputNode::makeNode(std::istream &in){
-	int r;
-	in >>r;
-	return new FunctionInputNode(r);
-}
 
 Function::FunctionOutputNode::FunctionOutputNode():Node("fout",50,50,Qt::lightGray,1,true){
 	actionDelete->setEnabled(false);
@@ -66,18 +53,4 @@ Function::FunctionInputNode *Function::getNthInputFromScene(int n)const{
 		if(node->_type=="fin"&& ((FunctionInputNode*)node)->_rank==n)
 			return (FunctionInputNode*)node;
 	return nullptr;
-}
-
-void Function::toBin(std::ostream& out)const{
-	const std::string tmp= text().toStdString();
-	out.write(tmp.data(),sizeof(char)*tmp.size());
-	out << '\n';
-	scene->toBin(out);
-	out.write(reinterpret_cast<const char*>(&nbArgs),sizeof(int));
-}
-
-void Function::toText(std::ostream& out)const{
-	out << text().toStdString()<<"\n";
-	scene->toText(out);
-	out << nbArgs << '\n';
 }

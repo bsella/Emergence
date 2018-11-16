@@ -23,9 +23,11 @@ void FunctionPlugin::updateUI(Ui::MainWindow* ui) const{
 }
 
 void FunctionPlugin::init()const{
-	Node::makeNodeMethods["fun"] = &FunctionNode::makeNode;
-	Node::makeNodeMethods["fin"] = &Function::FunctionInputNode::makeNode;
-	Node::makeNodeMethods["fout"] = &Function::FunctionOutputNode::makeNode;
+	Node::makeNodeBinTextMethods["fun"] = {&FunctionNode::makefromBin,&FunctionNode::makefromText};
+	Node::makeNodeBinTextMethods["fin"] =
+		{&Function::FunctionInputNode::makefromBin,&Function::FunctionInputNode::makefromText};
+	Node::makeNodeBinTextMethods["fout"] =
+		{&Function::FunctionOutputNode::makeNode, &Function::FunctionOutputNode::makeNode};
 	NodeBox::addTool("fun","Function");
 }
 

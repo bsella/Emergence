@@ -7,7 +7,8 @@
 class ColorNode : public Node{
 public:
 	ColorNode(const data_t::color& c= 0xff000000);
-	static Node* makeNode(std::istream&);
+	static Node* makeFromBin(std::istream&);
+	static Node* makeFromText(std::istream&);
 private:
 	inline data_t kernel()const{return cache;}
 	void paint(QPainter*,

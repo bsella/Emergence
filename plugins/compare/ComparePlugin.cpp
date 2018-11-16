@@ -23,10 +23,10 @@ void ComparePlugin::updateUI(Ui::MainWindow*ui) const{
 }
 
 void ComparePlugin::init()const{
-	Node::makeNodeMethods["gt"] = &GTNode::makeNode;
-	Node::makeNodeMethods["lt"] = &LTNode::makeNode;
-	Node::makeNodeMethods["eq"] = &EQNode::makeNode;
-	Node::makeNodeMethods["ne"] = &NENode::makeNode;
+	Node::makeNodeBinTextMethods["gt"] = {&GTNode::makeNode,&GTNode::makeNode};
+	Node::makeNodeBinTextMethods["lt"] = {&LTNode::makeNode,&LTNode::makeNode};
+	Node::makeNodeBinTextMethods["eq"] = {&EQNode::makeNode,&EQNode::makeNode};
+	Node::makeNodeBinTextMethods["ne"] = {&NENode::makeNode,&NENode::makeNode};
 
 	NodeBox::addTool("gt","Greater Than",QIcon(":/gt.png"),"Compare");
 	NodeBox::addTool("lt","Less Than",QIcon(":/lt.png"),"Compare");

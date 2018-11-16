@@ -10,7 +10,8 @@ public:
 	FunctionNode();
 	~FunctionNode();
 	data_t eval();
-	static Node* makeNode(std::istream &);
+	static Node* makefromBin(std::istream&);
+	static Node* makefromText(std::istream&);
 	static FunctionNode* current;
 	Function* func;
 	const uint nodeNumber;

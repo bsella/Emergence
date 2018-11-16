@@ -14,6 +14,6 @@ add_library(dialog
 	dialog/lut_dialog.cpp
 	dialog/lut_dialog.h)
 add_library(${PROJECT_NAME} SHARED LUTPlugin.cpp LUTPlugin.h)
-add_library(lut LUTNode.cpp Gradient.cpp LUTNode.h Gradient.h)
+add_library(lut fromToStream.cpp LUTNode.cpp Gradient.cpp LUTNode.h Gradient.h)
 
 target_link_libraries(${PROJECT_NAME} lut data_t dialog)

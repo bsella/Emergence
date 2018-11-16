@@ -23,10 +23,10 @@ void LogicPlugin::updateUI(Ui::MainWindow* ui) const{
 }
 
 void LogicPlugin::init()const{
-	Node::makeNodeMethods["and"] = &ANDNode::makeNode;
-	Node::makeNodeMethods["or"] = &ORNode::makeNode;
-	Node::makeNodeMethods["xor"] = &XORNode::makeNode;
-	Node::makeNodeMethods["not"] = &NOTNode::makeNode;
+	Node::makeNodeBinTextMethods["and"] = {&ANDNode::makeNode,&ANDNode::makeNode};
+	Node::makeNodeBinTextMethods["or"] =  {&ORNode::makeNode ,&ORNode::makeNode };
+	Node::makeNodeBinTextMethods["xor"] = {&XORNode::makeNode,&XORNode::makeNode};
+	Node::makeNodeBinTextMethods["not"] = {&NOTNode::makeNode,&NOTNode::makeNode};
 
 	NodeBox::addTool("and","And",QIcon(":/and.png"),"Logic");
 	NodeBox::addTool("or","Or",QIcon(":/or.png"),"Logic");

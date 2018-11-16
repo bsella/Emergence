@@ -178,7 +178,7 @@ void Workspace::fromText(std::istream& in){
 		int xx,yy;
 		in >> type >>xx >> yy;
 		Node* n;
-		n= Node::makeNodeMethods[type](in);
+		n= Node::makeNodeBinTextMethods[type].second(in);
 		n->setPos(xx,yy);
 		nodes.push_back(n);
 	}

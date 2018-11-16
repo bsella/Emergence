@@ -59,8 +59,8 @@ void PluginManager::fromBin(std::istream &in)const{
 	int nbPlugins;
 	in.read(reinterpret_cast<char*>(&nbPlugins),sizeof(int));
 	std::vector<std::string> known;
-	known.reserve(Node::makeNodeMethods.size());
-	for(const auto& keyValue : Node::makeNodeMethods)
+	known.reserve(Node::makeNodeBinTextMethods.size());
+	for(const auto& keyValue : Node::makeNodeBinTextMethods)
 		known.push_back(keyValue.first);
 	std::string tmp;
 	for(int i=0; i<nbPlugins;i++){
@@ -79,8 +79,8 @@ void PluginManager::fromText(std::istream &in)const{
 	int nbPlugins;
 	in>> nbPlugins;
 	std::vector<std::string> known;
-	known.reserve(Node::makeNodeMethods.size());
-	for(const auto& keyValue : Node::makeNodeMethods)
+	known.reserve(Node::makeNodeBinTextMethods.size());
+	for(const auto& keyValue : Node::makeNodeBinTextMethods)
 		known.push_back(keyValue.first);
 	std::string tmp;
 	for(int i=0; i<nbPlugins;i++){

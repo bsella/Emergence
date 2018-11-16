@@ -147,24 +147,3 @@ void Gradient::remove(color *c){
 Gradient::~Gradient(){
 	while (!empty()) remove(first);
 }
-
-void Gradient::toBin(std::ostream& out)const{
-	uint n=0;
-	for(auto it=first; it;it=it->next)
-		n++;
-	out.write(reinterpret_cast<const char*>(&n),sizeof(uint));
-	for(auto it= first; it; it=it->next){
-		out.write(reinterpret_cast<const char*>(&it->clr),sizeof(uint));
-		out.write(reinterpret_cast<const char*>(&it->alpha),sizeof(double));
-	}
-}
-void Gradient::toText(std::ostream& out)const{
-	uint n=0;
-	for(auto it=first; it;it=it->next)
-		n++;
-	out << n <<' ';
-	for(auto it= first; it; it=it->next){
-		out << it->clr <<' '<< it->alpha;
-		if(it->next) out<<' ';
-	}
-}

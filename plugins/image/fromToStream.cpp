@@ -1,6 +1,12 @@
 #include "BitmapNode.h"
 #include <QFileDialog>
 
+static Node* askForBMP(){
+	QString filename = QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
+	if(filename.isNull()) return nullptr;
+	return new BitmapNode(filename.toStdString());
+}
+
 Node* BitmapNode::makeFromBin(std::istream&in){
 	if(in.peek()!=EOF){
 		std::string path;
@@ -8,9 +14,7 @@ Node* BitmapNode::makeFromBin(std::istream&in){
 		in.ignore(1);
 		return new BitmapNode(path);
 	}
-	QString filename = QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
-	if(filename.isNull()) return nullptr;
-	return new BitmapNode(filename.toStdString());
+	return askForBMP();
 }
 Node* BitmapNode::makeFromText(std::istream&in){
 	if(in.peek()!=EOF){
@@ -18,9 +22,7 @@ Node* BitmapNode::makeFromText(std::istream&in){
 		in >> path;
 		return new BitmapNode(path);
 	}
-	QString filename = QFileDialog::getOpenFileName(0,"Choose Image",".","Images (*.bmp)");
-	if(filename.isNull()) return nullptr;
-	return new BitmapNode(filename.toStdString());
+	return askForBMP();
 }
 
 void BitmapNode::toBin(std::ostream &out) const{
